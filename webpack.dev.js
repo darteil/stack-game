@@ -1,7 +1,6 @@
 const merge = require('webpack-merge');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const common = require('./webpack.common');
 
 const publicPath = path.resolve(__dirname, './public');
@@ -23,12 +22,6 @@ module.exports = merge(common, {
     historyApiFallback: true
   },
   plugins: [
-    new ExtractTextPlugin('css/bundle.css'),
-    new HtmlReplaceWebpackPlugin([
-      {
-        pattern: '@@public_url',
-        replacement: ''
-      }
-    ]),
+    new ExtractTextPlugin('css/bundle.css')
   ]
 });
