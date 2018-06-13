@@ -1,7 +1,7 @@
 {
   "name": "fractals",
   "version": "1.0.0",
-  "description": "Fractals project",
+  "description": "ThreeJs project",
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js --open --mode development",
@@ -10,6 +10,8 @@
   "author": "Romanov Yurii",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^1.2.1",
+    "@material-ui/icons": "^1.1.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router": "^4.2.0",
@@ -29,6 +31,7 @@
     "file-loader": "^1.1.11",
     "html-replace-webpack-plugin": "^2.5.0",
     "html-webpack-plugin": "^4.0.0-alpha",
+    "prop-types": "^15.6.1",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",

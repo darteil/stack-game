@@ -12,7 +12,11 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   entry: indexFilePath,
-  resolve: {},
+  resolve: {
+    alias: {
+      'App': path.resolve(__dirname, './src')
+    }
+  },
   module: {
     rules: [
       {
