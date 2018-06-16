@@ -1,10 +1,10 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import SceneExample from 'App/MainPage/SceneExample.jsx';
 
 const styles = {
   root: {
@@ -14,8 +14,8 @@ const styles = {
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark',
-  },
+    type: 'dark'
+  }
 });
 
 const App = (props) => {
@@ -30,6 +30,7 @@ const App = (props) => {
             </Typography>
           </Toolbar>
         </AppBar>
+        <SceneExample />
       </div>
     </MuiThemeProvider>
   );
