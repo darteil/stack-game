@@ -1,44 +1,75 @@
 /* global requestAnimationFrame */
 import React, { Component } from 'react';
+import createOrbitControls from 'three-orbit-controls';
 import * as THREE from 'three';
 import styles from './styles.css';
-
+import buildBox from '../Game/buildBox';
 
 export default class SceneExample extends Component {
+  constructor(props) {
+    super(props);
+
+    this.container = React.createRef();
+
+    this.renderScene = this.renderScene.bind(this);
+    this.init = this.init.bind(this);
+  }
+
   componentDidMount() {
-    const scene = new THREE.Scene();
+    this.init();
+    this.renderScene();
+  }
+
+  init() {
     // eslint-disable-next-line
-    const camera = new THREE.PerspectiveCamera(70, this.threeRootElement.clientWidth / this.threeRootElement.clientHeight, 1, 1000);
-    const renderer = new THREE.WebGLRenderer();
+    const camera = new THREE.PerspectiveCamera(45, this.container.current.clientWidth / this.container.current.clientHeight, 1, 1000);
 
-    renderer.setSize(this.threeRootElement.clientWidth, this.threeRootElement.clientHeight);
-    this.threeRootElement.appendChild(renderer.domElement);
+    const axesHelper = new THREE.AxesHelper(500);
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const OrbitControls = createOrbitControls(THREE);
+    const light = new THREE.PointLight(0xff0000, 1, 100);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    scene.add(directionalLight);
 
-    const geometry = new THREE.BoxGeometry(100, 100, 100);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
+    camera.position.x = 200;
+    camera.position.y = 200;
+    camera.position.z = 200;
+    camera.lookAt(0, 0, 0);
 
-    scene.add(cube);
-    scene.background = new THREE.Color(0xf0f0f0);
+    scene.background = new THREE.Color(0x0031343C);
 
-    camera.position.y = 150;
-    camera.position.z = 500;
+    renderer.setSize(this.container.current.clientWidth, this.container.current.clientHeight);
+    this.container.current.appendChild(renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.update();
 
-    const animate = () => {
-      requestAnimationFrame(animate);
+    const mainBox = buildBox(100, 20, 100);
+    mainBox.position.set(50, 10, 50);
+    scene.add(mainBox);
 
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+    const box = buildBox(100, 20, 100);
+    box.position.set(50, 40, 50);
+    scene.add(box);
 
-      renderer.render(scene, camera);
-    };
+    light.position.set(152, 152, 152);
+    scene.add(light);
+    scene.add(axesHelper);
 
-    animate();
+    this.controls = controls;
+    this.scene = scene;
+    this.camera = camera;
+    this.renderer = renderer;
+  }
+
+  renderScene() {
+    requestAnimationFrame(this.renderScene);
+    this.renderer.render(this.scene, this.camera);
   }
 
   render() {
     return (
-      <div className={styles.scene} ref={(element) => { this.threeRootElement = element; }} />
+      <div className={styles.scene} ref={this.container} />
     );
   }
 }

@@ -1,20 +1,21 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const indexFilePath = path.resolve(__dirname, './src/index.jsx');
 
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: path.resolve(__dirname, './public/index.html'),
   filename: 'index.html',
-  inject: 'body',
+  inject: 'body'
 });
 
 module.exports = {
   entry: indexFilePath,
   resolve: {
     alias: {
-      'App': path.resolve(__dirname, './src')
+      'App': path.resolve(__dirname, './src'),
+      'lib': path.resolve(__dirname, './src/lib')
     }
   },
   module: {
@@ -52,7 +53,7 @@ module.exports = {
             options: {
               importLoaders: 1,
               localIdentName: '[path][name]__[local]__[hash:base64:5]',
-              modules: true, // Note. This prop enables CSS modules.
+              modules: true // Note. This prop enables CSS modules.
             },
           },
           publicPath: '/'

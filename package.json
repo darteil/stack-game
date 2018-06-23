@@ -18,7 +18,11 @@
     "react-dom": "^16.4.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "three": "^0.93.0"
+    "three": "^0.93.0",
+    "three-addons": "^1.2.0",
+    "three-orbit-controls": "^82.1.0",
+    "three-projector-renderer": "^1.0.1",
+    "three.js-projector": "^3.0.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
