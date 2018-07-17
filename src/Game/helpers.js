@@ -1,39 +1,62 @@
-const checkIntersection = box => box.position.x >= 150 ||
-  box.position.x <= -50 ||
-  box.position.z >= 150 ||
-  box.position.z <= -50;
+const checkIntersection = (box, activeBox, widthPrevBox, currentAxis) => {
+  if (currentAxis === 'x') {
+    if (box.position.x > activeBox.position.x) {
+      if (box.position.x - activeBox.position.x < widthPrevBox && box.position.x - activeBox.position.x >= 0) {
+        return true;
+      }
+    }
 
-const getWidthNewBox = (centerXOfBox, centerXOfPrevBox, widthPrevBox) => {
-  if (centerXOfBox > centerXOfPrevBox) {
-    const x1 = centerXOfPrevBox + (widthPrevBox / 2);
-    const x2 = centerXOfBox - (widthPrevBox / 2);
+    if (box.position.x < activeBox.position.x) {
+      if (activeBox.position.x - box.position.x < widthPrevBox && activeBox.position.x - box.position.x >= 0) {
+        return true;
+      }
+    }
 
+    if (box.position.x === activeBox.position.x) {
+      return true;
+    }
+  }
+
+  if (currentAxis === 'z') {
+    if (box.position.z > activeBox.position.z) {
+      if (box.position.z - activeBox.position.z < widthPrevBox && box.position.z - activeBox.position.z >= 0) {
+        return true;
+      }
+    }
+
+    if (box.position.z < activeBox.position.z) {
+      if (activeBox.position.z - box.position.z < widthPrevBox && activeBox.position.z - box.position.z >= 0) {
+        return true;
+      }
+    }
+
+    if (box.position.z === activeBox.position.z) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {
+  if (centerOfBox > centerOfPrevBox) {
+    const x1 = centerOfPrevBox + (widthPrevBox / 2);
+    const x2 = centerOfBox - (widthPrevBox / 2);
     return x1 - x2;
   }
-  if (centerXOfBox < centerXOfPrevBox) {
-    const x1 = centerXOfPrevBox - (widthPrevBox / 2);
-    const x2 = centerXOfBox + (widthPrevBox / 2);
+  if (centerOfBox < centerOfPrevBox) {
+    const x1 = centerOfPrevBox - (widthPrevBox / 2);
+    const x2 = centerOfBox + (widthPrevBox / 2);
 
     return x2 - x1;
   }
+  if (centerOfBox === centerOfPrevBox) {
+    return widthPrevBox;
+  }
   return 100;
 };
 
-const getPositionForNewBox = (centerOfBox, centerOfPrevBox, widthNewBox) => {
-  if (centerOfBox > centerOfPrevBox) {
-    if (centerOfBox - centerOfPrevBox > widthNewBox) {
-      return false;
-    }
-    return (centerOfBox + centerOfPrevBox) / 2;
-  }
-  if (centerOfBox < centerOfPrevBox) {
-    if (centerOfPrevBox - centerOfBox > widthNewBox) {
-      return false;
-    }
-    return (centerOfPrevBox + centerOfBox) / 2;
-  }
-  return 100;
-};
+const getPositionForNewBox = (centerOfBox, centerOfPrevBox) => (centerOfBox + centerOfPrevBox) / 2;
 
 module.exports = {
   checkIntersection,

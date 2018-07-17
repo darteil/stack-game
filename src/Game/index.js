@@ -1,7 +1,8 @@
-/* global requestAnimationFrame, cancelAnimationFrame, document */
+/* global requestAnimationFrame, cancelAnimationFrame */
 import createOrbitControls from 'three-orbit-controls';
 import * as THREE from 'three';
 import buildBox from './buildBox';
+import Helpers from './helpers';
 
 
 export default class Game {
@@ -9,13 +10,11 @@ export default class Game {
     this.xAxis = {
       prevBox: null,
       widthPrevBox: 100,
-      depthPrevBox: 100,
       activeBox: null
     };
 
     this.zAxis = {
       prevBox: null,
-      widthPrevBox: 100,
       depthPrevBox: 100,
       activeBox: null
     };
@@ -31,7 +30,7 @@ export default class Game {
     this.camera = null;
     this.renderer = null;
 
-    this.onDocumentKeyDown = this.onDocumentKeyDown.bind(this);
+    this.setNewStack = this.setNewStack.bind(this);
   }
 
   init() {
@@ -70,8 +69,6 @@ export default class Game {
     this.addBoxesForInit();
 
     this.createLights();
-
-    document.addEventListener('keydown', this.onDocumentKeyDown, false);
   }
 
   addBoxesForInit() {
@@ -120,9 +117,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x + 1, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x + 3, boxObject.position.y, boxObject.position.z);
     } else {
-      boxObject.position.set(boxObject.position.x - 1, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x - 3, boxObject.position.y, boxObject.position.z);
     }
   }
 
@@ -134,24 +131,14 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + 1);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + 3);
     } else {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - 1);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - 3);
     }
   }
 
   toggleAnimationAxis() {
     this.animationAxis = this.animationAxis === 'x' ? 'z' : 'x';
-  }
-
-  toggleDirectionFroActiveBox() {
-    if (this.animationAxis === 'x') {
-      this.xAxis.activeBox.position.set(-80, this.currentYPosition, 50);
-    }
-
-    if (this.animationAxis === 'z') {
-      this.zAxis.activeBox.position.set(50, this.currentYPosition, -80);
-    }
   }
 
   stopGame() {
@@ -169,18 +156,16 @@ export default class Game {
     this.xAxis = {
       prevBox: null,
       widthPrevBox: 100,
-      depthPrevBox: 100,
       activeBox: null
     };
 
     this.zAxis = {
       prevBox: null,
-      widthPrevBox: 100,
       depthPrevBox: 100,
       activeBox: null
     };
 
-    this.stopGameStatus = false;
+    this.stopGameStatus = true;
     this.currentYPosition = 15;
     this.requestId = null;
     this.directionAnimation = 'up'; // up or down
@@ -201,11 +186,85 @@ export default class Game {
     this.render();
   }
 
-  onDocumentKeyDown(event) {
-    const keyCode = event.which;
+  createNewStack() {
+    if (this.animationAxis === 'x') {
+      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
+      const newActiveBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
 
-    if (keyCode !== 32) {
+      const positionForNewBox = Helpers.getPositionForNewBox(
+        this.xAxis.activeBox.position.x,
+        this.xAxis.prevBox.position.x
+      );
+
+      newBox.position.set(positionForNewBox, this.currentYPosition, this.xAxis.prevBox ? this.xAxis.prevBox.position.z : 50);
+      newActiveBox.position.set(positionForNewBox, this.currentYPosition + 10, -80);
+
+      this.currentYPosition += 10;
+
+      this.scene.remove(this.xAxis.activeBox);
+      this.scene.add(newBox);
+      this.scene.add(newActiveBox);
+
+      this.zAxis.prevBox = newBox;
+      this.zAxis.activeBox = newActiveBox;
+    }
+
+    if (this.animationAxis === 'z') {
+      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
+      const newActiveBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
+
+      const positionForNewBox = Helpers.getPositionForNewBox(
+        this.zAxis.activeBox.position.z,
+        this.zAxis.prevBox.position.z
+      );
+
+      newBox.position.set(this.zAxis.prevBox.position.x, this.currentYPosition, positionForNewBox);
+      newActiveBox.position.set(-80, this.currentYPosition + 10, positionForNewBox);
+
+      this.currentYPosition += 10;
+
+      this.scene.remove(this.zAxis.activeBox);
+      this.scene.add(newBox);
+      this.scene.add(newActiveBox);
+
+      this.xAxis.prevBox = newBox;
+      this.xAxis.activeBox = newActiveBox;
+    }
+  }
+
+  setNewStack() {
+    if (this.stopGameStatus) {
       return false;
+    }
+
+    if (this.animationAxis === 'x') {
+      if (!Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x')) {
+        this.stopGame();
+        return false;
+      }
+
+      this.zAxis.depthPrevBox = Helpers.getWidthNewBox(
+        this.xAxis.activeBox.position.x,
+        this.xAxis.prevBox.position.x,
+        this.zAxis.depthPrevBox
+      );
+
+      this.createNewStack();
+    }
+
+    if (this.animationAxis === 'z') {
+      if (!Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z')) {
+        this.stopGame();
+        return false;
+      }
+
+      this.xAxis.widthPrevBox = Helpers.getWidthNewBox(
+        this.zAxis.activeBox.position.z,
+        this.zAxis.prevBox.position.z,
+        this.xAxis.widthPrevBox
+      );
+
+      this.createNewStack();
     }
 
     this.toggleAnimationAxis();

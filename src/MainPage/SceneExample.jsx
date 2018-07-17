@@ -24,10 +24,15 @@ class SceneExample extends Component {
     this.startGame = this.startGame.bind(this);
     this.stopGame = this.stopGame.bind(this);
     this.restartGame = this.restartGame.bind(this);
+    this.setNewStack = this.setNewStack.bind(this);
   }
 
   componentDidMount() {
     this.game.init();
+  }
+
+  setNewStack() {
+    this.game.setNewStack();
   }
 
   startGame() {
@@ -54,7 +59,7 @@ class SceneExample extends Component {
 
     return (
       <div>
-        <div className={styles.scene} ref={this.container} />
+        <div className={styles.scene} ref={this.container} onClick={this.setNewStack} />
         <Button disabled={this.state.gameStatus === 'launched'} variant="contained" color="primary" className={classes.button} onClick={this.startGame}>
           Start
         </Button>
