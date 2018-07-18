@@ -43,8 +43,12 @@ module.exports = () => {
     plugins: [
       new ExtractTextPlugin('css/bundle.[hash:8].css'),
       new CleanWebpackPlugin(
-        [publicPathFolder]
+        [distPath]
       ),
+      new webpack.DllReferencePlugin({
+        context: path.join(__dirname, 'public/vendor'),
+        manifest: require('./public/vendor/vendor-manifest')
+      }),
       new CopyWebpackPlugin([
         { from: publicPathFolder }
       ])

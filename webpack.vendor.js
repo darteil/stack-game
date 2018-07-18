@@ -1,40 +1,24 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-const dllDirectory = path.resolve(__dirname, './dll');
 
 module.exports = {
-  performance: {
-    hints: false
-  },
   entry: {
-    vendor: [
-      'react',
-      'react-dom',
-      'react-router',
-      'react-router-dom',
-      'three',
-      'three-addons',
-      'three-orbit-controls',
-      'three-projector-renderer',
-      'three.js-projector'
-    ]
+    vendor: [path.join(__dirname, 'vendors.js')]
   },
   output: {
-    filename: '[name].js',
-    path: dllDirectory,
+    path: path.join(__dirname, 'public/vendor'),
+    filename: 'dll.[name].js',
     library: '[name]_[hash]'
   },
   plugins: [
-    new CleanWebpackPlugin([dllDirectory]),
     new webpack.DllPlugin({
-      context: dllDirectory,
+      path: path.join(__dirname, 'public/vendor', '[name]-manifest.json'),
       name: '[name]_[hash]',
-      path: path.join(dllDirectory, '[name].json')
+      context: path.resolve(__dirname, 'public/vendor')
     })
   ],
   resolve: {
     modules: ['node_modules']
   }
 };
+
