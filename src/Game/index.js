@@ -39,7 +39,6 @@ export default class Game {
 
     const camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 5000);
 
-    const axesHelper = new THREE.AxesHelper(500);
     const scene = new THREE.Scene();
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     const OrbitControls = createOrbitControls(THREE);
@@ -59,7 +58,6 @@ export default class Game {
     controls.update();
 
     // light.position.set(152, 152, 152);
-    scene.add(axesHelper);
 
     this.controls = controls;
     this.scene = scene;

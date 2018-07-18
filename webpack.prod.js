@@ -43,8 +43,7 @@ module.exports = () => {
     plugins: [
       new ExtractTextPlugin('css/bundle.[hash:8].css'),
       new CleanWebpackPlugin(
-        [distPath],
-        { root: path.resolve(__dirname, './') }
+        [publicPathFolder]
       ),
       new CopyWebpackPlugin([
         { from: publicPathFolder }

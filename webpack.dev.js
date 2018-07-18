@@ -1,9 +1,11 @@
 const merge = require('webpack-merge');
+const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const common = require('./webpack.common');
 
 const publicPath = path.resolve(__dirname, './public');
+const dllDirectory = path.resolve(__dirname, './dll');
 
 module.exports = merge(common, {
   devtool: 'source-map',
@@ -22,6 +24,10 @@ module.exports = merge(common, {
     historyApiFallback: true
   },
   plugins: [
-    new ExtractTextPlugin('css/bundle.css')
+    new ExtractTextPlugin('css/bundle.css'),
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require(path.join(dllDirectory, '/vendor.json')),
+    })
   ]
 });
