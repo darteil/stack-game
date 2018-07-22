@@ -14,7 +14,7 @@ const styles = {
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark'
+    type: 'light'
   }
 });
 

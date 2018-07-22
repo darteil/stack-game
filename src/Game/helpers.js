@@ -1,41 +1,46 @@
 const checkIntersection = (box, activeBox, widthPrevBox, currentAxis) => {
+  let intersection = false;
+  let fullIntersection = false;
+
   if (currentAxis === 'x') {
     if (box.position.x > activeBox.position.x) {
       if (box.position.x - activeBox.position.x < widthPrevBox && box.position.x - activeBox.position.x >= 0) {
-        return true;
+        intersection = true;
       }
     }
 
     if (box.position.x < activeBox.position.x) {
       if (activeBox.position.x - box.position.x < widthPrevBox && activeBox.position.x - box.position.x >= 0) {
-        return true;
+        intersection = true;
       }
     }
 
     if (box.position.x === activeBox.position.x) {
-      return true;
+      intersection = true;
+      fullIntersection = true;
     }
   }
 
   if (currentAxis === 'z') {
     if (box.position.z > activeBox.position.z) {
       if (box.position.z - activeBox.position.z < widthPrevBox && box.position.z - activeBox.position.z >= 0) {
-        return true;
+        intersection = true;
       }
     }
 
     if (box.position.z < activeBox.position.z) {
       if (activeBox.position.z - box.position.z < widthPrevBox && activeBox.position.z - box.position.z >= 0) {
-        return true;
+        intersection = true;
       }
     }
 
     if (box.position.z === activeBox.position.z) {
-      return true;
+      intersection = true;
+      fullIntersection = true;
     }
   }
 
-  return false;
+  return { intersection, fullIntersection };
 };
 
 const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {

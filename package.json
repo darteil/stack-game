@@ -7,7 +7,7 @@
     "dev": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js --open --mode development",
     "prod": "./node_modules/.bin/webpack --config webpack.prod.js --mode production",
     "eslint": "./node_modules/.bin/eslint --fix ./src/",
-    "create-dll": "./node_modules/.bin/webpack --config webpack.vendor.js --mode production"
+    "create-dll": "./node_modules/.bin/webpack --config webpack.vendor.js --mode development"
   },
   "author": "Romanov Yurii",
   "license": "ISC",
@@ -15,16 +15,19 @@
     "@material-ui/core": "^1.4.0",
     "@material-ui/icons": "^1.1.0",
     "@tweenjs/tween.js": "^17.2.0",
+    "history": "^4.7.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "react-router-redux": "^4.0.8",
+    "redux": "^4.0.0",
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0",
     "three": "^0.93.0",
-    "three-addons": "^1.2.0",
-    "three-orbit-controls": "^82.1.0",
-    "three-projector-renderer": "^1.0.1",
-    "three.js-projector": "^3.0.6"
+    "three-addons": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -6,7 +6,6 @@ const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const common = require('./webpack.common');
 
 const publicPath = path.resolve(__dirname, './public');
-const dllDirectory = path.resolve(__dirname, './dll');
 
 module.exports = merge(common, {
   devtool: 'source-map',
@@ -21,7 +20,7 @@ module.exports = merge(common, {
       children: false,
     },
     overlay: true,
-    port: 3000,
+    port: 4000,
     historyApiFallback: true
   },
   plugins: [

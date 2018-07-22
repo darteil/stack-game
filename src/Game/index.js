@@ -1,6 +1,6 @@
 /* global requestAnimationFrame, cancelAnimationFrame */
-import createOrbitControls from 'three-orbit-controls';
 import * as THREE from 'three';
+import TWEEN from '@tweenjs/tween.js';
 import buildBox from './buildBox';
 import Helpers from './helpers';
 
@@ -9,16 +9,17 @@ export default class Game {
   constructor(container) {
     this.xAxis = {
       prevBox: null,
-      widthPrevBox: 100,
+      widthPrevBox: 50,
       activeBox: null
     };
 
     this.zAxis = {
       prevBox: null,
-      depthPrevBox: 100,
+      depthPrevBox: 50,
       activeBox: null
     };
 
+    this.vectorForCamera = null;
     this.stopGameStatus = true;
     this.container = container;
     this.currentYPosition = 15;
@@ -30,6 +31,8 @@ export default class Game {
     this.camera = null;
     this.renderer = null;
 
+    this.count = 0;
+
     this.setNewStack = this.setNewStack.bind(this);
   }
 
@@ -38,28 +41,25 @@ export default class Game {
     const height = this.container.current.clientHeight;
 
     const camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 5000);
+    // const camera = new THREE.OrthographicCamera(width / -5, width / 5, height / 5, height / -5, 2, 1000);
 
     const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0xf7d9aa, 100, 950);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    const OrbitControls = createOrbitControls(THREE);
     // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     // scene.add(directionalLight);
 
-    camera.position.x = 200;
-    camera.position.y = 200;
-    camera.position.z = 200;
-    camera.lookAt(0, 0, 0);
+    this.vectorForCamera = new THREE.Vector3(0, 0, 0);
 
-    scene.background = new THREE.Color(0x0031343C);
+    camera.position.x = 130;
+    camera.position.z = 130;
+
+    scene.background = new THREE.Color(0x0070726E);
 
     renderer.setSize(this.container.current.clientWidth, this.container.current.clientHeight);
+
     this.container.current.appendChild(renderer.domElement);
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.update();
 
-    // light.position.set(152, 152, 152);
-
-    this.controls = controls;
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
@@ -70,26 +70,29 @@ export default class Game {
   }
 
   addBoxesForInit() {
-    const firstBox = buildBox(100, 10, 100);
+    const firstBox = buildBox(50, 10, 50);
     firstBox.position.set(50, 5, 50);
-    firstBox.name = 'first-box';
     this.scene.add(firstBox);
 
-    const secondBox = buildBox(100, 10, 100);
+    const secondBox = buildBox(50, 10, 50);
     secondBox.position.set(50, this.currentYPosition, 50);
-    secondBox.name = 'second-box';
     this.scene.add(secondBox);
 
     this.xAxis.activeBox = secondBox;
     this.xAxis.prevBox = firstBox;
+
+    this.camera.position.y = this.xAxis.prevBox.position.y + 125;
+    this.vectorForCamera.x = this.xAxis.prevBox.position.x;
+    this.vectorForCamera.y = this.xAxis.prevBox.position.y;
+    this.vectorForCamera.z = this.xAxis.prevBox.position.z;
   }
 
   createLights() {
-    const hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
-    const shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    const hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.5);
+    const shadowLight = new THREE.DirectionalLight(0xffffff, 0.5);
     const ambientLight = new THREE.AmbientLight(0xdc8874, 0.5);
 
-    shadowLight.position.set(150, 350, 350);
+    shadowLight.position.set(150, 350, -350);
     shadowLight.castShadow = true;
 
     shadowLight.shadow.camera.left = -400;
@@ -146,6 +149,10 @@ export default class Game {
       this.scene.remove(this.zAxis.activeBox);
     }
     this.stopGameStatus = true;
+
+    cancelAnimationFrame(this.requestId);
+    this.requestId = null;
+    this.render();
   }
 
   restartGame() {
@@ -153,13 +160,13 @@ export default class Game {
 
     this.xAxis = {
       prevBox: null,
-      widthPrevBox: 100,
+      widthPrevBox: 50,
       activeBox: null
     };
 
     this.zAxis = {
       prevBox: null,
-      depthPrevBox: 100,
+      depthPrevBox: 50,
       activeBox: null
     };
 
@@ -168,12 +175,16 @@ export default class Game {
     this.requestId = null;
     this.directionAnimation = 'up'; // up or down
     this.animationAxis = 'x'; // x or z
+    this.count = 0;
 
     for (let i = this.scene.children.length - 1; i >= 0; i -= 1) {
       if (this.scene.children[i].type === 'Mesh') {
         this.scene.remove(this.scene.children[i]);
       }
     }
+
+    this.camera.position.x = 130;
+    this.camera.position.z = 130;
 
     this.addBoxesForInit();
     this.start();
@@ -186,7 +197,7 @@ export default class Game {
 
   createNewStack() {
     if (this.animationAxis === 'x') {
-      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
+      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox, this.xAxis.activeBox.name);
       const newActiveBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
 
       const positionForNewBox = Helpers.getPositionForNewBox(
@@ -208,7 +219,7 @@ export default class Game {
     }
 
     if (this.animationAxis === 'z') {
-      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
+      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox, this.zAxis.activeBox.name);
       const newActiveBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
 
       const positionForNewBox = Helpers.getPositionForNewBox(
@@ -228,6 +239,12 @@ export default class Game {
       this.xAxis.prevBox = newBox;
       this.xAxis.activeBox = newActiveBox;
     }
+
+    this.count += 1;
+  }
+
+  getCount() {
+    return this.count;
   }
 
   setNewStack() {
@@ -236,9 +253,12 @@ export default class Game {
     }
 
     if (this.animationAxis === 'x') {
-      if (!Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x')) {
+      if (!Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').intersection) {
         this.stopGame();
         return false;
+      }
+      if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        console.log('x yes!');
       }
 
       this.zAxis.depthPrevBox = Helpers.getWidthNewBox(
@@ -251,9 +271,13 @@ export default class Game {
     }
 
     if (this.animationAxis === 'z') {
-      if (!Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z')) {
+      if (!Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').intersection) {
         this.stopGame();
         return false;
+      }
+
+      if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        console.log('z yes!');
       }
 
       this.xAxis.widthPrevBox = Helpers.getWidthNewBox(
@@ -265,6 +289,21 @@ export default class Game {
       this.createNewStack();
     }
 
+    const tweenCameraPosition = new TWEEN.Tween(this.camera.position)
+      .to({
+        y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y + 125 : this.zAxis.prevBox.position.y + 125
+      })
+      .easing(TWEEN.Easing.Linear.None);
+
+    const vectorForCamera = new TWEEN.Tween(this.vectorForCamera)
+      .to({
+        y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y : this.zAxis.prevBox.position.y
+      })
+      .easing(TWEEN.Easing.Linear.None);
+
+    tweenCameraPosition.start();
+    vectorForCamera.start();
+
     this.toggleAnimationAxis();
 
     return true;
@@ -272,7 +311,8 @@ export default class Game {
 
   render() {
     this.renderer.render(this.scene, this.camera);
-    this.controls.update();
+    TWEEN.update();
+    this.camera.lookAt(this.vectorForCamera);
 
     if (!this.stopGameStatus) {
       if (this.animationAxis === 'x') {

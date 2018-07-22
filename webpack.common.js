@@ -13,6 +13,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
   entry: indexFilePath,
   resolve: {
+    extensions: ['.js', '.jsx'],
     alias: {
       'App': path.resolve(__dirname, './src'),
       'lib': path.resolve(__dirname, './src/lib')
