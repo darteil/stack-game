@@ -5,6 +5,5 @@ require('react-router');
 require('react-router-dom');
 require('three');
 require('three-addons');
-require('@material-ui/core');
-require('@material-ui/icons');
 require('@tweenjs/tween.js');
+require('classnames');

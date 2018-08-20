@@ -1,5 +1,15 @@
-/* global requestAnimationFrame, cancelAnimationFrame */
-import * as THREE from 'three';
+/* global requestAnimationFrame, cancelAnimationFrame, window */
+import {
+  PerspectiveCamera,
+  Scene,
+  Fog,
+  WebGLRenderer,
+  Vector3,
+  Color,
+  HemisphereLight,
+  DirectionalLight,
+  AmbientLight
+} from 'three';
 import TWEEN from '@tweenjs/tween.js';
 import buildBox from './buildBox';
 import Helpers from './helpers';
@@ -40,21 +50,21 @@ export default class Game {
     const width = this.container.current.clientWidth;
     const height = this.container.current.clientHeight;
 
-    const camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 5000);
+    const camera = new PerspectiveCamera(70, width / height, 0.1, 5000);
     // const camera = new THREE.OrthographicCamera(width / -5, width / 5, height / 5, height / -5, 2, 1000);
 
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0xf7d9aa, 100, 950);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const scene = new Scene();
+    scene.fog = new Fog(0xf7d9aa, 100, 950);
+    const renderer = new WebGLRenderer({ antialias: true });
     // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     // scene.add(directionalLight);
 
-    this.vectorForCamera = new THREE.Vector3(0, 0, 0);
+    this.vectorForCamera = new Vector3(0, 0, 0);
 
     camera.position.x = 130;
     camera.position.z = 130;
 
-    scene.background = new THREE.Color(0x0070726E);
+    scene.background = new Color(0x0070726E);
 
     renderer.setSize(this.container.current.clientWidth, this.container.current.clientHeight);
 
@@ -67,6 +77,7 @@ export default class Game {
     this.addBoxesForInit();
 
     this.createLights();
+    window.addEventListener('resize', this.onWindowResize, false);
   }
 
   addBoxesForInit() {
@@ -88,9 +99,9 @@ export default class Game {
   }
 
   createLights() {
-    const hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.5);
-    const shadowLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    const ambientLight = new THREE.AmbientLight(0xdc8874, 0.5);
+    const hemisphereLight = new HemisphereLight(0xaaaaaa, 0x000000, 0.5);
+    const shadowLight = new DirectionalLight(0xffffff, 0.5);
+    const ambientLight = new AmbientLight(0xdc8874, 0.5);
 
     shadowLight.position.set(150, 350, -350);
     shadowLight.castShadow = true;
@@ -188,6 +199,10 @@ export default class Game {
 
     this.addBoxesForInit();
     this.start();
+  }
+
+  getStopStatusGame() {
+    return this.stopGameStatus;
   }
 
   start() {
@@ -307,6 +322,13 @@ export default class Game {
     this.toggleAnimationAxis();
 
     return true;
+  }
+
+  onWindowResize() {
+    this.camera.aspect = this.container.current.clientWidth / this.container.current.clientHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(this.container.current.clientWidth, this.container.current.clientHeight);
   }
 
   render() {

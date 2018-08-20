@@ -1,5 +1,5 @@
 {
-  "name": "ThreeJsProject",
+  "name": "three_js_project",
   "version": "1.0.0",
   "description": "ThreeJs project",
   "main": "index.js",
@@ -12,10 +12,11 @@
   "author": "Romanov Yurii",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/core": "^1.4.0",
-    "@material-ui/icons": "^1.1.0",
     "@tweenjs/tween.js": "^17.2.0",
+    "classnames": "^2.2.6",
     "history": "^4.7.2",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.21",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -26,6 +27,7 @@
     "redux": "^4.0.0",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
+    "simplebar": "^3.0.0-beta.3",
     "three": "^0.93.0",
     "three-addons": "^1.2.0"
   },

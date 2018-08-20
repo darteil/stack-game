@@ -1,8 +1,13 @@
-import * as THREE from 'three';
+import {
+  BoxGeometry,
+  MeshPhongMaterial,
+  Mesh,
+  FlatShading
+} from 'three';
 import colorsList from './colors';
 
 const buildBox = (width, height, depth, customColor) => {
-  const geometry = new THREE.BoxGeometry(width, height, depth, 1);
+  const geometry = new BoxGeometry(width, height, depth, 1);
   let color = '#ffffff';
 
   if (customColor) {
@@ -11,11 +16,9 @@ const buildBox = (width, height, depth, customColor) => {
     color = colorsList[Math.floor(Math.random() * colorsList.length)];
   }
 
-  const material = new THREE.MeshPhongMaterial({ color, flatShading: THREE.FlatShading });
-  const box = new THREE.Mesh(geometry, material);
-  box.name = color;
+  const material = new MeshPhongMaterial({ color, flatShading: FlatShading });
 
-  return box;
+  return new Mesh(geometry, material);
 };
 
 export default buildBox;

@@ -7,8 +7,9 @@ import storage from 'redux-persist/lib/storage';
 import rootReducer from './rootReducer';
 
 const persistConfig = {
-  key: 'root',
-  storage
+  key: 'GameData',
+  storage,
+  whitelist: ['GameData']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

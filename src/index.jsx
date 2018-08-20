@@ -3,21 +3,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
+import App from 'App/MainPage/App';
 import { persistor, store, history } from './store';
-import routes from './routes';
+import './reset.css';
+import './global.css';
 
 
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router history={history}>
-        <BrowserRouter>
-          <div>
-            { routes() }
-          </div>
-        </BrowserRouter>
+        <App />
       </Router>
     </PersistGate>
   </Provider>,

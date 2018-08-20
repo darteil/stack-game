@@ -1,0 +1,17 @@
+body * {
+    font-family: "Roboto-Regular", sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+
+:global(#root) {
+    height: 100%;
+}
+
+body {
+    overflow: hidden;
+}

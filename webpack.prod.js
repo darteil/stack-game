@@ -1,8 +1,10 @@
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const common = require('./webpack.common');
 
@@ -41,6 +43,12 @@ module.exports = () => {
       ]
     },
     plugins: [
+      new HtmlReplaceWebpackPlugin([
+        {
+          pattern: '@@url',
+          replacement: '/react'
+        }
+      ]),
       new ExtractTextPlugin('css/bundle.[hash:8].css'),
       new CleanWebpackPlugin(
         [distPath]
