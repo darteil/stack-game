@@ -17,8 +17,10 @@ const buildBox = (width, height, depth, customColor) => {
   }
 
   const material = new MeshPhongMaterial({ color, flatShading: FlatShading });
+  const box = new Mesh(geometry, material);
+  box.name = color;
 
-  return new Mesh(geometry, material);
+  return box;
 };
 
 export default buildBox;

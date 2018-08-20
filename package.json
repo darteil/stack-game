@@ -14,6 +14,7 @@
   "dependencies": {
     "@tweenjs/tween.js": "^17.2.0",
     "classnames": "^2.2.6",
+    "dotenv-webpack": "^1.5.7",
     "history": "^4.7.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
@@ -43,6 +44,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
+    "dotenv": "^6.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-webpack": "^0.10.1",

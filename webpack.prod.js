@@ -6,6 +6,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common');
 
 const distPath = path.resolve(__dirname, './dist');
@@ -43,10 +44,11 @@ module.exports = () => {
       ]
     },
     plugins: [
+      new Dotenv({ path: './.env' }),
       new HtmlReplaceWebpackPlugin([
         {
           pattern: '@@url',
-          replacement: '/react'
+          replacement: '/stack'
         }
       ]),
       new ExtractTextPlugin('css/bundle.[hash:8].css'),

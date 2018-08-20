@@ -7,12 +7,12 @@ const Menu = () => (
   <div className={styles.menu}>
     <h1>Stack</h1>
     <ul>
-      <NavLink exact to="/react" activeClassName={styles.active}>
+      <NavLink exact to={process.env.SUB_ROUTE || '/'} activeClassName={styles.active}>
         <li>
           Game
         </li>
       </NavLink>
-      <NavLink to="/react/list-of-records" activeClassName={styles.active}>
+      <NavLink to={`${process.env.SUB_ROUTE}/list-of-records` || '/list-of-records`'} activeClassName={styles.active}>
         <li>
           List of records
         </li>

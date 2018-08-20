@@ -11,8 +11,8 @@ const App = () => (
     <Router>
       <Fragment>
         <Menu />
-        <Route exact path="/react/" component={Scene} />
-        <Route path="/react/list-of-records" component={ListOfRecords} />
+        <Route exact path={process.env.SUB_ROUTE || '/'} component={Scene} />
+        <Route path={`${process.env.SUB_ROUTE}/list-of-records` || '/list-of-records'} component={ListOfRecords} />
       </Fragment>
     </Router>
   </div>
