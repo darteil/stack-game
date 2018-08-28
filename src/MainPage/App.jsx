@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Scene from 'App/Scene/Scene';
 import ListOfRecords from 'App/ListOfRecords';
 import Menu from 'App/MainPage/Menu';
+import NotFound from 'App/NotFound';
+import { serverCategory } from 'globalVariables';
 import styles from './styles.css';
 
 
@@ -11,8 +13,11 @@ const App = () => (
     <Router>
       <Fragment>
         <Menu />
-        <Route exact path={process.env.SUB_ROUTE || '/'} component={Scene} />
-        <Route path={`${process.env.SUB_ROUTE}/list-of-records` || '/list-of-records'} component={ListOfRecords} />
+        <Switch>
+          <Route exact path={`${serverCategory}/`} component={Scene} />
+          <Route path={`${serverCategory}/list-of-records`} component={ListOfRecords} />
+          <Route path="*" component={NotFound} />
+        </Switch>
       </Fragment>
     </Router>
   </div>

@@ -38,14 +38,10 @@ class Scene extends Component {
     }
 
     this.game.setNewStack();
-    this.setState({
-      count: this.game.getCount()
-    });
+    this.setState(() => ({ count: this.game.getCount() }));
 
     if (this.game.getStopStatusGame()) {
-      this.setState({
-        gameStatus: 'stopped'
-      });
+      this.setState(() => ({ gameStatus: 'stopped' }));
 
       if (this.props.topRecord !== 0) {
         if (this.state.count > this.props.topRecord) {
@@ -66,9 +62,7 @@ class Scene extends Component {
       return false;
     }
     this.game.start();
-    this.setState({
-      gameStatus: 'launched'
-    });
+    this.setState(() => ({ gameStatus: 'launched' }));
     return true;
   }
 
@@ -77,10 +71,10 @@ class Scene extends Component {
   }
 
   restartGame() {
-    this.setState({
+    this.setState(() => ({
       count: 0,
       gameStatus: 'launched'
-    });
+    }));
     this.game.restartGame();
   }
 

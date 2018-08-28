@@ -32,7 +32,7 @@ class ListOfRecords extends Component {
             </div>
           }
           <div className={styles.result}>
-            <p>Лучший результат <span>{this.props.topRecord}</span></p>
+            <p>Best result<span>{this.props.topRecord}</span></p>
           </div>
         </div>
       </div>

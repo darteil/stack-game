@@ -212,7 +212,7 @@ export default class Game {
 
   createNewStack() {
     if (this.animationAxis === 'x') {
-      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox, this.xAxis.activeBox.name);
+      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox, this.xAxis.activeBox.currentColor);
       const newActiveBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
 
       const positionForNewBox = Helpers.getPositionForNewBox(
@@ -234,7 +234,7 @@ export default class Game {
     }
 
     if (this.animationAxis === 'z') {
-      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox, this.zAxis.activeBox.name);
+      const newBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox, this.zAxis.activeBox.currentColor);
       const newActiveBox = buildBox(this.zAxis.depthPrevBox, 10, this.xAxis.widthPrevBox);
 
       const positionForNewBox = Helpers.getPositionForNewBox(
