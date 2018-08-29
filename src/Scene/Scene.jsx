@@ -1,7 +1,9 @@
+/* global document */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
+import { showMessage } from 'App/Message/Actions';
 import { addRecord, setTopRecord } from './Actions';
 import Game from '../Game/index';
 import Control from './Control';
@@ -28,12 +30,20 @@ class Scene extends Component {
   }
 
   componentDidMount() {
+    document.addEventListener('keydown', this.setNewStack);
     this.game.init();
     this.startGame();
+    if (this.props.listOfRecords.length === 0) {
+      this.props.showMessage('Press "w" to set block =)');
+    }
   }
 
-  setNewStack() {
-    if (this.state.gameStatus === 'stopped') {
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.setNewStack);
+  }
+
+  setNewStack(event) {
+    if (this.state.gameStatus === 'stopped' || event.which !== 87) {
       return false;
     }
 
@@ -46,6 +56,7 @@ class Scene extends Component {
       if (this.props.topRecord !== 0) {
         if (this.state.count > this.props.topRecord) {
           this.props.setTopRecord(this.state.count);
+          this.props.showMessage('New record!');
         }
       } else {
         this.props.setTopRecord(this.state.count);
@@ -81,7 +92,7 @@ class Scene extends Component {
   render() {
     return (
       <div className={styles['scene-wrap']}>
-        <Control setNewStack={this.setNewStack} restartGame={this.restartGame} />
+        <Control restartGame={this.restartGame} />
         <div className={styles.count}>{this.state.count}</div>
         <div className={styles.scene} ref={this.container} />
       </div>
@@ -92,11 +103,14 @@ class Scene extends Component {
 Scene.propTypes = {
   addRecord: PropTypes.func.isRequired,
   setTopRecord: PropTypes.func.isRequired,
-  topRecord: PropTypes.number.isRequired
+  showMessage: PropTypes.func.isRequired,
+  topRecord: PropTypes.number.isRequired,
+  listOfRecords: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
-  topRecord: state.GameData.topRecord
+  topRecord: state.GameData.topRecord,
+  listOfRecords: state.GameData.listOfRecords
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -105,6 +119,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setTopRecord: (record) => {
     dispatch(setTopRecord(record));
+  },
+  showMessage: (text) => {
+    dispatch(showMessage(text));
   }
 });
 

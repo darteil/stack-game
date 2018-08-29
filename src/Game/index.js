@@ -272,9 +272,7 @@ export default class Game {
         this.stopGame();
         return false;
       }
-      if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
-        console.log('x yes!');
-      }
+      /* if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {} */
 
       this.zAxis.depthPrevBox = Helpers.getWidthNewBox(
         this.xAxis.activeBox.position.x,
@@ -291,9 +289,7 @@ export default class Game {
         return false;
       }
 
-      if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
-        console.log('z yes!');
-      }
+      /* if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {} */
 
       this.xAxis.widthPrevBox = Helpers.getWidthNewBox(
         this.zAxis.activeBox.position.z,
@@ -339,8 +335,14 @@ export default class Game {
     if (!this.stopGameStatus) {
       if (this.animationAxis === 'x') {
         this.animationOnXAxis(this.xAxis.activeBox);
+        /* if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+          this.setNewStack();
+        } */
       } else {
         this.animationOnZAxis(this.zAxis.activeBox);
+        /* if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+          this.setNewStack();
+        } */
       }
     }
 
