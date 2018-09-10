@@ -47,8 +47,8 @@ export default class Game {
   }
 
   init() {
-    const width = this.container.current.clientWidth;
-    const height = this.container.current.clientHeight;
+    const width = this.container.clientWidth;
+    const height = this.container.clientHeight;
 
     const camera = new PerspectiveCamera(70, width / height, 0.1, 5000);
     // const camera = new THREE.OrthographicCamera(width / -5, width / 5, height / 5, height / -5, 2, 1000);
@@ -64,11 +64,11 @@ export default class Game {
     camera.position.x = 130;
     camera.position.z = 130;
 
-    scene.background = new Color(0x0070726E);
+    scene.background = new Color(0x001A0F0E);
 
-    renderer.setSize(this.container.current.clientWidth, this.container.current.clientHeight);
+    renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
-    this.container.current.appendChild(renderer.domElement);
+    this.container.appendChild(renderer.domElement);
 
     this.scene = scene;
     this.camera = camera;
@@ -321,10 +321,10 @@ export default class Game {
   }
 
   onWindowResize() {
-    this.camera.aspect = this.container.current.clientWidth / this.container.current.clientHeight;
+    this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(this.container.current.clientWidth, this.container.current.clientHeight);
+    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
   }
 
   render() {

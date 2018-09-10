@@ -20,19 +20,15 @@ class Scene extends Component {
     };
 
     this.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
     this.container = React.createRef();
-    this.game = new Game(this.container);
-    this.startGame = this.startGame.bind(this);
-    this.stopGame = this.stopGame.bind(this);
-    this.restartGame = this.restartGame.bind(this);
-    this.setNewStack = this.setNewStack.bind(this);
+    this.game = null;
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.setNewStack);
+    this.game = new Game(this.container.current);
     this.game.init();
     this.startGame();
+    document.addEventListener('keydown', this.setNewStack);
     if (this.props.listOfRecords.length === 0) {
       this.props.showMessage('Press "w" to set block =)');
     }
@@ -42,7 +38,7 @@ class Scene extends Component {
     document.removeEventListener('keydown', this.setNewStack);
   }
 
-  setNewStack(event) {
+  setNewStack = (event) => {
     if (this.state.gameStatus === 'stopped' || event.which !== 87) {
       return false;
     }
@@ -66,28 +62,28 @@ class Scene extends Component {
     }
 
     return true;
-  }
+  };
 
-  startGame() {
+  startGame = () => {
     if (this.state.gameStatus === 'launched') {
       return false;
     }
     this.game.start();
     this.setState(() => ({ gameStatus: 'launched' }));
     return true;
-  }
+  };
 
-  stopGame() {
+  stopGame = () => {
     this.game.stopGame();
-  }
+  };
 
-  restartGame() {
+  restartGame = () => {
     this.setState(() => ({
       count: 0,
       gameStatus: 'launched'
     }));
     this.game.restartGame();
-  }
+  };
 
   render() {
     return (

@@ -11,13 +11,17 @@ const common = require('./webpack.common');
 
 const distPath = path.resolve(__dirname, './dist');
 const publicPathFolder = path.resolve(__dirname, './public');
+console.log(process.env.SERVER_CATEGORY);
 
 module.exports = () => {
+  let publicPath = '/stack';
+
   return merge(common, {
     devtool: 'source-map',
     output: {
       path: distPath,
-      filename: 'js/[name].[hash:8].js'
+      filename: 'js/[name].[hash:8].js',
+      publicPath: publicPath
     },
     optimization: {
       minimizer: [
@@ -48,7 +52,7 @@ module.exports = () => {
       new HtmlReplaceWebpackPlugin([
         {
           pattern: '@@url',
-          replacement: '/stack'
+          replacement: publicPath
         }
       ]),
       new ExtractTextPlugin('css/bundle.[hash:8].css'),

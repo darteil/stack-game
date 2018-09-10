@@ -9,12 +9,10 @@ class Message extends Component {
     super(props);
 
     this.timeoutVariable = setTimeout(() => { this.props.hideMessage(); }, 10000);
-    this.clickCrossHandler = this.clickCrossHandler.bind(this);
   }
 
-  clickCrossHandler() {
+  componentWillUnmount() {
     clearTimeout(this.timeoutVariable);
-    this.props.hideMessage();
   }
 
   render() {
