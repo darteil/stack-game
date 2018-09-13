@@ -1,4 +1,4 @@
-# ThreeJsProject, stack game
+# Stack game
 
 Project requires [Node.js](https://nodejs.org/) v6+ to run.
 
