@@ -28,6 +28,8 @@ class Scene extends Component {
     this.game = new Game(this.container.current);
     this.game.init();
     this.startGame();
+    // this.game.enableOrbitControls();
+    // this.game.enableAxesHelper();
     document.addEventListener('keydown', this.setNewStack);
     if (this.props.listOfRecords.length === 0) {
       this.props.showMessage('Press "w" to set block =)');
@@ -51,14 +53,18 @@ class Scene extends Component {
 
       if (this.props.topRecord !== 0) {
         if (this.state.count > this.props.topRecord) {
-          this.props.setTopRecord(this.state.count);
+          this.props.setTopRecord(this.state.count, this.game.getStackHeight());
           this.props.showMessage('New record!');
         }
       } else {
-        this.props.setTopRecord(this.state.count);
+        this.props.setTopRecord(this.state.count, this.game.getStackHeight());
       }
 
-      this.props.addRecord({ time: moment().tz(this.timeZone).format('MMMM Do YYYY, HH:mm:ss'), count: this.state.count });
+      this.props.addRecord({
+        time: moment().tz(this.timeZone).format('MMMM Do YYYY, HH:mm:ss'),
+        count: this.state.count,
+        heightStack: this.game.getStackHeight()
+      });
     }
 
     return true;
@@ -113,8 +119,8 @@ const mapDispatchToProps = dispatch => ({
   addRecord: (record) => {
     dispatch(addRecord(record));
   },
-  setTopRecord: (record) => {
-    dispatch(setTopRecord(record));
+  setTopRecord: (record, height) => {
+    dispatch(setTopRecord(record, height));
   },
   showMessage: (text) => {
     dispatch(showMessage(text));

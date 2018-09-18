@@ -1,13 +1,13 @@
 {
-  "name": "three_js_project",
+  "name": "stack_game",
   "version": "1.0.0",
-  "description": "ThreeJs project",
+  "description": "Stack game",
   "main": "index.js",
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js --open --mode development",
     "prod": "./node_modules/.bin/webpack --config webpack.prod.js --mode production",
     "eslint": "./node_modules/.bin/eslint --fix ./src/",
-    "create-dll": "./node_modules/.bin/webpack --config webpack.vendor.js --mode development"
+    "create-vendors": "./node_modules/.bin/webpack --config webpack.vendor.js --mode development"
   },
   "author": "Romanov Yurii",
   "license": "ISC",
@@ -30,7 +30,8 @@
     "redux-thunk": "^2.3.0",
     "simplebar": "^3.0.0-beta.3",
     "three": "^0.93.0",
-    "three-addons": "^1.2.0"
+    "three-addons": "^1.2.0",
+    "three-orbitcontrols": "^2.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

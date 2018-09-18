@@ -53,12 +53,25 @@
     color: #fff;
     font-size: 12px;
     font-family: 'Roboto-Medium', sans-serif;
+    margin-left: 3px;
 }
 
 .result {
     padding: 15px;
     background-color: #161823;
     color: #ffffff;
-    font-size: 3em;
+    font-size: 30px;
     text-align: center;
+}
+
+.result p:first-child {
+    margin-bottom: 20px;
+}
+
+.result-stats {
+    font-size: 18px;
+}
+
+.result-stats span {
+    color: darkgreen;
 }

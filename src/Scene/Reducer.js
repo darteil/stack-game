@@ -2,7 +2,8 @@ import { ADD_RECORD, SET_TOP_RECORD } from './Actions';
 
 const initialState = {
   listOfRecords: [],
-  topRecord: 0
+  topRecord: 0,
+  topHeightStack: 0
 };
 
 export default function GameData(state = initialState, action) {
@@ -18,7 +19,7 @@ export default function GameData(state = initialState, action) {
       return { ...state, listOfRecords: newListOfRecords };
     }
     case SET_TOP_RECORD: {
-      return { ...state, topRecord: action.count };
+      return { ...state, topRecord: action.count, topHeightStack: action.heightStack };
     }
     default:
       return state;

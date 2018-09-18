@@ -8,10 +8,15 @@ import {
   Color,
   HemisphereLight,
   DirectionalLight,
-  AmbientLight
+  AmbientLight,
+  PlaneGeometry,
+  DoubleSide, AxesHelper,
+  Mesh, MeshPhongMaterial, FlatShading
 } from 'three';
+import OrbitControls from 'three-orbitcontrols';
 import TWEEN from '@tweenjs/tween.js';
 import buildBox from './buildBox';
+import createScaleItem from './scaleItem';
 import Helpers from './helpers';
 
 
@@ -40,8 +45,10 @@ export default class Game {
     this.scene = null;
     this.camera = null;
     this.renderer = null;
+    this.latestScaleItemPositionY = 5;
 
     this.count = 0;
+    this.heightStack = 0;
 
     this.setNewStack = this.setNewStack.bind(this);
   }
@@ -51,13 +58,9 @@ export default class Game {
     const height = this.container.clientHeight;
 
     const camera = new PerspectiveCamera(70, width / height, 0.1, 5000);
-    // const camera = new THREE.OrthographicCamera(width / -5, width / 5, height / 5, height / -5, 2, 1000);
-
     const scene = new Scene();
     scene.fog = new Fog(0xf7d9aa, 100, 950);
     const renderer = new WebGLRenderer({ antialias: true });
-    // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    // scene.add(directionalLight);
 
     this.vectorForCamera = new Vector3(0, 0, 0);
 
@@ -69,15 +72,24 @@ export default class Game {
     renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
     this.container.appendChild(renderer.domElement);
-
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
 
     this.addBoxesForInit();
+    this.createWalls();
 
     this.createLights();
     window.addEventListener('resize', this.onWindowResize, false);
+  }
+
+  enableOrbitControls() {
+    this.controls = new OrbitControls(this.camera);
+  }
+
+  enableAxesHelper() {
+    const axesHelper = new AxesHelper(500);
+    this.scene.add(axesHelper);
   }
 
   addBoxesForInit() {
@@ -96,6 +108,17 @@ export default class Game {
     this.vectorForCamera.x = this.xAxis.prevBox.position.x;
     this.vectorForCamera.y = this.xAxis.prevBox.position.y;
     this.vectorForCamera.z = this.xAxis.prevBox.position.z;
+  }
+
+  createWalls() {
+    const floorGeometry = new PlaneGeometry(240, 100);
+    const floorMaterial = new MeshPhongMaterial({ color: 0xffff00, side: DoubleSide, flatShading: FlatShading });
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = Math.PI / 2;
+    floor.position.z = 50;
+
+    this.scene.add(floor);
+    this.scene.add(createScaleItem(this.heightStack, -120, this.latestScaleItemPositionY, 50));
   }
 
   createLights() {
@@ -186,7 +209,9 @@ export default class Game {
     this.requestId = null;
     this.directionAnimation = 'up'; // up or down
     this.animationAxis = 'x'; // x or z
+    this.latestScaleItemPositionY = 5;
     this.count = 0;
+    this.heightStack = 0;
 
     for (let i = this.scene.children.length - 1; i >= 0; i -= 1) {
       if (this.scene.children[i].type === 'Mesh') {
@@ -198,6 +223,7 @@ export default class Game {
     this.camera.position.z = 130;
 
     this.addBoxesForInit();
+    this.createWalls();
     this.start();
   }
 
@@ -255,11 +281,18 @@ export default class Game {
       this.xAxis.activeBox = newActiveBox;
     }
 
+    this.latestScaleItemPositionY += 10;
+    this.heightStack += 1;
+    this.scene.add(createScaleItem(this.heightStack, -120, this.latestScaleItemPositionY, 50));
     this.count += 1;
   }
 
   getCount() {
     return this.count;
+  }
+
+  getStackHeight() {
+    return this.heightStack;
   }
 
   setNewStack() {
@@ -272,7 +305,9 @@ export default class Game {
         this.stopGame();
         return false;
       }
-      /* if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {} */
+      if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        this.count += 1;
+      }
 
       this.zAxis.depthPrevBox = Helpers.getWidthNewBox(
         this.xAxis.activeBox.position.x,
@@ -289,7 +324,9 @@ export default class Game {
         return false;
       }
 
-      /* if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {} */
+      if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        this.count += 1;
+      }
 
       this.xAxis.widthPrevBox = Helpers.getWidthNewBox(
         this.zAxis.activeBox.position.z,
@@ -302,14 +339,14 @@ export default class Game {
 
     const tweenCameraPosition = new TWEEN.Tween(this.camera.position)
       .to({
-        y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y + 125 : this.zAxis.prevBox.position.y + 125
-      })
+        y: this.camera.position.y + 10
+      }, 500)
       .easing(TWEEN.Easing.Linear.None);
 
     const vectorForCamera = new TWEEN.Tween(this.vectorForCamera)
       .to({
         y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y : this.zAxis.prevBox.position.y
-      })
+      }, 500)
       .easing(TWEEN.Easing.Linear.None);
 
     tweenCameraPosition.start();
@@ -330,19 +367,25 @@ export default class Game {
   render() {
     this.renderer.render(this.scene, this.camera);
     TWEEN.update();
-    this.camera.lookAt(this.vectorForCamera);
+    if (this.controls) {
+      this.controls.update();
+    } else {
+      this.camera.lookAt(this.vectorForCamera);
+    }
 
     if (!this.stopGameStatus) {
       if (this.animationAxis === 'x') {
         this.animationOnXAxis(this.xAxis.activeBox);
-        /* if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        /*if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
           this.setNewStack();
-        } */
+          this.count += 1;
+        }*/
       } else {
         this.animationOnZAxis(this.zAxis.activeBox);
-        /* if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        /*if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
           this.setNewStack();
-        } */
+          this.count += 1;
+        }*/
       }
     }
 

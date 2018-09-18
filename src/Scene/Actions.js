@@ -8,9 +8,10 @@ export function addRecord(record) {
   };
 }
 
-export function setTopRecord(count) {
+export function setTopRecord(count, heightStack) {
   return {
     type: SET_TOP_RECORD,
-    count
+    count,
+    heightStack
   };
 }

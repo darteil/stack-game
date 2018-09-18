@@ -11,7 +11,10 @@ const ListOfRecords = props => (
   <div className={styles.wrap}>
     <div className={styles['flex-block']}>
       <div className={styles.result}>
-        <p>Best result: {props.topRecord}</p>
+        <p>Best result</p>
+        <p className={styles['result-stats']}>
+          Count: <span>{props.topRecord}</span> Height stack: <span>{props.topHeight}</span>
+        </p>
       </div>
       {
         props.listOfRecords.length > 0 &&
@@ -19,7 +22,13 @@ const ListOfRecords = props => (
           <ul className={styles.list}>
             {
               props.listOfRecords.slice(0).reverse().map(record => (
-                <li key={record.id}>{record.time} <span>{record.count}</span></li>
+                <li key={record.id}>
+                  {record.time}
+                  <div>
+                    <span>count: {record.count}</span>
+                    <span>height stack: {record.heightStack}</span>
+                  </div>
+                </li>
               ))
             }
           </ul>
@@ -33,9 +42,11 @@ ListOfRecords.propTypes = {
   listOfRecords: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     time: PropTypes.string,
-    count: PropTypes.number
+    count: PropTypes.number,
+    heightStack: PropTypes.number
   })),
-  topRecord: PropTypes.number.isRequired
+  topRecord: PropTypes.number.isRequired,
+  topHeight: PropTypes.number.isRequired
 };
 
 ListOfRecords.defaultProps = {
@@ -44,7 +55,8 @@ ListOfRecords.defaultProps = {
 
 const mapStateToProps = state => ({
   listOfRecords: state.GameData.listOfRecords,
-  topRecord: state.GameData.topRecord
+  topRecord: state.GameData.topRecord,
+  topHeight: state.GameData.topHeightStack
 });
 
 export default connect(mapStateToProps)(ListOfRecords);

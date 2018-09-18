@@ -14,69 +14,38 @@
 
 .control {
     width: 300px;
-    height: 130px;
+    height: 83px;
     position: absolute;
     left: 30px;
     bottom: 30px;
     z-index: 99;
 }
 
-.button {
-    background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
-    background-image: linear-gradient(top, #f4f1ee, #fff);
-    border-radius: 50%;
-    box-shadow: 0 8px 10px 0 rgba(0, 0, 0, .3), inset 0 4px 1px 1px white, inset 0 -3px 1px 1px rgba(204,198,197,.5);
-    float:left;
-    height: 100px;
-    margin: 0 30px 30px 0;
-    position: relative;
-    width: 100px;
+.fuller-button.blue {
+    box-shadow: inset 0 0 1em rgba(0,170,170,0.5), 0 0 1em rgba(0,170,170,0.5);
+    border: #0dd solid 2px;
+}
+
+.fuller-button {
+    color: rgba(255, 255, 255, 1);
+    background: none;
+    border-radius: 0;
+    padding: 1.2em 5em;
+    letter-spacing: 0.35em;
+    font-size: 0.9em;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+    margin: 1em;
     cursor: pointer;
-    -webkit-transition: all .1s linear;
-    transition: all .1s linear;
 }
 
-.button:after {
-    color: #e9e6e4;
-    content: "";
-    display: block;
-    font-size: 30px;
-    height: 30px;
-    text-decoration: none;
-    text-shadow: 0 -1px 1px #bdb5b4, 1px 1px 1px white;
-    position: absolute;
-    width: 30px;
+.fuller-button.blue {
+     box-shadow: inset 0 0 1em rgba(0,170,170,0.5), 0 0 1em rgba(0,170,170,0.5);
+     border: #0dd solid 2px;
 }
 
-.restart:after {
-    content: "↺";
-    left: 30px;
-    top: 25px;
-    font-size: 50px;
-}
-
-.button:hover {
-    background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
-    background-image: linear-gradient(top, #fff, #f4f1ee);
-    color: #0088cc;
-}
-
-.restart:hover:after {
-    color: #eb2f2f;
-    text-shadow: 0 0 6px #eb2f2f;
-}
-
-
-
-.button:active {
-    background-image: -webkit-linear-gradient(top, #efedec, #f7f4f4);
-    background-image: linear-gradient(top, #efedec, #f7f4f4);
-    box-shadow: 0 3px 5px 0 rgba(0,0,0,.4), inset 0 -3px 1px 1px rgba(204,198,197,.5);
-}
-
-.button:active:after {
-    color:#dbd2d2;
-    text-shadow: 0 -1px 1px #bdb5b4, 0 1px 1px white;
+.fuller-button.blue:hover {
+     background-color: #0dd;
+     box-shadow: inset 0 0 0 rgba(0,170,170,0.5), 0 0 1.5em rgba(0,170,170,0.7);
 }
 
 .count {

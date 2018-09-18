@@ -5,7 +5,7 @@ import ClassNames from 'classnames';
 
 const Control = props => (
   <div className={styles.control}>
-    <span className={ClassNames(styles.button, styles.restart)} onClick={props.restartGame} />
+    <button className={ClassNames(styles['fuller-button'], styles.blue)} onClick={props.restartGame}>Restart</button>
   </div>
 );
 

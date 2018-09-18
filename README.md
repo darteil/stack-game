@@ -25,3 +25,15 @@ Check eslint errors.
 ```sh
 $ npm run eslint
 ```
+
+Update dll.vendor.js (webpack DllPlugin) from vendors.js
+
+```sh
+$ npm run create-vendors
+```
+
+### Using libraries
+
+[moment](https://github.com/moment/moment),
+[moment-timezone](https://github.com/moment/moment-timezone/),
+[simplebar](https://github.com/Grsmto/simplebar)
