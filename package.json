@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "Stack game",
   "main": "index.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/darteil/StackGame.git"
+  },
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js --open --mode development",
     "prod": "./node_modules/.bin/webpack --config webpack.prod.js --mode production",
     "eslint": "./node_modules/.bin/eslint --fix ./src/",
     "create-vendors": "./node_modules/.bin/webpack --config webpack.vendor.js --mode development"
   },
-  "author": "Romanov Yurii",
+  "author": "Romanov Yury",
   "license": "ISC",
   "dependencies": {
     "@tweenjs/tween.js": "^17.2.0",
