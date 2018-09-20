@@ -1,6 +1,7 @@
 import { ADD_RECORD, SET_TOP_RECORD } from './Actions';
 
 const initialState = {
+  versionData: 1,
   listOfRecords: [],
   topRecord: 0,
   topHeightStack: 0
