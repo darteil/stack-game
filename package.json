@@ -4,8 +4,8 @@
   "description": "Stack game",
   "main": "index.js",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/darteil/StackGame.git"
+    "type": "git",
+    "url": "https://github.com/darteil/StackGame.git"
   },
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js --open --mode development",
@@ -23,8 +23,8 @@
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
@@ -32,7 +32,6 @@
     "redux": "^4.0.0",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "simplebar": "^3.0.0-beta.3",
     "three": "^0.93.0",
     "three-addons": "^1.2.0",
     "three-orbitcontrols": "^2.1.2"

@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import 'simplebar';
-
-// eslint-disable-next-line
-import '!style-loader!css-loader!simplebar/dist/simplebar.css';
 import styles from './styles.css';
 
 const ListOfRecords = props => (
@@ -18,7 +14,7 @@ const ListOfRecords = props => (
       </div>
       {
         props.listOfRecords.length > 0 &&
-        <div className={styles.container} data-simplebar>
+        <div className={styles.container}>
           <ul className={styles.list}>
             {
               props.listOfRecords.slice(0).reverse().map(record => (
