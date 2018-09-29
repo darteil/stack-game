@@ -9,6 +9,7 @@ Install the dependencies and devDependencies and start.
 
 ```sh
 $ npm install
+$ npm run create-vendors
 $ npm run dev
 ```
 
@@ -36,4 +37,4 @@ $ npm run create-vendors
 
 [moment](https://github.com/moment/moment),
 [moment-timezone](https://github.com/moment/moment-timezone/),
-[simplebar](https://github.com/Grsmto/simplebar)
+[Tween.js](https://github.com/tweenjs/tween.js/)
