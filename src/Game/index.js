@@ -9,14 +9,14 @@ import {
   HemisphereLight,
   DirectionalLight,
   AmbientLight,
-  PlaneGeometry,
+  PlaneGeometry, FontLoader, TextGeometry,
   DoubleSide, AxesHelper,
   Mesh, MeshPhongMaterial, FlatShading
 } from 'three';
 import OrbitControls from 'three-orbitcontrols';
 import TWEEN from '@tweenjs/tween.js';
 import buildBox from './buildBox';
-import createScaleItem from './scaleItem';
+import createScaleBox from './scaleBox';
 import Helpers from './helpers';
 
 
@@ -45,7 +45,9 @@ export default class Game {
     this.scene = null;
     this.camera = null;
     this.renderer = null;
-    this.latestScaleItemPositionY = 5;
+    this.scaleBox = null;
+    this.textCountPositionY = 20;
+    this.fontFor3DText = null;
 
     this.count = 0;
     this.heightStack = 0;
@@ -77,7 +79,12 @@ export default class Game {
     this.renderer = renderer;
 
     this.addBoxesForInit();
-    this.createWalls();
+    this.createFloor();
+    const loader = new FontLoader();
+    loader.load('./fonts/Android_101.json', (res) => {
+      this.fontFor3DText = res;
+      this.createTextGeometryCount();
+    });
 
     this.createLights();
     window.addEventListener('resize', this.onWindowResize, false);
@@ -101,6 +108,10 @@ export default class Game {
     secondBox.position.set(50, this.currentYPosition, 50);
     this.scene.add(secondBox);
 
+    this.scaleBox = createScaleBox();
+    this.scaleBox.position.set(-120, 5, 50);
+    this.scene.add(this.scaleBox);
+
     this.xAxis.activeBox = secondBox;
     this.xAxis.prevBox = firstBox;
 
@@ -110,7 +121,7 @@ export default class Game {
     this.vectorForCamera.z = this.xAxis.prevBox.position.z;
   }
 
-  createWalls() {
+  createFloor() {
     const floorGeometry = new PlaneGeometry(240, 100);
     const floorMaterial = new MeshPhongMaterial({ color: 0xffff00, side: DoubleSide, flatShading: FlatShading });
     const floor = new Mesh(floorGeometry, floorMaterial);
@@ -118,7 +129,36 @@ export default class Game {
     floor.position.z = 50;
 
     this.scene.add(floor);
-    this.scene.add(createScaleItem(this.heightStack, -120, this.latestScaleItemPositionY, 50));
+  }
+
+  createTextGeometryCount() {
+    if (this.textCount) {
+      this.scene.remove(this.textCount);
+      this.textCount = null;
+    }
+
+    const options = {
+      size: 20,
+      height: 5,
+      font: this.fontFor3DText,
+      style: 'regular',
+      curveSegments: 20,
+      steps: 50
+    };
+
+    const textMaterial = new MeshPhongMaterial({
+      color: '#4b5320',
+      flatShading: FlatShading
+    });
+    const textGeom = new TextGeometry(this.count.toString(), options);
+    textGeom.computeBoundingBox();
+    textGeom.computeVertexNormals();
+    const textMesh = new Mesh(textGeom, textMaterial);
+    textMesh.rotation.y = Math.PI / 2;
+    textMesh.position.set(-120, this.textCountPositionY, 100);
+    this.textCount = textMesh;
+
+    this.scene.add(textMesh);
   }
 
   createLights() {
@@ -209,9 +249,10 @@ export default class Game {
     this.requestId = null;
     this.directionAnimation = 'up'; // up or down
     this.animationAxis = 'x'; // x or z
-    this.latestScaleItemPositionY = 5;
     this.count = 0;
     this.heightStack = 0;
+    this.scaleBox = null;
+    this.textCountPositionY = 20;
 
     for (let i = this.scene.children.length - 1; i >= 0; i -= 1) {
       if (this.scene.children[i].type === 'Mesh') {
@@ -223,7 +264,8 @@ export default class Game {
     this.camera.position.z = 130;
 
     this.addBoxesForInit();
-    this.createWalls();
+    this.createFloor();
+    this.createTextGeometryCount();
     this.start();
   }
 
@@ -281,10 +323,10 @@ export default class Game {
       this.xAxis.activeBox = newActiveBox;
     }
 
-    this.latestScaleItemPositionY += 10;
     this.heightStack += 1;
-    this.scene.add(createScaleItem(this.heightStack, -120, this.latestScaleItemPositionY, 50));
     this.count += 1;
+    this.createTextGeometryCount();
+    this.textCountPositionY += 10;
   }
 
   getCount() {
@@ -293,6 +335,49 @@ export default class Game {
 
   getStackHeight() {
     return this.heightStack;
+  }
+
+  startTweenAnimations() {
+    // Camera position
+    const tweenCameraPosition = new TWEEN.Tween(this.camera.position)
+      .to({
+        y: this.camera.position.y + 10
+      }, 500)
+      .easing(TWEEN.Easing.Linear.None);
+
+    // Camera look
+    const vectorForCamera = new TWEEN.Tween(this.vectorForCamera)
+      .to({
+        y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y : this.zAxis.prevBox.position.y
+      }, 500)
+      .easing(TWEEN.Easing.Linear.None);
+
+    // Text count position
+    const tweenTextCountPosition = new TWEEN.Tween(this.textCount.position)
+      .to({
+        y: this.textCountPositionY
+      }, 500)
+      .easing(TWEEN.Easing.Linear.None);
+
+    // Scale box height
+    this.scaleBox.geometry.vertices.forEach((vertex, index) => {
+      if (index === 0 || index === 1 || index === 4 || index === 5) {
+        const tweenVertex = new TWEEN.Tween(this.scaleBox.geometry.vertices[index])
+          .to({
+            y: this.scaleBox.geometry.vertices[index].y + 10
+          }, 500)
+          .onUpdate(() => {
+            this.scaleBox.geometry.verticesNeedUpdate = true;
+          })
+          .easing(TWEEN.Easing.Linear.None);
+
+        tweenVertex.start();
+      }
+    });
+
+    tweenTextCountPosition.start();
+    tweenCameraPosition.start();
+    vectorForCamera.start();
   }
 
   setNewStack() {
@@ -337,20 +422,7 @@ export default class Game {
       this.createNewStack();
     }
 
-    const tweenCameraPosition = new TWEEN.Tween(this.camera.position)
-      .to({
-        y: this.camera.position.y + 10
-      }, 500)
-      .easing(TWEEN.Easing.Linear.None);
-
-    const vectorForCamera = new TWEEN.Tween(this.vectorForCamera)
-      .to({
-        y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y : this.zAxis.prevBox.position.y
-      }, 500)
-      .easing(TWEEN.Easing.Linear.None);
-
-    tweenCameraPosition.start();
-    vectorForCamera.start();
+    this.startTweenAnimations();
 
     this.toggleAnimationAxis();
 
