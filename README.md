@@ -38,3 +38,7 @@ $ npm run create-vendors
 [moment](https://github.com/moment/moment),
 [moment-timezone](https://github.com/moment/moment-timezone/),
 [Tween.js](https://github.com/tweenjs/tween.js/)
+
+###License
+
+MIT License, Copyright (c) 2018 Romanov Yury

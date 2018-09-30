@@ -122,7 +122,7 @@ const mapDispatchToProps = dispatch => ({
   setTopRecord: (record, height) => {
     dispatch(setTopRecord(record, height));
   },
-  showMessage: (text) => {
+  showMessage(text) {
     dispatch(showMessage(text));
   }
 });
