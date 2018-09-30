@@ -357,7 +357,7 @@ export default class Game {
       .to({
         y: this.textCountPositionY
       }, 500)
-      .easing(TWEEN.Easing.Linear.None);
+      .easing(TWEEN.Easing.Quartic.InOut);
 
     // Scale box height
     this.scaleBox.geometry.vertices.forEach((vertex, index) => {
@@ -369,7 +369,7 @@ export default class Game {
           .onUpdate(() => {
             this.scaleBox.geometry.verticesNeedUpdate = true;
           })
-          .easing(TWEEN.Easing.Linear.None);
+          .easing(TWEEN.Easing.Quartic.InOut);
 
         tweenVertex.start();
       }
