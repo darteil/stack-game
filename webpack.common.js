@@ -15,8 +15,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      'App': path.resolve(__dirname, './src'),
-      'globalVariables$': path.resolve(__dirname, './src/globalVariables.js')
+      'App': path.resolve(__dirname, './src')
     }
   },
   module: {

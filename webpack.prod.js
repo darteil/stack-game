@@ -6,7 +6,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common');
 
 const distPath = path.resolve(__dirname, './dist');
@@ -32,13 +31,13 @@ module.exports = () => {
             beautify: false,
             comments: false,
             compress: {
-              sequences     : true,
-              booleans      : true,
-              loops         : true,
-              unused      : true,
-              warnings    : false,
+              sequences: true,
+              booleans: true,
+              loops: true,
+              unused: true,
+              warnings: false,
               drop_console: true,
-              unsafe      : true
+              unsafe: true
             },
             ecma: 6,
             mangle: true
@@ -48,7 +47,6 @@ module.exports = () => {
       ]
     },
     plugins: [
-      new Dotenv({ path: './.env' }),
       new HtmlReplaceWebpackPlugin([
         {
           pattern: '@@url',

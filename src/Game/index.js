@@ -5,16 +5,17 @@ import {
   Fog,
   WebGLRenderer,
   Vector3,
+  FontLoader,
   Color,
+  AxesHelper,
+  GridHelper,
   HemisphereLight,
   DirectionalLight,
-  AmbientLight,
-  PlaneGeometry, FontLoader, TextGeometry,
-  DoubleSide, AxesHelper,
-  Mesh, MeshPhongMaterial, FlatShading
+  AmbientLight
 } from 'three';
 import OrbitControls from 'three-orbitcontrols';
 import TWEEN from '@tweenjs/tween.js';
+import createTextObject from './createTextObject';
 import buildBox from './buildBox';
 import createScaleBox from './scaleBox';
 import Helpers from './helpers';
@@ -46,7 +47,7 @@ export default class Game {
     this.camera = null;
     this.renderer = null;
     this.scaleBox = null;
-    this.textCountPositionY = 20;
+    this.textHeightStackPositionY = 20;
     this.fontFor3DText = null;
 
     this.count = 0;
@@ -59,9 +60,9 @@ export default class Game {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
 
-    const camera = new PerspectiveCamera(70, width / height, 0.1, 5000);
+    const camera = new PerspectiveCamera(70, width / height, 0.1, 2000);
     const scene = new Scene();
-    scene.fog = new Fog(0xf7d9aa, 100, 950);
+    scene.fog = new Fog(0x005E5E5E, 2, 2000);
     const renderer = new WebGLRenderer({ antialias: true });
 
     this.vectorForCamera = new Vector3(0, 0, 0);
@@ -69,8 +70,9 @@ export default class Game {
     camera.position.x = 130;
     camera.position.z = 130;
 
-    scene.background = new Color(0x001A0F0E);
+    scene.background = new Color(0x005E5E5E);
 
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
     this.container.appendChild(renderer.domElement);
@@ -79,14 +81,18 @@ export default class Game {
     this.renderer = renderer;
 
     this.addBoxesForInit();
-    this.createFloor();
     const loader = new FontLoader();
     loader.load('./fonts/Android_101.json', (res) => {
       this.fontFor3DText = res;
-      this.createTextGeometryCount();
+      this.createHeightStackText();
     });
 
     this.createLights();
+
+    const gridHelper = new GridHelper(5000, 200, '#525A5C', '#525A5C');
+    scene.add(gridHelper);
+
+    scene.children.reverse();
     window.addEventListener('resize', this.onWindowResize, false);
   }
 
@@ -121,44 +127,18 @@ export default class Game {
     this.vectorForCamera.z = this.xAxis.prevBox.position.z;
   }
 
-  createFloor() {
-    const floorGeometry = new PlaneGeometry(240, 100);
-    const floorMaterial = new MeshPhongMaterial({ color: 0xffff00, side: DoubleSide, flatShading: FlatShading });
-    const floor = new Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = Math.PI / 2;
-    floor.position.z = 50;
-
-    this.scene.add(floor);
-  }
-
-  createTextGeometryCount() {
-    if (this.textCount) {
-      this.scene.remove(this.textCount);
-      this.textCount = null;
+  createHeightStackText() {
+    if (this.textHeightStack) {
+      this.scene.remove(this.textHeightStack);
+      this.textHeightStack = null;
     }
 
-    const options = {
-      size: 20,
-      height: 5,
-      font: this.fontFor3DText,
-      style: 'regular',
-      curveSegments: 20,
-      steps: 50
-    };
+    this.textHeightStack = createTextObject(this.heightStack.toString(), this.fontFor3DText);
 
-    const textMaterial = new MeshPhongMaterial({
-      color: '#4b5320',
-      flatShading: FlatShading
-    });
-    const textGeom = new TextGeometry(this.count.toString(), options);
-    textGeom.computeBoundingBox();
-    textGeom.computeVertexNormals();
-    const textMesh = new Mesh(textGeom, textMaterial);
-    textMesh.rotation.y = Math.PI / 2;
-    textMesh.position.set(-120, this.textCountPositionY, 100);
-    this.textCount = textMesh;
+    this.textHeightStack.rotation.y = Math.PI / 2;
+    this.textHeightStack.position.set(-120, this.textHeightStackPositionY, 100);
 
-    this.scene.add(textMesh);
+    this.scene.add(this.textHeightStack);
   }
 
   createLights() {
@@ -252,7 +232,7 @@ export default class Game {
     this.count = 0;
     this.heightStack = 0;
     this.scaleBox = null;
-    this.textCountPositionY = 20;
+    this.textHeightStackPositionY = 20;
 
     for (let i = this.scene.children.length - 1; i >= 0; i -= 1) {
       if (this.scene.children[i].type === 'Mesh') {
@@ -264,8 +244,7 @@ export default class Game {
     this.camera.position.z = 130;
 
     this.addBoxesForInit();
-    this.createFloor();
-    this.createTextGeometryCount();
+    this.createHeightStackText();
     this.start();
   }
 
@@ -325,8 +304,8 @@ export default class Game {
 
     this.heightStack += 1;
     this.count += 1;
-    this.createTextGeometryCount();
-    this.textCountPositionY += 10;
+    this.createHeightStackText();
+    this.textHeightStackPositionY += 10;
   }
 
   getCount() {
@@ -353,9 +332,9 @@ export default class Game {
       .easing(TWEEN.Easing.Linear.None);
 
     // Text count position
-    const tweenTextCountPosition = new TWEEN.Tween(this.textCount.position)
+    const tweenTextHeightStackPosition = new TWEEN.Tween(this.textHeightStack.position)
       .to({
-        y: this.textCountPositionY
+        y: this.textHeightStackPositionY
       }, 500)
       .easing(TWEEN.Easing.Quartic.InOut);
 
@@ -375,7 +354,7 @@ export default class Game {
       }
     });
 
-    tweenTextCountPosition.start();
+    tweenTextHeightStackPosition.start();
     tweenCameraPosition.start();
     vectorForCamera.start();
   }
@@ -450,13 +429,11 @@ export default class Game {
         this.animationOnXAxis(this.xAxis.activeBox);
         /*if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
           this.setNewStack();
-          this.count += 1;
         }*/
       } else {
         this.animationOnZAxis(this.zAxis.activeBox);
         /*if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
           this.setNewStack();
-          this.count += 1;
         }*/
       }
     }

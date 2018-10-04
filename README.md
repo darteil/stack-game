@@ -1,5 +1,7 @@
 # Stack game
 
+![](public/Screenshot.png?raw=true)
+
 Project requires [Node.js](https://nodejs.org/) v6+ to run.
 
 ### Installation and run project.

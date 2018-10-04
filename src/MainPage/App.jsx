@@ -6,7 +6,6 @@ import Scene from 'App/Scene/Scene';
 import ListOfRecords from 'App/ListOfRecords';
 import Menu from 'App/MainPage/Menu';
 import ErrorComponent from 'App/ErrorComponent';
-import { serverCategory } from 'globalVariables';
 import Message from 'App/Message';
 import ErrorBoundary from 'App/ErrorBoundary';
 import styles from './styles.css';
@@ -20,8 +19,8 @@ const App = props => (
         <Menu />
         <ErrorBoundary>
           <Switch>
-            <Route exact path={`${serverCategory}/`} component={Scene} />
-            <Route path={`${serverCategory}/list-of-records`} component={ListOfRecords} />
+            <Route exact path="/" component={Scene} />
+            <Route path="/list-of-records" component={ListOfRecords} />
             <Route path="*" component={NotFound} />
           </Switch>
         </ErrorBoundary>
