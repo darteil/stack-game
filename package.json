@@ -12,6 +12,7 @@
     "prod": "./node_modules/.bin/webpack --config webpack.prod.js --mode production",
     "eslint": "./node_modules/.bin/eslint --fix ./src/",
     "create-vendors": "./node_modules/.bin/webpack --config webpack.vendor.js --mode production",
+    "test": "jest --config ./jest-config/jest.config.json",
     "precommit": "lint-staged"
   },
   "author": "Romanov Yury",
@@ -37,8 +38,10 @@
     "three-orbitcontrols": "^2.1.2"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.3",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^7.1.5",
     "babel-plugin-dynamic-import-webpack": "^1.0.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -48,6 +51,9 @@
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
+    "enzyme-to-json": "^3.3.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-webpack": "^0.10.1",
@@ -59,6 +65,8 @@
     "html-replace-webpack-plugin": "^2.5.2",
     "html-webpack-plugin": "^4.0.0-alpha",
     "husky": "^1.0.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^23.6.0",
     "lint-staged": "^7.3.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-logger": "^3.0.6",

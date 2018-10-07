@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorComponent should render correctly 1`] = `
+<div
+  className="wrap"
+>
+  <div
+    className="text"
+  >
+    <p>
+      error message
+    </p>
+  </div>
+</div>
+`;
