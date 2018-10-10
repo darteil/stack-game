@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common');
 
 const publicPath = path.resolve(__dirname, './public');
@@ -25,7 +24,6 @@ module.exports = merge(common, {
     historyApiFallback: true
   },
   plugins: [
-    new Dotenv({ path: './.env' }),
     new ExtractTextPlugin('css/bundle.css'),
     new HtmlReplaceWebpackPlugin([
       {

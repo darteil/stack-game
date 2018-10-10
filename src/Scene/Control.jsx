@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from 'App/Scene/styles.css';
 import ClassNames from 'classnames';
+import styles from './styles.css';
+
 
 const Control = props => (
   <div className={styles.control}>

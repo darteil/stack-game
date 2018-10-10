@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Scene from 'App/Scene/Scene';
+import SceneContainer from 'App/Scene/SceneContainer';
 import ListOfRecords from 'App/ListOfRecords';
 import Menu from 'App/MainPage/Menu';
 import ErrorComponent from 'App/ErrorComponent';
@@ -19,7 +19,7 @@ const App = props => (
         <Menu />
         <ErrorBoundary>
           <Switch>
-            <Route exact path="/" component={Scene} />
+            <Route exact path="/" component={SceneContainer} />
             <Route path="/list-of-records" component={ListOfRecords} />
             <Route path="*" component={NotFound} />
           </Switch>

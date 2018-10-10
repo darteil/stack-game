@@ -1,16 +1,13 @@
 /* global document */
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
-import { showMessage } from 'App/Message/Actions';
-import { addRecord, setTopRecord } from './Actions';
 import Game from '../Game/index';
 import Control from './Control';
 import styles from './styles.css';
 
 
-class Scene extends Component {
+export default class Scene extends Component {
   constructor(props) {
     super(props);
 
@@ -110,21 +107,3 @@ Scene.propTypes = {
   listOfRecords: PropTypes.array.isRequired
 };
 
-const mapStateToProps = state => ({
-  topRecord: state.GameData.topRecord,
-  listOfRecords: state.GameData.listOfRecords
-});
-
-const mapDispatchToProps = dispatch => ({
-  addRecord: (record) => {
-    dispatch(addRecord(record));
-  },
-  setTopRecord: (record, height) => {
-    dispatch(setTopRecord(record, height));
-  },
-  showMessage: (text) => {
-    dispatch(showMessage(text));
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Scene);

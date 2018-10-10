@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu should render correctly 1`] = `
+<div>
+  <h1>
+    Stack
+  </h1>
+  <ul>
+    <NavLink
+      activeClassName="active"
+      aria-current="page"
+      exact={true}
+      to="/"
+    >
+      <li>
+        Game
+      </li>
+    </NavLink>
+    <NavLink
+      activeClassName="active"
+      aria-current="page"
+      to="/list-of-records"
+    >
+      <li>
+        List of records
+      </li>
+    </NavLink>
+  </ul>
+</div>
+`;
