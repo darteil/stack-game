@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListOfRecords component should render correctly 1`] = `
+<div>
+  <div>
+    <div>
+      <p>
+        Best result
+      </p>
+      <p>
+        Count: 
+        <span>
+          16
+        </span>
+         Height stack: 
+        <span>
+          16
+        </span>
+      </p>
+    </div>
+    <div>
+      <ul>
+        <li
+          key="2"
+        >
+          September 29th 2018, 16:11:32
+          <div>
+            <span>
+              count: 
+              16
+            </span>
+            <span>
+              height stack: 
+              16
+            </span>
+          </div>
+        </li>
+        <li
+          key="1"
+        >
+          September 24th 2018, 16:15:26
+          <div>
+            <span>
+              count: 
+              3
+            </span>
+            <span>
+              height stack: 
+              3
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Scene component should render correctly 1`] = `
+<div>
+  <Control
+    restartGame={[Function]}
+  />
+  <div>
+    0
+  </div>
+  <div />
+</div>
+`;

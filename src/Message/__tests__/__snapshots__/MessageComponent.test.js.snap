@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Message component should render correctly 1`] = `
+<div>
+  <em
+    onClick={[MockFunction]}
+  />
+  <p>
+    text example
+  </p>
+</div>
+`;
