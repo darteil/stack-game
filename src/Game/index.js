@@ -15,11 +15,13 @@ import {
 } from 'three';
 import OrbitControls from 'three-orbitcontrols';
 import TWEEN from '@tweenjs/tween.js';
-import createTextObject from './createTextObject';
-import buildBox from './buildBox';
-import createScaleBox from './scaleBox';
+import buildTextObject from './Objects/buildTextObject';
+import buildBox from './Objects/buildBox';
+import buildScaleBox from './Objects/buildScaleBox';
 import Helpers from './helpers';
 
+
+const SPEED = 3;
 
 export default class Game {
   constructor(container) {
@@ -114,7 +116,7 @@ export default class Game {
     secondBox.position.set(50, this.currentYPosition, 50);
     this.scene.add(secondBox);
 
-    this.scaleBox = createScaleBox();
+    this.scaleBox = buildScaleBox();
     this.scaleBox.position.set(-120, 5, 50);
     this.scene.add(this.scaleBox);
 
@@ -133,7 +135,7 @@ export default class Game {
       this.textHeightStack = null;
     }
 
-    this.textHeightStack = createTextObject(this.heightStack.toString(), this.fontFor3DText);
+    this.textHeightStack = buildTextObject(this.heightStack.toString(), this.fontFor3DText);
 
     this.textHeightStack.rotation.y = Math.PI / 2;
     this.textHeightStack.position.set(-120, this.textHeightStackPositionY, 100);
@@ -172,9 +174,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x + 3, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x + SPEED, boxObject.position.y, boxObject.position.z);
     } else {
-      boxObject.position.set(boxObject.position.x - 3, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x - SPEED, boxObject.position.y, boxObject.position.z);
     }
   }
 
@@ -186,9 +188,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + 3);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + SPEED);
     } else {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - 3);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - SPEED);
     }
   }
 
@@ -369,9 +371,6 @@ export default class Game {
         this.stopGame();
         return false;
       }
-      if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
-        this.count += 1;
-      }
 
       this.zAxis.depthPrevBox = Helpers.getWidthNewBox(
         this.xAxis.activeBox.position.x,
@@ -380,16 +379,16 @@ export default class Game {
       );
 
       this.createNewStack();
+      if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        Helpers.transparentMeshAnimate(this.zAxis.prevBox);
+        this.count += 1;
+      }
     }
 
     if (this.animationAxis === 'z') {
       if (!Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').intersection) {
         this.stopGame();
         return false;
-      }
-
-      if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
-        this.count += 1;
       }
 
       this.xAxis.widthPrevBox = Helpers.getWidthNewBox(
@@ -399,6 +398,10 @@ export default class Game {
       );
 
       this.createNewStack();
+      if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        Helpers.transparentMeshAnimate(this.xAxis.prevBox);
+        this.count += 1;
+      }
     }
 
     this.startTweenAnimations();
@@ -427,14 +430,14 @@ export default class Game {
     if (!this.stopGameStatus) {
       if (this.animationAxis === 'x') {
         this.animationOnXAxis(this.xAxis.activeBox);
-        /*if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
           this.setNewStack();
-        }*/
+        }
       } else {
         this.animationOnZAxis(this.zAxis.activeBox);
-        /*if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
           this.setNewStack();
-        }*/
+        }
       }
     }
 

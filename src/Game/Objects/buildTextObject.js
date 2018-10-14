@@ -1,6 +1,6 @@
 import { FlatShading, Mesh, MeshPhongMaterial, TextGeometry } from 'three';
 
-const createTextObject = (text, font) => {
+const buildTextObject = (text, font) => {
   const options = {
     size: 20,
     height: 5,
@@ -20,4 +20,4 @@ const createTextObject = (text, font) => {
   return new Mesh(textGeom, textMaterial);
 };
 
-export default createTextObject;
+export default buildTextObject;

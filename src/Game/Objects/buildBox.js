@@ -4,7 +4,7 @@ import {
   Mesh,
   FlatShading
 } from 'three';
-import colorsList from './colors';
+import colorsList from '../colors';
 
 const buildBox = (width, height, depth, customColor) => {
   const geometry = new BoxGeometry(width, height, depth, 1);
@@ -16,7 +16,7 @@ const buildBox = (width, height, depth, customColor) => {
     color = colorsList[Math.floor(Math.random() * colorsList.length)];
   }
 
-  const material = new MeshPhongMaterial({ color, flatShading: FlatShading });
+  const material = new MeshPhongMaterial({ color, flatShading: FlatShading, transparent: true });
   const box = new Mesh(geometry, material);
   box.currentColor = color;
 

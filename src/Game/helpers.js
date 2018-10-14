@@ -1,3 +1,5 @@
+import TWEEN from '@tweenjs/tween.js';
+
 const checkIntersection = (box, activeBox, widthPrevBox, currentAxis) => {
   let intersection = false;
   let fullIntersection = false;
@@ -63,8 +65,25 @@ const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {
 
 const getPositionForNewBox = (centerOfBox, centerOfPrevBox) => (centerOfBox + centerOfPrevBox) / 2;
 
+const transparentMeshAnimate = (mesh) => {
+  const emerging = new TWEEN.Tween(mesh.material)
+    .to({
+      opacity: 1
+    }, 350)
+    .easing(TWEEN.Easing.Linear.None);
+
+  const disappearing = new TWEEN.Tween(mesh.material)
+    .to({
+      opacity: 0.3
+    }, 350)
+    .easing(TWEEN.Easing.Linear.None).onComplete(() => { emerging.start(); });
+
+  disappearing.start();
+};
+
 module.exports = {
   checkIntersection,
   getWidthNewBox,
-  getPositionForNewBox
+  getPositionForNewBox,
+  transparentMeshAnimate
 };
