@@ -430,14 +430,14 @@ export default class Game {
     if (!this.stopGameStatus) {
       if (this.animationAxis === 'x') {
         this.animationOnXAxis(this.xAxis.activeBox);
-        if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        /*if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
           this.setNewStack();
-        }
+        }*/
       } else {
         this.animationOnZAxis(this.zAxis.activeBox);
-        if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        /*if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
           this.setNewStack();
-        }
+        }*/
       }
     }
 
