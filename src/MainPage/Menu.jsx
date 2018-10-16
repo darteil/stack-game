@@ -5,7 +5,6 @@ import styles from './styles.css';
 
 const Menu = () => (
   <div className={styles.menu}>
-    <h1>Stack</h1>
     <ul>
       <NavLink exact to="/" activeClassName={styles.active}>
         <li>

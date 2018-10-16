@@ -2,9 +2,6 @@
 
 exports[`Menu should render correctly 1`] = `
 <div>
-  <h1>
-    Stack
-  </h1>
   <ul>
     <NavLink
       activeClassName="active"

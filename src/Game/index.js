@@ -56,6 +56,7 @@ export default class Game {
     this.heightStack = 0;
 
     this.setNewStack = this.setNewStack.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
   }
 
   init() {

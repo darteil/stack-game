@@ -10,10 +10,9 @@ const common = require('./webpack.common');
 
 const distPath = path.resolve(__dirname, './dist');
 const publicPathFolder = path.resolve(__dirname, './public');
-console.log(process.env.SERVER_CATEGORY);
 
 module.exports = () => {
-  let publicPath = '/stack';
+  let publicPath = '';
 
   return merge(common, {
     devtool: 'source-map',

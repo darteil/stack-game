@@ -16,8 +16,8 @@
     width: 300px;
     height: 83px;
     position: absolute;
-    left: 30px;
-    bottom: 30px;
+    left: 0;
+    bottom: 0;
     z-index: 99;
 }
 
@@ -30,7 +30,7 @@
     color: rgba(255, 255, 255, 1);
     background: none;
     border-radius: 0;
-    padding: 1.2em 5em;
+    padding: 1.2em 4.7em;
     letter-spacing: 0.35em;
     font-size: 0.9em;
     transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
