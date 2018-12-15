@@ -1,12 +1,11 @@
 const merge = require('webpack-merge');
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const common = require('./webpack.common');
+const base = require('./webpack.base');
 
-const publicPath = path.resolve(__dirname, './public');
+const publicPath = path.resolve(__dirname, '../public');
 
-module.exports = merge(common, {
+module.exports = merge(base, {
   devtool: 'source-map',
   devServer: {
     contentBase: publicPath,
@@ -23,10 +22,9 @@ module.exports = merge(common, {
     historyApiFallback: true
   },
   plugins: [
-    new ExtractTextPlugin('css/bundle.css'),
     new webpack.DllReferencePlugin({
       context: path.join(__dirname, 'public/vendor'),
-      manifest: require('./public/vendor/vendor-manifest')
+      manifest: require('../public/vendor/vendor-manifest')
     })
   ]
 });

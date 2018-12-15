@@ -1,21 +1,17 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const indexFilePath = path.resolve(__dirname, './src/index.jsx');
+const indexFilePath = path.resolve(__dirname, '../src/index.jsx');
+const devMode = process.env.NODE_ENV !== 'production';
 
-const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: path.resolve(__dirname, './public/index.html'),
-  filename: 'index.html',
-  inject: 'body'
-});
 
 module.exports = {
   entry: indexFilePath,
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      'App': path.resolve(__dirname, './src')
+      App: path.resolve(__dirname, '../src')
     }
   },
   module: {
@@ -23,9 +19,9 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
-        use:[
+        use: [
           {
-            loader:'babel-loader',
+            loader: 'babel-loader',
             options: {
               cacheDirectory: true
             }
@@ -46,23 +42,29 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: {
-            loader: "css-loader",
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
             options: {
+              url: false,
               importLoaders: 1,
               localIdentName: '[path][name]__[local]__[hash:base64:5]',
-              modules: true // Note. This prop enables CSS modules.
-            },
-          },
-          publicPath: '/'
-        })
+              modules: true
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
-    HtmlWebpackPluginConfig
-  ],
-
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash].css'
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: path.resolve(__dirname, '../public/index.html'),
+      filename: 'index.html'
+    })
+  ]
 };
