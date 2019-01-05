@@ -43,4 +43,4 @@ $ npm run create-vendors
 
 ### License
 
-MIT License, Copyright (c) 2018 Romanov Yury
+MIT License, Copyright (c) 2018 Romanov Yurii
