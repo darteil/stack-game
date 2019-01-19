@@ -12,12 +12,5 @@ module.exports = {
     "jsx-a11y/label-has-for": 0,
     "spaced-comment": 0,
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
-  },
-  'settings': {
-    'import/resolver': {
-      'webpack': {
-        'config': 'config/webpack.base.js'
-      }
-    }
   }
 };

@@ -11,14 +11,13 @@ Install the dependencies and devDependencies and start.
 
 ```sh
 $ npm install
-$ npm run create-vendors
 $ npm run dev
 ```
 
 Create production build.
 
 ```sh
-$ npm run create-build
+$ npm run prod
 ```
 
 ### Other
@@ -27,12 +26,6 @@ Check eslint errors.
 
 ```sh
 $ npm run eslint
-```
-
-Update dll.vendor.js (webpack DllPlugin) from vendors.js
-
-```sh
-$ npm run create-vendors
 ```
 
 ### Using libraries

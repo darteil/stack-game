@@ -1,5 +1,3 @@
 /public/
-webpack.common.js
-webpack.dev.js
-webpack.prod.js
+/config/
 /src/**/*.test.js

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import GameData from 'App/Scene/Reducer';
-import Message from 'App/Message/Reducer';
+import GameData from '../Scene/Reducer';
+import Message from '../Message/Reducer';
 
 export default combineReducers({
   routerReducer,

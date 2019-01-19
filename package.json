@@ -11,7 +11,6 @@
     "dev": "./node_modules/.bin/webpack-dev-server --config config/webpack.dev.js --open --mode development",
     "prod": "./node_modules/.bin/webpack --config config/webpack.prod.js --mode production",
     "eslint": "./node_modules/.bin/eslint --fix ./src/",
-    "create-vendors": "./node_modules/.bin/webpack --config config/webpack.vendor.js --mode production",
     "test": "jest --config ./jest-config/jest.config.js",
     "precommit": "lint-staged"
   },
@@ -57,7 +56,6 @@
     "enzyme-to-json": "^3.3.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-import-resolver-webpack": "^0.10.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
@@ -71,6 +69,7 @@
     "jsdom": "^12.2.0",
     "lint-staged": "^7.3.0",
     "mini-css-extract-plugin": "^0.5.0",
+    "progress-bar-webpack-plugin": "^1.11.0",
     "redux-devtools-extension": "^2.13.7",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",

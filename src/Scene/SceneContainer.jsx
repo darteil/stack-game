@@ -1,7 +1,7 @@
 import React from 'react';
-import { addRecord, setTopRecord } from 'App/Scene/Actions';
-import { showMessage } from 'App/Message/Actions';
 import { connect } from 'react-redux';
+import { addRecord, setTopRecord } from '../Scene/Actions';
+import { showMessage } from '../Message/Actions';
 import Scene from './Scene';
 
 const SceneContainer = props => <Scene {...props} />;

@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import GithubCorner from 'react-github-corner';
-import App from 'App/MainPage/App';
+import App from './MainPage/App';
 import { persistor, store, history } from './store';
 import './reset.css';
 import './global.css';
