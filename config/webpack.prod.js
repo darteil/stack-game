@@ -3,6 +3,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const base = require('./webpack.base');
 
 const distPath = path.resolve(__dirname, '../dist');
@@ -16,6 +17,9 @@ module.exports = (env, argv) => merge(base(env, argv), {
     filename: 'js/[name].[hash:8].js'
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash].css'
+    }),
     new ProgressBarPlugin(),
     new CleanWebpackPlugin(
       [distPath],
