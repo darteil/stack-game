@@ -11,8 +11,7 @@
     "dev": "./node_modules/.bin/webpack-dev-server --config config/webpack.dev.js --open --mode development",
     "prod": "./node_modules/.bin/webpack --config config/webpack.prod.js --mode production",
     "eslint": "./node_modules/.bin/eslint --fix ./src/",
-    "test": "jest --config ./jest-config/jest.config.js",
-    "precommit": "lint-staged"
+    "test": "jest --config ./jest-config/jest.config.js"
   },
   "author": "Romanov Yury",
   "license": "MIT",
@@ -79,6 +78,11 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.1.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+   }
   },
   "lint-staged": {
     "*.{js,jsx}": [
