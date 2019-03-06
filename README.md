@@ -1,6 +1,6 @@
 # Stack game
 
-![](public/Screenshot.png?raw=true)
+![](http://darteil-projects.ru/static/images/stack-game.png)
 
 Project requires [Node.js](https://nodejs.org/) v6+ to run.
 
