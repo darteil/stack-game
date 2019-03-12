@@ -36,4 +36,4 @@ $ npm run eslint
 
 ### License
 
-MIT License, Copyright (c) 2018 Romanov Yurii
+MIT License, Copyright (c) 2019 Romanov Yurii
