@@ -20,7 +20,6 @@ import buildBox from './Objects/buildBox';
 import buildScaleBox from './Objects/buildScaleBox';
 import Helpers from './helpers';
 
-
 const SPEED = 3;
 
 export default class Game {
@@ -65,7 +64,7 @@ export default class Game {
 
     const camera = new PerspectiveCamera(70, width / height, 0.1, 2000);
     const scene = new Scene();
-    scene.fog = new Fog(0x005E5E5E, 2, 2000);
+    scene.fog = new Fog(0x005e5e5e, 2, 2000);
     const renderer = new WebGLRenderer({ antialias: true });
 
     this.vectorForCamera = new Vector3(0, 0, 0);
@@ -73,7 +72,7 @@ export default class Game {
     camera.position.x = 130;
     camera.position.z = 130;
 
-    scene.background = new Color(0x005E5E5E);
+    scene.background = new Color(0x005e5e5e);
 
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(this.container.clientWidth, this.container.clientHeight);
@@ -85,7 +84,7 @@ export default class Game {
 
     this.addBoxesForInit();
     const loader = new FontLoader();
-    loader.load('./fonts/Android_101.json', (res) => {
+    loader.load('./fonts/Android_101.json', res => {
       this.fontFor3DText = res;
       this.createHeightStackText();
     });
@@ -270,7 +269,11 @@ export default class Game {
         this.xAxis.prevBox.position.x
       );
 
-      newBox.position.set(positionForNewBox, this.currentYPosition, this.xAxis.prevBox ? this.xAxis.prevBox.position.z : 50);
+      newBox.position.set(
+        positionForNewBox,
+        this.currentYPosition,
+        this.xAxis.prevBox ? this.xAxis.prevBox.position.z : 50
+      );
       newActiveBox.position.set(positionForNewBox, this.currentYPosition + 10, -80);
 
       this.currentYPosition += 10;
@@ -322,32 +325,44 @@ export default class Game {
   startTweenAnimations() {
     // Camera position
     const tweenCameraPosition = new TWEEN.Tween(this.camera.position)
-      .to({
-        y: this.camera.position.y + 10
-      }, 500)
+      .to(
+        {
+          y: this.camera.position.y + 10
+        },
+        500
+      )
       .easing(TWEEN.Easing.Linear.None);
 
     // Camera look
     const vectorForCamera = new TWEEN.Tween(this.vectorForCamera)
-      .to({
-        y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y : this.zAxis.prevBox.position.y
-      }, 500)
+      .to(
+        {
+          y: this.animationAxis === 'x' ? this.xAxis.prevBox.position.y : this.zAxis.prevBox.position.y
+        },
+        500
+      )
       .easing(TWEEN.Easing.Linear.None);
 
     // Text count position
     const tweenTextHeightStackPosition = new TWEEN.Tween(this.textHeightStack.position)
-      .to({
-        y: this.textHeightStackPositionY
-      }, 500)
+      .to(
+        {
+          y: this.textHeightStackPositionY
+        },
+        500
+      )
       .easing(TWEEN.Easing.Quartic.InOut);
 
     // Scale box height
     this.scaleBox.geometry.vertices.forEach((vertex, index) => {
       if (index === 0 || index === 1 || index === 4 || index === 5) {
         const tweenVertex = new TWEEN.Tween(this.scaleBox.geometry.vertices[index])
-          .to({
-            y: this.scaleBox.geometry.vertices[index].y + 10
-          }, 500)
+          .to(
+            {
+              y: this.scaleBox.geometry.vertices[index].y + 10
+            },
+            500
+          )
           .onUpdate(() => {
             this.scaleBox.geometry.verticesNeedUpdate = true;
           })
@@ -368,7 +383,9 @@ export default class Game {
     }
 
     if (this.animationAxis === 'x') {
-      if (!Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').intersection) {
+      if (
+        !Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').intersection
+      ) {
         this.stopGame();
         return false;
       }
@@ -380,14 +397,19 @@ export default class Game {
       );
 
       this.createNewStack();
-      if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+      if (
+        Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x')
+          .fullIntersection
+      ) {
         Helpers.transparentMeshAnimate(this.zAxis.prevBox);
         this.count += 1;
       }
     }
 
     if (this.animationAxis === 'z') {
-      if (!Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').intersection) {
+      if (
+        !Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').intersection
+      ) {
         this.stopGame();
         return false;
       }
@@ -399,7 +421,10 @@ export default class Game {
       );
 
       this.createNewStack();
-      if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+      if (
+        Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z')
+          .fullIntersection
+      ) {
         Helpers.transparentMeshAnimate(this.xAxis.prevBox);
         this.count += 1;
       }

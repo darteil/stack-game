@@ -12,15 +12,18 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addRecord: (record) => {
+  addRecord: record => {
     dispatch(addRecord(record));
   },
   setTopRecord: (record, height) => {
     dispatch(setTopRecord(record, height));
   },
-  showMessage: (text) => {
+  showMessage: text => {
     dispatch(showMessage(text));
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SceneContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SceneContainer);

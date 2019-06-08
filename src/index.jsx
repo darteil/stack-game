@@ -10,7 +10,6 @@ import { persistor, store, history } from './store';
 import './reset.css';
 import './global.css';
 
-
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
@@ -22,5 +21,5 @@ ReactDOM.render(
       </Router>
     </PersistGate>
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

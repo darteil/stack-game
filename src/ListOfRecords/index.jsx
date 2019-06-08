@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import List from './List';
 
-const ListOfRecords = props => (
-  <List {...props} />
-);
+const ListOfRecords = props => <List {...props} />;
 
 ListOfRecords.propTypes = {
-  listOfRecords: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    time: PropTypes.string,
-    count: PropTypes.number,
-    heightStack: PropTypes.number
-  })),
+  listOfRecords: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      time: PropTypes.string,
+      count: PropTypes.number,
+      heightStack: PropTypes.number
+    })
+  ),
   topRecord: PropTypes.number.isRequired,
   topHeight: PropTypes.number.isRequired
 };

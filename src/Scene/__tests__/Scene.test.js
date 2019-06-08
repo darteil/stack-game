@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
 import Scene from '../Scene';
 
-
 describe('Scene component', () => {
   const props = {
     listOfRecords: [
@@ -26,10 +25,7 @@ describe('Scene component', () => {
     addRecord: jest.fn()
   };
 
-  const output = shallow(
-    <Scene {...props} />,
-    { disableLifecycleMethods: true }
-  );
+  const output = shallow(<Scene {...props} />, { disableLifecycleMethods: true });
 
   it('should render correctly', () => {
     expect(shallowToJson(output)).toMatchSnapshot();

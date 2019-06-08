@@ -11,12 +11,13 @@ const List = props => (
           Count: <span>{props.topRecord}</span> Height stack: <span>{props.topHeight}</span>
         </p>
       </div>
-      {
-        props.listOfRecords.length > 0 &&
+      {props.listOfRecords.length > 0 && (
         <div className={styles.container}>
           <ul className={styles.list}>
-            {
-              props.listOfRecords.slice(0).reverse().map(record => (
+            {props.listOfRecords
+              .slice(0)
+              .reverse()
+              .map(record => (
                 <li key={record.id}>
                   {record.time}
                   <div>
@@ -24,22 +25,23 @@ const List = props => (
                     <span>height stack: {record.heightStack}</span>
                   </div>
                 </li>
-              ))
-            }
+              ))}
           </ul>
         </div>
-      }
+      )}
     </div>
   </div>
 );
 
 List.propTypes = {
-  listOfRecords: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    time: PropTypes.string,
-    count: PropTypes.number,
-    heightStack: PropTypes.number
-  })),
+  listOfRecords: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      time: PropTypes.string,
+      count: PropTypes.number,
+      heightStack: PropTypes.number
+    })
+  ),
   topRecord: PropTypes.number.isRequired,
   topHeight: PropTypes.number.isRequired
 };

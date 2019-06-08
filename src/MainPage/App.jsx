@@ -24,10 +24,7 @@ const App = props => (
             <Route path="*" component={NotFound} />
           </Switch>
         </ErrorBoundary>
-        {
-          props.showMessageStatus &&
-          <Message />
-        }
+        {props.showMessageStatus && <Message />}
       </Fragment>
     </Router>
   </div>
@@ -40,6 +37,5 @@ App.propTypes = {
 const mapStateToProps = state => ({
   showMessageStatus: state.Message.show
 });
-
 
 export default connect(mapStateToProps)(App);

@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Message component should render correctly 1`] = `
-<div>
+<div
+  className="control"
+>
   <button
-    className=""
+    className="fuller-button blue"
     onClick={[MockFunction]}
   >
     Restart

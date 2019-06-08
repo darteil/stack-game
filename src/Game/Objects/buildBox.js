@@ -1,9 +1,4 @@
-import {
-  BoxGeometry,
-  MeshPhongMaterial,
-  Mesh,
-  FlatShading
-} from 'three';
+import { BoxGeometry, MeshPhongMaterial, Mesh, FlatShading } from 'three';
 import colorsList from '../colors';
 
 const buildBox = (width, height, depth, customColor) => {

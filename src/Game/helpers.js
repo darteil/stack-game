@@ -47,13 +47,13 @@ const checkIntersection = (box, activeBox, widthPrevBox, currentAxis) => {
 
 const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {
   if (centerOfBox > centerOfPrevBox) {
-    const x1 = centerOfPrevBox + (widthPrevBox / 2);
-    const x2 = centerOfBox - (widthPrevBox / 2);
+    const x1 = centerOfPrevBox + widthPrevBox / 2;
+    const x2 = centerOfBox - widthPrevBox / 2;
     return x1 - x2;
   }
   if (centerOfBox < centerOfPrevBox) {
-    const x1 = centerOfPrevBox - (widthPrevBox / 2);
-    const x2 = centerOfBox + (widthPrevBox / 2);
+    const x1 = centerOfPrevBox - widthPrevBox / 2;
+    const x2 = centerOfBox + widthPrevBox / 2;
 
     return x2 - x1;
   }
@@ -65,25 +65,36 @@ const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {
 
 const getPositionForNewBox = (centerOfBox, centerOfPrevBox) => (centerOfBox + centerOfPrevBox) / 2;
 
-const transparentMeshAnimate = (mesh) => {
+const transparentMeshAnimate = mesh => {
   const emerging = new TWEEN.Tween(mesh.material)
-    .to({
-      opacity: 1
-    }, 350)
+    .to(
+      {
+        opacity: 1
+      },
+      350
+    )
     .easing(TWEEN.Easing.Linear.None);
 
   const disappearing = new TWEEN.Tween(mesh.material)
-    .to({
-      opacity: 0.3
-    }, 350)
-    .easing(TWEEN.Easing.Linear.None).onComplete(() => { emerging.start(); });
+    .to(
+      {
+        opacity: 0.3
+      },
+      350
+    )
+    .easing(TWEEN.Easing.Linear.None)
+    .onComplete(() => {
+      emerging.start();
+    });
 
   disappearing.start();
 };
 
-module.exports = {
+const Helpers = {
   checkIntersection,
   getWidthNewBox,
   getPositionForNewBox,
   transparentMeshAnimate
 };
+
+export default Helpers;

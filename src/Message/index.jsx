@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { hideMessage } from './Actions';
 import MessageComponent from './MessageComponent';
 
-
 const Message = props => <MessageComponent {...props} />;
 
 const mapStateToProps = state => ({
@@ -16,5 +15,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Message);
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Message);

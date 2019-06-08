@@ -6,7 +6,9 @@ export default class MessageComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.timeoutVariable = setTimeout(() => { this.props.hideMessage(); }, 10000);
+    this.timeoutVariable = setTimeout(() => {
+      this.props.hideMessage();
+    }, 10000);
   }
 
   componentWillUnmount() {
@@ -27,4 +29,3 @@ MessageComponent.propTypes = {
   text: PropTypes.string.isRequired,
   hideMessage: PropTypes.func.isRequired
 };
-

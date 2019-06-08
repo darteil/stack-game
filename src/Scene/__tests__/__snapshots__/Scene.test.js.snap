@@ -1,13 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Scene component should render correctly 1`] = `
-<div>
+<div
+  className="scene-wrap"
+>
   <Control
     restartGame={[Function]}
   />
-  <div>
+  <div
+    className="count"
+  >
     0
   </div>
-  <div />
+  <div
+    className="scene"
+  />
 </div>
 `;

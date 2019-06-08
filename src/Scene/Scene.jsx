@@ -6,7 +6,6 @@ import Game from '../Game/index';
 import Control from './Control';
 import styles from './styles.css';
 
-
 export default class Scene extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +36,7 @@ export default class Scene extends Component {
     document.removeEventListener('keydown', this.setNewStack);
   }
 
-  setNewStack = (event) => {
+  setNewStack = event => {
     if (this.state.gameStatus === 'stopped' || event.which !== 87) {
       return false;
     }
@@ -58,7 +57,9 @@ export default class Scene extends Component {
       }
 
       this.props.addRecord({
-        time: moment().tz(this.timeZone).format('MMMM Do YYYY, HH:mm:ss'),
+        time: moment()
+          .tz(this.timeZone)
+          .format('MMMM Do YYYY, HH:mm:ss'),
         count: this.state.count,
         heightStack: this.game.getStackHeight()
       });
@@ -106,4 +107,3 @@ Scene.propTypes = {
   topRecord: PropTypes.number.isRequired,
   listOfRecords: PropTypes.array.isRequired
 };
-

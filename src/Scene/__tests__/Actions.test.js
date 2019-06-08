@@ -6,7 +6,7 @@ describe('Scene actions', () => {
       type: actions.ADD_RECORD,
       record: {}
     };
-    expect(actions.addRecord({})).toEqual(expectedAction)
+    expect(actions.addRecord({})).toEqual(expectedAction);
   });
 
   it('should create an action SET_TOP_RECORD', () => {
@@ -15,6 +15,6 @@ describe('Scene actions', () => {
       count: 10,
       heightStack: 11
     };
-    expect(actions.setTopRecord(10, 11)).toEqual(expectedAction)
-  })
+    expect(actions.setTopRecord(10, 11)).toEqual(expectedAction);
+  });
 });

@@ -31,9 +31,7 @@ describe('ListOfRecords', () => {
       }
     };
     store = mockStore(initialState);
-    wrapper = shallow(
-      <ListOfRecords store={store} />
-    );
+    wrapper = shallow(<ListOfRecords store={store} />);
   });
 
   it('check prop', () => {
@@ -42,4 +40,3 @@ describe('ListOfRecords', () => {
     expect(wrapper.props().listOfRecords.length).toBe(2);
   });
 });
-

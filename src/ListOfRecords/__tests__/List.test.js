@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
 import List from 'App/ListOfRecords/List';
 
-
 describe('ListOfRecords component', () => {
   it('should render correctly', () => {
     const mockListOfRecords = [

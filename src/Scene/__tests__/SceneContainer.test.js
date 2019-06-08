@@ -30,9 +30,7 @@ describe('SceneContainer', () => {
       }
     };
     store = mockStore(initialState);
-    wrapper = shallow(
-      <SceneContainer store={store} />
-    );
+    wrapper = shallow(<SceneContainer store={store} />);
   });
 
   it('check prop', () => {
@@ -40,4 +38,3 @@ describe('SceneContainer', () => {
     expect(wrapper.props().listOfRecords.length).toBe(2);
   });
 });
-
