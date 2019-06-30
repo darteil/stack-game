@@ -9,7 +9,6 @@
   },
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config config/webpack.dev.js --mode development",
-    "prod": "./node_modules/.bin/webpack --config config/webpack.prod.js --mode production",
     "lint": "./node_modules/.bin/prettier --config ./.prettierrc.js ./src/**/*.jsx ./src/**/*.js --write",
     "test": "jest --config ./jest-config/jest.config.js"
   },
