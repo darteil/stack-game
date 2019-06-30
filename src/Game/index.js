@@ -84,7 +84,7 @@ export default class Game {
 
     this.addBoxesForInit();
     const loader = new FontLoader();
-    loader.load('./fonts/Android_101.json', res => {
+    loader.load('/stack/fonts/Android_101.json', res => {
       this.fontFor3DText = res;
       this.createHeightStackText();
     });

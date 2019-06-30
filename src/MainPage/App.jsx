@@ -14,7 +14,7 @@ const NotFound = () => <ErrorComponent message="Not Found =(" />;
 
 const App = props => (
   <div className={styles.app}>
-    <Router basename="/">
+    <Router basename="/stack">
       <Fragment>
         <Menu />
         <ErrorBoundary>
