@@ -30,4 +30,4 @@ deploy:
     - npm run prod
     - sshpass -V
     - export SSHPASS=$SSH_USER_PASS
-    - sshpass -e scp -o stricthostkeychecking=no -r dist/* $HOST:/var/www/html/stack-game
+    - sshpass -e scp -o stricthostkeychecking=no -r dist/* $HOST:/var/www/html/stack
