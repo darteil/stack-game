@@ -1,0 +1,33 @@
+image: node:latest
+
+cache:
+  key: ci
+  paths:
+    - node_modules
+    - build
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq sshpass
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  only:
+    - master
+  script:
+    - npm i
+    - npm run prod
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script:
+    - npm i
+    - npm run prod
+    - sshpass -V
+    - export SSHPASS=$SSH_USER_PASS
+    - sshpass -e scp -o stricthostkeychecking=no -r dist/* $HOST:/var/www/html/stack-game
