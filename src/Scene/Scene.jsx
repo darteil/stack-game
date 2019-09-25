@@ -6,6 +6,10 @@ import Game from '../Game/index';
 import Control from './Control';
 import styles from './styles.css';
 
+/**
+ * I had to leave unchanged
+ * Because it’s impossible to initialize a game on a react-hooks
+ */
 export default class Scene extends Component {
   constructor(props) {
     super(props);
