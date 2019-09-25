@@ -1,31 +1,29 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.css';
 
-export default class MessageComponent extends Component {
-  constructor(props) {
-    super(props);
+const MessageComponent = props => {
+  let timeoutVariable;
 
-    this.timeoutVariable = setTimeout(() => {
-      this.props.hideMessage();
+  useEffect(() => {
+    timeoutVariable = setTimeout(() => {
+      props.hideMessage();
     }, 10000);
-  }
 
-  componentWillUnmount() {
-    clearTimeout(this.timeoutVariable);
-  }
+    return () => clearTimeout(timeoutVariable);
+  }, []);
 
-  render() {
-    return (
-      <div className={styles.message}>
-        <em onClick={this.props.hideMessage} />
-        <p>{this.props.text}</p>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.message}>
+      <em onClick={props.hideMessage} />
+      <p>{props.text}</p>
+    </div>
+  );
+};
 
 MessageComponent.propTypes = {
   text: PropTypes.string.isRequired,
   hideMessage: PropTypes.func.isRequired
 };
+
+export default MessageComponent;
