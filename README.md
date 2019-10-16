@@ -32,4 +32,4 @@ $ npm run lint
 
 ### License
 
-MIT License, Copyright (c) 2019 Romanov Yurii
+MIT License, Copyright (c) 2019 Romanov Yuri
