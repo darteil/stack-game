@@ -1,50 +1,43 @@
 .app {
-    width: 100%;
-    min-height: 100%;
-    height: 100%;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
 }
 
 .menu {
-    width: 226px;
-    height: auto;
-    background-color: #28242A;
-    color: #fff;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 2;
-}
-
-.menu h1 {
-    font-family: 'Roboto-Medium', sans-serif;
-    font-size: 22px;
-    text-align: center;
-    padding: 23px;
-    border-bottom: 1px solid #313240;
+  width: 226px;
+  height: auto;
+  background-color: #28242a;
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
 }
 
 .menu ul {
-    height: 100%;
+  height: 100%;
 }
 
 .menu ul a {
-    font-size: 14px;
-    color: #a0a4a7;
-    text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #a0a4a7;
+  text-decoration: none;
 }
 
 .menu ul a li {
-    padding: 18px;
-    cursor: pointer;
-    background-color: #434343;
+  padding: 18px;
+  cursor: pointer;
+  background-color: #434343;
 }
 
 .menu ul a li:hover {
-    background-color: #DDDDDD;
+  background-color: #dddddd;
 }
 
 .menu ul a.active li {
-    background-color: #FF6008;
-    color: #333333;
-    cursor: default;
+  background-color: #ff6008;
+  color: #333333;
+  cursor: default;
 }
