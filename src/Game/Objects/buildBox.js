@@ -14,6 +14,8 @@ const buildBox = (width, height, depth, customColor) => {
   const material = new MeshPhongMaterial({ color, flatShading: FlatShading, transparent: true });
   const box = new Mesh(geometry, material);
   box.currentColor = color;
+  box.castShadow = true;
+  box.receiveShadow = true;
 
   return box;
 };
