@@ -1604,7 +1604,6 @@ const colorsList = [
   '#980036',
   '#f78fa7',
   '#beb5b7',
-  '#c96323',
   '#fef4cc',
   '#ffe1df',
   '#ba7f03',

@@ -5,20 +5,31 @@ import {
   Fog,
   WebGLRenderer,
   Vector3,
+  Vector2,
   FontLoader,
   Color,
   AxesHelper,
-  GridHelper,
   HemisphereLight,
   DirectionalLight,
-  AmbientLight
+  AmbientLight,
+  PCFSoftShadowMap
 } from 'three';
+
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
+
 import OrbitControls from 'three-orbitcontrols';
 import TWEEN from '@tweenjs/tween.js';
 import buildTextObject from './Objects/buildTextObject';
 import buildBox from './Objects/buildBox';
+import buildFloor from './Objects/buildFloor';
 import buildScaleBox from './Objects/buildScaleBox';
 import Helpers from './helpers';
+
+import GlowsPass from './Passes/Glows';
 
 const SPEED = 3;
 
@@ -50,6 +61,7 @@ export default class Game {
     this.scaleBox = null;
     this.textHeightStackPositionY = 20;
     this.fontFor3DText = null;
+    this.composer = null;
 
     this.count = 0;
     this.heightStack = 0;
@@ -64,23 +76,34 @@ export default class Game {
 
     const camera = new PerspectiveCamera(70, width / height, 0.1, 2000);
     const scene = new Scene();
-    scene.fog = new Fog(0x005e5e5e, 2, 2000);
+    scene.background = new Color(0x2b6dbd);
+    scene.fog = new Fog(scene.background, 2, 2200);
     const renderer = new WebGLRenderer({ antialias: true });
+    const composer = new EffectComposer(renderer);
+
+    const renderPass = new RenderPass(scene, camera);
+    renderPass.renderToScreen = true;
 
     this.vectorForCamera = new Vector3(0, 0, 0);
 
     camera.position.x = 130;
     camera.position.z = 130;
 
-    scene.background = new Color(0x005e5e5e);
-
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = PCFSoftShadowMap;
+    composer.setSize(this.container.clientWidth, this.container.clientHeight);
+    composer.addPass(renderPass);
+
+    const floor = buildFloor(5000, 5000);
+    scene.add(floor);
 
     this.container.appendChild(renderer.domElement);
     this.scene = scene;
     this.camera = camera;
     this.renderer = renderer;
+    this.composer = composer;
 
     this.addBoxesForInit();
     const loader = new FontLoader();
@@ -90,16 +113,34 @@ export default class Game {
     });
 
     this.createLights();
-
-    const gridHelper = new GridHelper(5000, 200, '#525A5C', '#525A5C');
-    scene.add(gridHelper);
+    this.initPasses();
 
     scene.children.reverse();
     window.addEventListener('resize', this.onWindowResize, false);
   }
 
+  initPasses() {
+    const glowsPass = new ShaderPass(GlowsPass);
+
+    glowsPass.color = '#ffcfe0';
+    glowsPass.material.uniforms.uPosition.value = new Vector2(0, 0.25);
+    glowsPass.material.uniforms.uRadius.value = 0.7;
+    glowsPass.material.uniforms.uColor.value = new Color(glowsPass.color);
+    glowsPass.material.uniforms.uAlpha.value = 0.55;
+    glowsPass.renderToScreen = true;
+
+    const pixelRatio = this.renderer.getPixelRatio();
+
+    const fxaaPass = new ShaderPass(FXAAShader);
+    fxaaPass.material.uniforms.resolution.value.x = 1 / (this.container.clientWidth * pixelRatio);
+    fxaaPass.material.uniforms.resolution.value.y = 1 / (this.container.clientHeight * pixelRatio);
+
+    this.composer.addPass(fxaaPass);
+    this.composer.addPass(glowsPass);
+  }
+
   enableOrbitControls() {
-    this.controls = new OrbitControls(this.camera);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
   }
 
   enableAxesHelper() {
@@ -144,25 +185,32 @@ export default class Game {
   }
 
   createLights() {
-    const hemisphereLight = new HemisphereLight(0xaaaaaa, 0x000000, 0.5);
-    const shadowLight = new DirectionalLight(0xffffff, 0.5);
-    const ambientLight = new AmbientLight(0xdc8874, 0.5);
+    const hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.3);
+    hemisphereLight.color.setHSL(0.6, 1, 0.6);
+    hemisphereLight.groundColor.setHSL(0.095, 1, 0.75);
+    hemisphereLight.position.set(0, 1000, 0);
 
-    shadowLight.position.set(150, 350, -350);
-    shadowLight.castShadow = true;
+    const directionalLight = new DirectionalLight(0xffffff, 0.5);
+    const ambientLight = new AmbientLight(0xdc8874, 0.7);
 
-    shadowLight.shadow.camera.left = -400;
-    shadowLight.shadow.camera.right = 400;
-    shadowLight.shadow.camera.top = 400;
-    shadowLight.shadow.camera.bottom = -400;
-    shadowLight.shadow.camera.near = 1;
-    shadowLight.shadow.camera.far = 1000;
+    directionalLight.position.set(100, 1000, 150);
+    directionalLight.target.position.set(36, 0, 36);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.left = -400;
+    directionalLight.shadow.camera.right = 400;
+    directionalLight.shadow.camera.top = 400;
+    directionalLight.shadow.camera.bottom = -400;
 
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.far = 5000;
+    directionalLight.shadow.bias = -0.0001;
+    directionalLight.penumbra = 1;
+    directionalLight.decay = 5;
 
     this.scene.add(hemisphereLight);
-    this.scene.add(shadowLight);
+    this.scene.add(directionalLight);
+    this.scene.add(directionalLight.target);
     this.scene.add(ambientLight);
   }
 
@@ -237,7 +285,7 @@ export default class Game {
     this.textHeightStackPositionY = 20;
 
     for (let i = this.scene.children.length - 1; i >= 0; i -= 1) {
-      if (this.scene.children[i].type === 'Mesh') {
+      if (this.scene.children[i].type === 'Mesh' && this.scene.children[i].name !== 'floor') {
         this.scene.remove(this.scene.children[i]);
       }
     }
@@ -442,10 +490,11 @@ export default class Game {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    this.composer.setSize(this.container.clientWidth, this.container.clientHeight);
   }
 
   render() {
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render(this.scene, this.camera);
     TWEEN.update();
     if (this.controls) {
       this.controls.update();
@@ -456,12 +505,18 @@ export default class Game {
     if (!this.stopGameStatus) {
       if (this.animationAxis === 'x') {
         this.animationOnXAxis(this.xAxis.activeBox);
-        /*if (Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x').fullIntersection) {
+        /*if (
+          Helpers.checkIntersection(this.xAxis.prevBox, this.xAxis.activeBox, this.zAxis.depthPrevBox, 'x')
+            .fullIntersection
+        ) {
           this.setNewStack();
         }*/
       } else {
         this.animationOnZAxis(this.zAxis.activeBox);
-        /*if (Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z').fullIntersection) {
+        /*if (
+          Helpers.checkIntersection(this.zAxis.prevBox, this.zAxis.activeBox, this.xAxis.widthPrevBox, 'z')
+            .fullIntersection
+        ) {
           this.setNewStack();
         }*/
       }
