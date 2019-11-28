@@ -7,6 +7,7 @@ import Control from './Control';
 import styles from './styles.css';
 
 /**
+ * No react-hooks
  * I had to leave unchanged
  * Because it’s impossible to initialize a game on a react-hooks
  */
