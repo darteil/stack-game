@@ -8,7 +8,8 @@
     "url": "https://github.com/darteil/StackGame.git"
   },
   "scripts": {
-    "prod": "./node_modules/.bin/webpack --config config/webpack.prod.js --mode production"
+    "prod": "./node_modules/.bin/webpack --config config/webpack.prod.js --mode production",
+    "test": "jest --config ./jest-config/jest.config.js"
   },
   "author": "Romanov Yuri",
   "license": "MIT",
