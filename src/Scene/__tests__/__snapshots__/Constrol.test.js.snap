@@ -5,7 +5,7 @@ exports[`Message component should render correctly 1`] = `
   className="control"
 >
   <button
-    className="fuller-button blue"
+    className="restart-button"
     onClick={[MockFunction]}
   >
     Restart
