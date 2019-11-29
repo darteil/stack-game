@@ -5,6 +5,8 @@ const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const base = require('./webpack.base');
 
 const distPath = path.resolve(__dirname, '../dist');
@@ -14,12 +16,14 @@ module.exports = (env, argv) => {
   let publicPath = '/stack';
 
   return merge(base(env, argv), {
-    devtool: 'source-map',
     stats: 'errors-only',
     output: {
       path: distPath,
       filename: 'js/[name].[hash:8].js',
       publicPath: publicPath
+    },
+    optimization: {
+      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
     },
     plugins: [
       new MiniCssExtractPlugin({
