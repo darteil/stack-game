@@ -1,8 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Record } from './types';
 import styles from './styles.css';
 
-const List = props => (
+interface IProps {
+  listOfRecords: Record[];
+  topRecord: number;
+  topHeight: number;
+}
+
+const List = (props: IProps) => (
   <div className={styles.wrap}>
     <div className={styles['flex-block']}>
       <div className={styles.result}>
@@ -32,22 +38,5 @@ const List = props => (
     </div>
   </div>
 );
-
-List.propTypes = {
-  listOfRecords: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      time: PropTypes.string,
-      count: PropTypes.number,
-      heightStack: PropTypes.number
-    })
-  ),
-  topRecord: PropTypes.number.isRequired,
-  topHeight: PropTypes.number.isRequired
-};
-
-List.defaultProps = {
-  listOfRecords: []
-};
 
 export default List;

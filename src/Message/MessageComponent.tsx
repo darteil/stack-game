@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import styles from './styles.css';
 
-const MessageComponent = props => {
-  let timeoutVariable;
+interface IProps {
+  text: string;
+  hideMessage: () => void;
+}
+
+const MessageComponent = (props: IProps) => {
+  let timeoutVariable: NodeJS.Timeout;
 
   useEffect(() => {
     timeoutVariable = setTimeout(() => {
@@ -19,11 +23,6 @@ const MessageComponent = props => {
       <p>{props.text}</p>
     </div>
   );
-};
-
-MessageComponent.propTypes = {
-  text: PropTypes.string.isRequired,
-  hideMessage: PropTypes.func.isRequired
 };
 
 export default MessageComponent;

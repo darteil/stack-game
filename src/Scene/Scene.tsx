@@ -1,18 +1,31 @@
 /* global document */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
-import Game from '../Game/index';
+import { Record } from '../ListOfRecords/types';
+import { v1 as uuid } from 'uuid';
+import Game from '../Game';
 import Control from './Control';
 import styles from './styles.css';
 
-/**
- * No react-hooks
- * I had to leave unchanged
- * Because it’s impossible to initialize a game on a react-hooks
- */
-export default class Scene extends Component {
-  constructor(props) {
+interface IProps {
+  addRecord: (record: Record) => void;
+  setTopRecord: (count: number, height: number) => void;
+  showMessage: (text: string) => void;
+  topRecord: number;
+  listOfRecords: Record[];
+}
+
+interface IState {
+  gameStatus: string;
+  count: number;
+}
+
+export default class Scene extends Component<IProps, IState> {
+  private timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  private container!: React.RefObject<HTMLDivElement>;
+  private game: any;
+
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
@@ -20,30 +33,31 @@ export default class Scene extends Component {
       count: 0
     };
 
-    this.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    this.container = React.createRef();
     this.game = null;
+    this.container = React.createRef();
+    this.setNewStack = this.setNewStack.bind(this);
   }
 
   componentDidMount() {
-    this.game = new Game(this.container.current);
+    this.game = new Game(this.container.current as HTMLElement);
     this.game.init();
     this.startGame();
     // this.game.enableOrbitControls();
     // this.game.enableAxesHelper();
-    document.addEventListener('keydown', this.setNewStack);
+
+    window.addEventListener('keydown', this.setNewStack);
     if (this.props.listOfRecords.length === 0) {
       this.props.showMessage('Press "w" to set block =)');
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.setNewStack);
+    window.removeEventListener('keydown', this.setNewStack);
   }
 
-  setNewStack = event => {
+  setNewStack = (event: KeyboardEvent) => {
     if (this.state.gameStatus === 'stopped' || event.which !== 87) {
-      return false;
+      return;
     }
 
     this.game.setNewStack();
@@ -62,6 +76,7 @@ export default class Scene extends Component {
       }
 
       this.props.addRecord({
+        id: uuid(),
         time: moment()
           .tz(this.timeZone)
           .format('MMMM Do YYYY, HH:mm:ss'),
@@ -70,7 +85,7 @@ export default class Scene extends Component {
       });
     }
 
-    return true;
+    return;
   };
 
   startGame = () => {
@@ -104,11 +119,3 @@ export default class Scene extends Component {
     );
   }
 }
-
-Scene.propTypes = {
-  addRecord: PropTypes.func.isRequired,
-  setTopRecord: PropTypes.func.isRequired,
-  showMessage: PropTypes.func.isRequired,
-  topRecord: PropTypes.number.isRequired,
-  listOfRecords: PropTypes.array.isRequired
-};

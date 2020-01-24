@@ -1,9 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import ErrorComponent from './ErrorComponent/index';
 
-export default class ErrorBoundary extends Component {
-  constructor(props) {
+interface IProps {
+  children: ReactNode;
+}
+
+interface IState {
+  hasError: boolean;
+}
+
+export default class ErrorBoundary extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -19,7 +27,3 @@ export default class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.object.isRequired
-};

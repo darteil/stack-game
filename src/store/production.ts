@@ -13,9 +13,9 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default function developerConfigureStore(initialState) {
+export default function developerConfigureStore(initialState: any) {
   const enhancer = compose(applyMiddleware(thunk));
-  const store = createStore(persistedReducer, initialState, enhancer);
+  const store = createStore(persistedReducer, initialState as any, enhancer);
   const persistor = persistStore(store);
 
   return { store, persistor };

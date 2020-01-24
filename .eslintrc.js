@@ -1,18 +1,17 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
+  extends: [
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended'
+  ],
   rules: {
-    'prettier/prettier': 'error',
-    'react/forbid-prop-types': 0,
-    'comma-dangle': ['error', 'never'],
-    'max-len': 0,
-    'jsx-a11y/aria-role': 0,
-    'jsx-a11y/no-static-element-interactions': 0,
-    'jsx-a11y/click-events-have-key-events': 0,
-    'jsx-a11y/no-noninteractive-element-interactions': 0,
-    'jsx-a11y/label-has-for': 0,
-    'spaced-comment': 0,
-    'import/no-extraneous-dependencies': ['error', { devDependencies: true }]
-  }
+    'linebreak-style': ['error', 'unix'],
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/interface-name-prefix': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    'prettier/prettier': 'error'
+  },
+  plugins: ['prettier']
 };

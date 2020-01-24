@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const indexFilePath = path.resolve(__dirname, '../src/index.jsx');
+const indexFilePath = path.resolve(__dirname, '../src/index.tsx');
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== 'production';
@@ -10,31 +10,16 @@ module.exports = (env, argv) => {
   return {
     entry: indexFilePath,
     resolve: {
-      extensions: ['.js', '.jsx']
+      extensions: ['.ts', '.tsx', '.js']
     },
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(ts|tsx|js)$/,
           exclude: /(node_modules)/,
           use: [
             {
-              loader: 'babel-loader',
-              options: {
-                cacheDirectory: true
-              }
-            }
-          ]
-        },
-        {
-          test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 8192,
-                name: 'img/[hash].[ext]'
-              }
+              loader: 'ts-loader'
             }
           ]
         },

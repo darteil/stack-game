@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.css';
 
-const ErrorComponent = props => (
+interface IProps {
+  message: string;
+}
+
+const ErrorComponent = (props: IProps) => (
   <div className={styles.wrap}>
     <div className={styles.text}>
       <p>{props.message}</p>

@@ -19,7 +19,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default function developerConfigureStore(initialState) {
+export default function developerConfigureStore(initialState: any) {
   const composeEnhancers = composeWithDevTools({});
   const enhancer = composeEnhancers(applyMiddleware(thunk, logger));
   const store = createStore(persistedReducer, initialState, enhancer);

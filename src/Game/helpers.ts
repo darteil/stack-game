@@ -1,6 +1,7 @@
 import TWEEN from '@tweenjs/tween.js';
+import { Mesh } from 'three';
 
-const checkIntersection = (box, activeBox, widthPrevBox, currentAxis) => {
+const checkIntersection = (box: Mesh, activeBox: Mesh, widthPrevBox: number, currentAxis: string) => {
   let intersection = false;
   let fullIntersection = false;
 
@@ -45,7 +46,7 @@ const checkIntersection = (box, activeBox, widthPrevBox, currentAxis) => {
   return { intersection, fullIntersection };
 };
 
-const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {
+const getWidthNewBox = (centerOfBox: number, centerOfPrevBox: number, widthPrevBox: number) => {
   if (centerOfBox > centerOfPrevBox) {
     const x1 = centerOfPrevBox + widthPrevBox / 2;
     const x2 = centerOfBox - widthPrevBox / 2;
@@ -63,9 +64,9 @@ const getWidthNewBox = (centerOfBox, centerOfPrevBox, widthPrevBox) => {
   return 100;
 };
 
-const getPositionForNewBox = (centerOfBox, centerOfPrevBox) => (centerOfBox + centerOfPrevBox) / 2;
+const getPositionForNewBox = (centerOfBox: number, centerOfPrevBox: number) => (centerOfBox + centerOfPrevBox) / 2;
 
-const transparentMeshAnimate = mesh => {
+const transparentMeshAnimate = (mesh: Mesh) => {
   const emerging = new TWEEN.Tween(mesh.material)
     .to(
       {

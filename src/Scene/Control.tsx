@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.css';
 
-const Control = props => (
+interface IProps {
+  restartGame: () => void;
+}
+
+const Control = (props: IProps) => (
   <div className={styles.control}>
     <button className={styles['restart-button']} onClick={props.restartGame}>
       Restart

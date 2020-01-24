@@ -1,6 +1,6 @@
-import { FlatShading, Mesh, MeshPhongMaterial, TextGeometry } from 'three';
+import { Mesh, MeshPhongMaterial, TextGeometry, Font } from 'three';
 
-const buildTextObject = (text, font) => {
+const buildTextObject = (text: string, font: Font) => {
   const options = {
     size: 20,
     height: 5,
@@ -12,7 +12,7 @@ const buildTextObject = (text, font) => {
 
   const textMaterial = new MeshPhongMaterial({
     color: '#4b5320',
-    flatShading: FlatShading
+    flatShading: true
   });
   const textGeom = new TextGeometry(text, options);
   textGeom.computeBoundingBox();

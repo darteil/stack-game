@@ -1,21 +1,17 @@
-import { ADD_RECORD, SET_TOP_RECORD } from './Actions';
+import { IGameDataState, RecordActionTypes, ADD_RECORD, SET_TOP_RECORD } from './types';
 
-const initialState = {
+const initialState: IGameDataState = {
   versionData: 1,
   listOfRecords: [],
   topRecord: 0,
   topHeightStack: 0
 };
 
-export default function GameData(state = initialState, action) {
+export default function GameData(state = initialState, action: RecordActionTypes): IGameDataState {
   switch (action.type) {
     case ADD_RECORD: {
       const newListOfRecords = [...state.listOfRecords];
-      const record = { ...action.record };
-
-      record.id = newListOfRecords.length + 1;
-
-      newListOfRecords.push(record);
+      newListOfRecords.push(action.record);
 
       return { ...state, listOfRecords: newListOfRecords };
     }
