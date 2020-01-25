@@ -138,8 +138,8 @@ export default class Game {
     window.addEventListener('resize', this.onWindowResize, false);
   }
 
-  // TODO: fix 'any'
   initPasses() {
+    // TODO: fix 'any'
     const glowsPass: any = new ShaderPass(GlowsPass);
 
     glowsPass.color = '#ffcfe0';
@@ -184,13 +184,18 @@ export default class Game {
     this.xAxis.activeBox = secondBox;
     this.xAxis.prevBox = firstBox;
 
-    this.camera.position.y = this.xAxis.prevBox.position.y + 125;
+    const cameraPositionYOffset = 125;
+
+    this.camera.position.y = this.xAxis.prevBox.position.y + cameraPositionYOffset;
     this.vectorForCamera.x = this.xAxis.prevBox.position.x;
     this.vectorForCamera.y = this.xAxis.prevBox.position.y;
     this.vectorForCamera.z = this.xAxis.prevBox.position.z;
   }
 
   createHeightStackText() {
+    const textPositionX = -120;
+    const textPositionZ = 100;
+
     if (this.textHeightStack) {
       this.scene.remove(this.textHeightStack);
       this.textHeightStack = null;
@@ -199,7 +204,7 @@ export default class Game {
     this.textHeightStack = buildTextObject(this.heightStack.toString(), this.fontFor3DText);
 
     this.textHeightStack.rotation.y = Math.PI / 2;
-    this.textHeightStack.position.set(-120, this.textHeightStackPositionY, 100);
+    this.textHeightStack.position.set(textPositionX, this.textHeightStackPositionY, textPositionZ);
 
     this.scene.add(this.textHeightStack);
   }
@@ -225,8 +230,6 @@ export default class Game {
 
     directionalLight.shadow.camera.far = 5000;
     directionalLight.shadow.bias = -0.0001;
-    // directionalLight.penumbra = 1;
-    // directionalLight.decay = 5;
 
     this.scene.add(hemisphereLight);
     this.scene.add(directionalLight);
@@ -235,9 +238,12 @@ export default class Game {
   }
 
   animationOnXAxis(boxObject: Mesh) {
-    if (boxObject.position.x >= 180) {
+    const maximumRangeOfMotionUp = -80;
+    const maximumRangeOfMotionDown = 180;
+
+    if (boxObject.position.x >= maximumRangeOfMotionDown) {
       this.directionAnimation = 'up';
-    } else if (boxObject.position.x < -80) {
+    } else if (boxObject.position.x < maximumRangeOfMotionUp) {
       this.directionAnimation = 'down';
     }
 
@@ -249,9 +255,12 @@ export default class Game {
   }
 
   animationOnZAxis(boxObject: Mesh) {
-    if (boxObject.position.z >= 180) {
+    const maximumRangeOfMotionUp = -80;
+    const maximumRangeOfMotionDown = 180;
+
+    if (boxObject.position.z >= maximumRangeOfMotionDown) {
       this.directionAnimation = 'up';
-    } else if (boxObject.position.z < -80) {
+    } else if (boxObject.position.z < maximumRangeOfMotionUp) {
       this.directionAnimation = 'down';
     }
 
@@ -441,12 +450,13 @@ export default class Game {
 
     // Scale box height
     (this.scaleBox.geometry as Geometry).vertices.forEach((vertex, index) => {
+      // modify the coordinates of the top vertices
       if (index === 0 || index === 1 || index === 4 || index === 5) {
         if (!this.scaleBox) return;
-        const tweenVertex = new TWEEN.Tween((this.scaleBox.geometry as Geometry).vertices[index])
+        const tweenVertex = new TWEEN.Tween(vertex)
           .to(
             {
-              y: (this.scaleBox.geometry as Geometry).vertices[index].y + 10
+              y: vertex.y + 10
             },
             500
           )
