@@ -1,4 +1,4 @@
-import { SHOW_MESSAGE, HIDE_MESSAGE } from '../Actions';
+import { SHOW_MESSAGE, HIDE_MESSAGE } from '../types';
 import reducer from '../Reducer';
 
 const initialState = {
@@ -7,10 +7,6 @@ const initialState = {
 };
 
 describe('message reducer', () => {
-  it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(initialState);
-  });
-
   it('should handle SHOW_MESSAGE', () => {
     expect(
       reducer(initialState, {

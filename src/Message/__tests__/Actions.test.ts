@@ -1,19 +1,20 @@
-import * as actions from '../Actions';
+import { SHOW_MESSAGE, HIDE_MESSAGE } from '../types';
+import { showMessage, hideMessage } from '../Actions';
 
 describe('Message actions', () => {
   it('should create an action SHOW_MESSAGE', () => {
     const text = 'Text example';
     const expectedAction = {
-      type: actions.SHOW_MESSAGE,
+      type: SHOW_MESSAGE,
       text
     };
-    expect(actions.showMessage(text)).toEqual(expectedAction);
+    expect(showMessage(text)).toEqual(expectedAction);
   });
 
   it('should create an action HIDE_MESSAGE', () => {
     const expectedAction = {
-      type: actions.HIDE_MESSAGE
+      type: HIDE_MESSAGE
     };
-    expect(actions.hideMessage()).toEqual(expectedAction);
+    expect(hideMessage()).toEqual(expectedAction);
   });
 });

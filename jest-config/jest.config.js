@@ -1,20 +1,21 @@
 module.exports = {
+  preset: 'ts-jest',
   bail: true,
   rootDir: '../',
-  setupFilesAfterEnv: ['<rootDir>/jest-config/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest-config/setupTests.ts'],
   transformIgnorePatterns: ['node_modules/(?!jest|react)'],
-  moduleFileExtensions: ['js', 'jsx', 'json'],
-  setupFiles: ['jest-canvas-mock'],
+  moduleFileExtensions: ['js', 'ts', 'tsx', 'jsx', 'json', 'node'],
   moduleDirectories: ['node_modules'],
   transform: {
-    '^.+\\.js?$': 'babel-jest',
-    '^.+\\.jsx?$': 'babel-jest'
+    '^.+\\.tsx?$': 'ts-jest'
   },
   globals: {
-    window: true
+    window: true,
+    'ts-jest': {
+      tsConfig: '<rootDir>/tsconfig.json'
+    }
   },
   moduleNameMapper: {
-    '^App(.*)$': '<rootDir>/src$1',
     '^.+\\.css$': 'jest-css-modules'
   }
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
-import MessageComponent from 'App/Message/MessageComponent';
+import MessageComponent from '../MessageComponent';
 
 describe('Message component', () => {
   it('should render correctly', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { shallowToJson } from 'enzyme-to-json';
-import Menu from 'App/MainPage/Menu';
+import Menu from '../Menu';
 
 describe('Menu', () => {
   it('should render correctly', () => {

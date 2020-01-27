@@ -1,4 +1,4 @@
-import { SET_TOP_RECORD, ADD_RECORD } from '../Actions';
+import { SET_TOP_RECORD, ADD_RECORD } from '../types';
 import reducer from '../Reducer';
 
 const initialState = {
@@ -8,20 +8,23 @@ const initialState = {
   topHeightStack: 0
 };
 
-describe('Scene reducer', () => {
-  it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(initialState);
-  });
+const record = {
+  id: '10',
+  time: 'January 14th 2020, 14:06:51',
+  count: 10,
+  heightStack: 20
+};
 
+describe('Scene reducer', () => {
   it('should handle ADD_RECORD', () => {
     expect(
       reducer(initialState, {
         type: ADD_RECORD,
-        record: {}
+        record
       })
     ).toEqual({
       ...initialState,
-      listOfRecords: [{ id: 1 }]
+      listOfRecords: [record]
     });
   });
 
