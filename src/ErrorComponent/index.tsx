@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './styles.css';
 
 interface IProps {
@@ -13,9 +12,5 @@ const ErrorComponent = (props: IProps) => (
     </div>
   </div>
 );
-
-ErrorComponent.propTypes = {
-  message: PropTypes.string.isRequired
-};
 
 export default ErrorComponent;
