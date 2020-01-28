@@ -1,5 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
@@ -13,9 +12,8 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default function developerConfigureStore(initialState: any) {
-  const enhancer = compose(applyMiddleware(thunk));
-  const store = createStore(persistedReducer, initialState as any, enhancer);
+export default function productionConfigureStore(initialState: any) {
+  const store = createStore(persistedReducer, initialState);
   const persistor = persistStore(store);
 
   return { store, persistor };

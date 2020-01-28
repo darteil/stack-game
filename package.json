@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --config config/webpack.dev.js --mode development",
-    "lint": "./node_modules/.bin/prettier --config ./.prettierrc.js ./src/**/*.jsx ./src/**/*.js --write",
+    "lint": "./node_modules/.bin/prettier --config ./.prettierrc.js ./src/**/*.tsx ./src/**/*.ts --write",
     "test": "jest --config ./jest-config/jest.config.js"
   },
   "author": "Romanov Yuri",
@@ -41,7 +41,6 @@
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.5",
     "redux-persist": "^5.10.0",
-    "redux-thunk": "^2.3.0",
     "three": "^0.112.1",
     "three-addons": "^1.2.0",
     "three-orbitcontrols-ts": "git+https://git@github.com/nicolaspanel/three-orbitcontrols-ts.git"
@@ -100,8 +99,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "./node_modules/.bin/eslint --fix",
+    "*.{ts,tsx}": [
+      "npm run lint",
       "git add"
     ]
   }
