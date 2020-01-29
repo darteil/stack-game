@@ -10,7 +10,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const base = require('./webpack.base');
 
 const distPath = path.resolve(__dirname, '../dist');
-const publicPathFolder = path.resolve(__dirname, '../public/');
+const publicPathFolder = path.resolve(__dirname, '../public');
 
 module.exports = (env, argv) => {
   let publicPath = '/stack';
@@ -26,20 +26,15 @@ module.exports = (env, argv) => {
       minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})]
     },
     plugins: [
+      new ProgressBarPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[name].[hash].css'
       }),
-      new ProgressBarPlugin(),
       new CleanWebpackPlugin([distPath], {
         root: path.resolve(__dirname, '../')
       }),
       new HtmlWebpackTagsPlugin({ tags: ['fonts/roboto.css'], append: true }),
-      new CopyWebpackPlugin([
-        {
-          from: publicPathFolder,
-          ignore: ['vendor/**/*']
-        }
-      ])
+      new CopyWebpackPlugin([{ from: publicPathFolder, ignore: ['vendor/**/*'] }])
     ]
   });
 };
