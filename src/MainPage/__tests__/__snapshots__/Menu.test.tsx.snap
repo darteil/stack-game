@@ -7,7 +7,6 @@ exports[`Menu should render correctly 1`] = `
   <ul>
     <NavLink
       activeClassName="active"
-      aria-current="page"
       exact={true}
       to="/"
     >
@@ -17,7 +16,6 @@ exports[`Menu should render correctly 1`] = `
     </NavLink>
     <NavLink
       activeClassName="active"
-      aria-current="page"
       to="/list-of-records"
     >
       <li>

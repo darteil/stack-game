@@ -4,8 +4,6 @@
 
 ![](http://darteil-projects.ru/static/images/stack-screen.png)
 
-Project requires [Node.js](https://nodejs.org/) v6+ to run.
-
 ### Installation and run project.
 
 Switch to dev branch.
@@ -18,7 +16,7 @@ $ npm run dev
 
 ### Other
 
-Check eslint errors.
+Check code formatting errors.
 
 ```sh
 $ npm run lint
