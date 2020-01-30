@@ -13,6 +13,15 @@ stages:
   - build
   - deploy
 
+testing:
+  stage: build
+  only:
+    - master
+  script:
+    - npm run i
+    - npm run lint
+    - npm test
+
 build:
   stage: build
   only:
