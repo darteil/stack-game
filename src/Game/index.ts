@@ -14,8 +14,7 @@ import {
   AmbientLight,
   PCFSoftShadowMap,
   Font,
-  Mesh,
-  Geometry
+  Mesh
 } from 'three';
 
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
@@ -29,7 +28,7 @@ import TWEEN from '@tweenjs/tween.js';
 import buildTextObject from './Objects/buildTextObject';
 import buildBox from './Objects/buildBox';
 import buildFloor from './Objects/buildFloor';
-import buildScaleBox from './Objects/buildScaleBox';
+import ScaleBox from './Objects/ScaleBox';
 import Helpers from './helpers';
 
 import GlowsPass from './Passes/Glows';
@@ -49,26 +48,26 @@ interface IZAxis {
 }
 
 export default class Game {
-  vectorForCamera!: Vector3;
-  stopGameStatus = true;
-  container: HTMLElement;
-  currentYPosition = 15;
-  requestAnimationId!: number | null;
-  directionAnimation = 'up'; // up or down
-  animationAxis = 'x'; // x or z
-  controls!: OrbitControls;
-  scene!: Scene;
-  camera!: PerspectiveCamera;
-  renderer!: WebGLRenderer;
-  scaleBox!: Mesh | null;
-  textHeightStack: Mesh | null;
-  textHeightStackPositionY = 20;
-  fontFor3DText!: Font;
-  composer!: EffectComposer;
-  count = 0;
-  heightStack = 0;
-  xAxis: IXAxis;
-  zAxis: IZAxis;
+  public stopGameStatus = true;
+  public controls!: OrbitControls;
+  public count = 0;
+  public heightStack = 0;
+  private vectorForCamera!: Vector3;
+  private container: HTMLElement;
+  private currentYPosition = 15;
+  private requestAnimationId!: number | null;
+  private directionAnimation = 'up'; // up or down
+  private animationAxis = 'x'; // x or z
+  private scene!: Scene;
+  private camera!: PerspectiveCamera;
+  private renderer!: WebGLRenderer;
+  private scaleBox!: ScaleBox | null;
+  private textHeightStack: Mesh | null;
+  private textHeightStackPositionY = 20;
+  private fontFor3DText!: Font;
+  private composer!: EffectComposer;
+  private xAxis: IXAxis;
+  private zAxis: IZAxis;
 
   constructor(container: HTMLElement) {
     this.xAxis = {
@@ -93,38 +92,36 @@ export default class Game {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
 
-    const camera = new PerspectiveCamera(70, width / height, 0.1, 2000);
-    const scene = new Scene();
-    scene.background = new Color(0x2b6dbd);
-    scene.fog = new Fog(0x2b6dbd, 2, 2200);
-    const renderer = new WebGLRenderer({ antialias: true });
-    const composer = new EffectComposer(renderer);
+    this.camera = new PerspectiveCamera(70, width / height, 0.1, 2000);
+    this.scene = new Scene();
+    this.scene.background = new Color(0x2b6dbd);
+    this.scene.fog = new Fog(0x2b6dbd, 2, 2200);
+    this.renderer = new WebGLRenderer({ antialias: true });
 
-    const renderPass = new RenderPass(scene, camera);
+    const renderPass = new RenderPass(this.scene, this.camera);
     renderPass.renderToScreen = true;
 
     this.vectorForCamera = new Vector3(0, 0, 0);
 
-    camera.position.x = 130;
-    camera.position.z = 130;
+    this.camera.position.x = 130;
+    this.camera.position.z = 130;
 
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = PCFSoftShadowMap;
-    composer.setSize(this.container.clientWidth, this.container.clientHeight);
-    composer.addPass(renderPass);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(width, height);
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
+
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.setSize(width, height);
+    this.composer.addPass(renderPass);
 
     const floor = buildFloor(5000, 5000);
-    scene.add(floor);
+    this.scene.add(floor);
 
-    this.container.appendChild(renderer.domElement);
-    this.scene = scene;
-    this.camera = camera;
-    this.renderer = renderer;
-    this.composer = composer;
+    this.container.appendChild(this.renderer.domElement);
 
     this.addBoxesForInit();
+
     const loader = new FontLoader();
     loader.load('./fonts/Android_101.json', res => {
       this.fontFor3DText = res;
@@ -134,12 +131,18 @@ export default class Game {
     this.createLights();
     this.initPasses();
 
-    scene.children.reverse();
+    this.scene.children.reverse();
     window.addEventListener('resize', this.onWindowResize, false);
   }
 
-  initPasses() {
-    // TODO: fix 'any'
+  private initPasses() {
+    /**
+     * ShaderPass type, no parameter: color
+     * Material in ShaderPass, no parameter: uniforms
+     *
+     * But they work, I don’t know why...
+     * Рad to leave a 'any' type
+     */
     const glowsPass: any = new ShaderPass(GlowsPass);
 
     glowsPass.color = '#ffcfe0';
@@ -168,7 +171,7 @@ export default class Game {
     this.scene.add(axesHelper);
   }
 
-  addBoxesForInit() {
+  private addBoxesForInit() {
     const firstBox = buildBox(50, 10, 50);
     firstBox.position.set(50, 5, 50);
     this.scene.add(firstBox);
@@ -177,9 +180,9 @@ export default class Game {
     secondBox.position.set(50, this.currentYPosition, 50);
     this.scene.add(secondBox);
 
-    this.scaleBox = buildScaleBox();
-    this.scaleBox.position.set(-120, 5, 50);
-    this.scene.add(this.scaleBox);
+    this.scaleBox = new ScaleBox();
+    this.scaleBox.mesh.position.set(-120, 5, 50);
+    this.scene.add(this.scaleBox.mesh);
 
     this.xAxis.activeBox = secondBox;
     this.xAxis.prevBox = firstBox;
@@ -192,7 +195,7 @@ export default class Game {
     this.vectorForCamera.z = this.xAxis.prevBox.position.z;
   }
 
-  createHeightStackText() {
+  private createHeightStackText() {
     const textPositionX = -120;
     const textPositionZ = 100;
 
@@ -209,7 +212,7 @@ export default class Game {
     this.scene.add(this.textHeightStack);
   }
 
-  createLights() {
+  private createLights() {
     const hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.3);
     hemisphereLight.color.setHSL(0.6, 1, 0.6);
     hemisphereLight.groundColor.setHSL(0.095, 1, 0.75);
@@ -237,7 +240,7 @@ export default class Game {
     this.scene.add(ambientLight);
   }
 
-  animationOnXAxis(boxObject: Mesh) {
+  private animationOnXAxis(boxObject: Mesh) {
     const maximumRangeOfMotionUp = -80;
     const maximumRangeOfMotionDown = 180;
 
@@ -254,7 +257,7 @@ export default class Game {
     }
   }
 
-  animationOnZAxis(boxObject: Mesh) {
+  private animationOnZAxis(boxObject: Mesh) {
     const maximumRangeOfMotionUp = -80;
     const maximumRangeOfMotionDown = 180;
 
@@ -271,7 +274,7 @@ export default class Game {
     }
   }
 
-  toggleAnimationAxis() {
+  private toggleAnimationAxis() {
     this.animationAxis = this.animationAxis === 'x' ? 'z' : 'x';
   }
 
@@ -336,7 +339,7 @@ export default class Game {
     this.render();
   }
 
-  createNewStack() {
+  private createNewStack() {
     if (this.animationAxis === 'x') {
       if (!this.xAxis.activeBox) return;
       const newBox = buildBox(
@@ -414,7 +417,7 @@ export default class Game {
     return this.heightStack;
   }
 
-  startTweenAnimations() {
+  private startTweenAnimations() {
     if (!this.xAxis.activeBox || !this.xAxis.prevBox || !this.zAxis.activeBox || !this.zAxis.prevBox || !this.scaleBox)
       return;
     // Camera position
@@ -448,27 +451,7 @@ export default class Game {
       )
       .easing(TWEEN.Easing.Quartic.InOut);
 
-    // Scale box height
-    (this.scaleBox.geometry as Geometry).vertices.forEach((vertex, index) => {
-      // modify the coordinates of the top vertices
-      if (index === 0 || index === 1 || index === 4 || index === 5) {
-        if (!this.scaleBox) return;
-        const tweenVertex = new TWEEN.Tween(vertex)
-          .to(
-            {
-              y: vertex.y + 10
-            },
-            500
-          )
-          .onUpdate(() => {
-            if (!this.scaleBox) return;
-            (this.scaleBox.geometry as Geometry).verticesNeedUpdate = true;
-          })
-          .easing(TWEEN.Easing.Quartic.InOut);
-
-        tweenVertex.start();
-      }
-    });
+    this.scaleBox.increaseHeight(10);
 
     tweenTextHeightStackPosition.start();
     tweenCameraPosition.start();
@@ -539,7 +522,7 @@ export default class Game {
     return true;
   }
 
-  onWindowResize() {
+  private onWindowResize() {
     this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
     this.camera.updateProjectionMatrix();
 
@@ -547,7 +530,7 @@ export default class Game {
     this.composer.setSize(this.container.clientWidth, this.container.clientHeight);
   }
 
-  render() {
+  private render() {
     this.composer.render();
     TWEEN.update();
     if (this.controls) {
