@@ -5,7 +5,8 @@ const initialState = {
   versionData: 1,
   listOfRecords: [],
   topRecord: 0,
-  topHeightStack: 0
+  topHeightStack: 0,
+  UI: true
 };
 
 const record = {
