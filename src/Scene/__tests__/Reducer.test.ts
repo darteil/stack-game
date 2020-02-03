@@ -1,4 +1,4 @@
-import { SET_TOP_RECORD, ADD_RECORD } from '../types';
+import { SET_TOP_RECORD, ADD_RECORD, TOGGLE_UI } from '../types';
 import reducer from '../Reducer';
 
 const initialState = {
@@ -40,6 +40,17 @@ describe('Scene reducer', () => {
       ...initialState,
       topRecord: 10,
       topHeightStack: 10
+    });
+  });
+
+  it('should handle TOGGLE_UI', () => {
+    expect(
+      reducer(initialState, {
+        type: TOGGLE_UI
+      })
+    ).toEqual({
+      ...initialState,
+      UI: false
     });
   });
 });
