@@ -1,31 +1,23 @@
-/* global document */
+/* global window */
 import React, { Component } from 'react';
 import moment from 'moment-timezone';
-import { Record } from '../ListOfRecords/types';
+import { ISceneProps } from './SceneContainer';
 import { v1 as uuid } from 'uuid';
 import Game from '../Game';
 import Control from './Control';
 import styles from './styles.css';
-
-interface IProps {
-  addRecord: (record: Record) => void;
-  setTopRecord: (count: number, height: number) => void;
-  showMessage: (text: string) => void;
-  topRecord: number;
-  listOfRecords: Record[];
-}
 
 interface IState {
   gameStatus: string;
   count: number;
 }
 
-export default class Scene extends Component<IProps, IState> {
+export default class Scene extends Component<ISceneProps, IState> {
   private timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   private container!: React.RefObject<HTMLDivElement>;
   private game: any;
 
-  constructor(props: IProps) {
+  constructor(props: ISceneProps) {
     super(props);
 
     this.state = {
@@ -36,6 +28,7 @@ export default class Scene extends Component<IProps, IState> {
     this.game = null;
     this.container = React.createRef();
     this.setNewStack = this.setNewStack.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -45,18 +38,36 @@ export default class Scene extends Component<IProps, IState> {
     // this.game.enableOrbitControls();
     // this.game.enableAxesHelper();
 
-    window.addEventListener('keydown', this.setNewStack);
+    window.addEventListener('keydown', this.onKeyDown);
     if (this.props.listOfRecords.length === 0) {
       this.props.showMessage('Press "w" to set block =)');
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.setNewStack);
+    window.removeEventListener('keydown', this.onKeyDown);
   }
 
-  setNewStack = (event: KeyboardEvent) => {
-    if (this.state.gameStatus === 'stopped' || event.which !== 87) {
+  onKeyDown(event: KeyboardEvent) {
+    const setNewStackKey = 87; // "w"
+    const toggleUiKey = 72; // "h"
+
+    switch (event.which) {
+      case setNewStackKey: {
+        this.setNewStack();
+        break;
+      }
+      case toggleUiKey: {
+        this.props.toggleUI();
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  setNewStack = () => {
+    if (this.state.gameStatus === 'stopped') {
       return;
     }
 
@@ -112,8 +123,12 @@ export default class Scene extends Component<IProps, IState> {
   render() {
     return (
       <div className={styles['scene-wrap']}>
-        <Control restartGame={this.restartGame} />
-        <div className={styles.count}>{this.state.count}</div>
+        {this.props.UI && (
+          <>
+            <Control restartGame={this.restartGame} />
+            <div className={styles.count}>{this.state.count}</div>
+          </>
+        )}
         <div className={styles.scene} ref={this.container} />
       </div>
     );

@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import GithubCorner from 'react-github-corner';
 import App from './MainPage/App';
 import { persistor, store, browserHistory } from './store';
 import './reset.css';
@@ -16,7 +15,6 @@ ReactDOM.render(
       <Router history={browserHistory}>
         <Fragment>
           <App />
-          <GithubCorner href="https://github.com/darteil/StackGame" />
         </Fragment>
       </Router>
     </PersistGate>

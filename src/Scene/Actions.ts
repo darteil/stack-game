@@ -1,5 +1,5 @@
 import { Record } from '../ListOfRecords/types';
-import { ADD_RECORD, SET_TOP_RECORD, IAddRecord, ISetTopRecord } from './types';
+import { ADD_RECORD, SET_TOP_RECORD, TOGGLE_UI, IToggleUI, IAddRecord, ISetTopRecord } from './types';
 
 export function addRecord(record: Record): IAddRecord {
   return {
@@ -13,5 +13,11 @@ export function setTopRecord(count: number, heightStack: number): ISetTopRecord 
     type: SET_TOP_RECORD,
     count,
     heightStack
+  };
+}
+
+export function toggleUI(): IToggleUI {
+  return {
+    type: TOGGLE_UI
   };
 }

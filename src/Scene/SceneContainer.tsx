@@ -1,25 +1,28 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { addRecord, setTopRecord } from './Actions';
+import { addRecord, setTopRecord, toggleUI } from './Actions';
 import { showMessage } from '../Message/Actions';
 import { Record } from '../ListOfRecords/types';
 import { AppState } from '../store';
 import Scene from './Scene';
 
-interface IProps {
-  topRecord: number;
-  listOfRecords: Record[];
+export interface ISceneProps {
   addRecord: (record: Record) => void;
   setTopRecord: (count: number, height: number) => void;
   showMessage: (text: string) => void;
+  toggleUI: () => void;
+  topRecord: number;
+  listOfRecords: Record[];
+  UI: boolean;
 }
 
-const SceneContainer = (props: IProps) => <Scene {...props} />;
+const SceneComponent = (props: ISceneProps) => <Scene {...props} />;
 
 const mapStateToProps = (state: AppState) => ({
   topRecord: state.GameData.topRecord,
-  listOfRecords: state.GameData.listOfRecords
+  listOfRecords: state.GameData.listOfRecords,
+  UI: state.GameData.UI
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -31,7 +34,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   showMessage: (text: string) => {
     dispatch(showMessage(text));
+  },
+  toggleUI: () => {
+    dispatch(toggleUI());
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SceneContainer);
+export const SceneContainer = connect(mapStateToProps, mapDispatchToProps)(SceneComponent);
