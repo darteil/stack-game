@@ -8,12 +8,13 @@
   right: 20px;
   width: 300px;
   min-height: 50px;
-  padding: 15px;
+  padding: 20px;
   background-color: #fff;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .message p {
+  margin: 5px;
   font-size: 20px;
 }
 

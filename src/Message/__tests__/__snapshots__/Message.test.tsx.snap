@@ -7,8 +7,12 @@ exports[`Message component should render correctly 1`] = `
   <em
     onClick={[MockFunction]}
   />
-  <p>
-    text example
-  </p>
+  <div>
+    <p
+      key="0"
+    >
+      text example
+    </p>
+  </div>
 </div>
 `;

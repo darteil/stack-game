@@ -7,7 +7,7 @@ import { SceneContainer } from '../Scene/SceneContainer';
 import ListOfRecords from '../ListOfRecords';
 import Menu from './Menu';
 import ErrorComponent from '../ErrorComponent';
-import Message from '../Message';
+import { MessageContainer } from '../Message';
 import ErrorBoundary from '../ErrorBoundary';
 import styles from './styles.css';
 
@@ -31,7 +31,7 @@ const App = (props: IProps) => (
               <Route path="*" component={NotFound} />
             </Switch>
           </ErrorBoundary>
-          {props.showMessageStatus && <Message />}
+          {props.showMessageStatus && <MessageContainer />}
         </Fragment>
       </Router>
     </div>

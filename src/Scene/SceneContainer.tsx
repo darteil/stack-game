@@ -10,7 +10,7 @@ import Scene from './Scene';
 export interface ISceneProps {
   addRecord: (record: Record) => void;
   setTopRecord: (count: number, height: number) => void;
-  showMessage: (text: string) => void;
+  showMessage: (...text: string[]) => void;
   toggleUI: () => void;
   topRecord: number;
   listOfRecords: Record[];
@@ -32,8 +32,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setTopRecord: (count: number, height: number) => {
     dispatch(setTopRecord(count, height));
   },
-  showMessage: (text: string) => {
-    dispatch(showMessage(text));
+  showMessage: (...messages: string[]) => {
+    dispatch(showMessage(...messages));
   },
   toggleUI: () => {
     dispatch(toggleUI());

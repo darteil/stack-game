@@ -1,12 +1,8 @@
 import React, { useEffect } from 'react';
+import { IMessageProps } from '.';
 import styles from './styles.css';
 
-interface IProps {
-  text: string;
-  hideMessage: () => void;
-}
-
-const MessageComponent = (props: IProps) => {
+const Message = (props: IMessageProps) => {
   let timeoutVariable: NodeJS.Timeout;
 
   useEffect(() => {
@@ -20,9 +16,13 @@ const MessageComponent = (props: IProps) => {
   return (
     <div className={styles.message}>
       <em onClick={props.hideMessage} />
-      <p>{props.text}</p>
+      <div>
+        {props.messages.map((text: string, index: number) => (
+          <p key={index}>{text}</p>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default MessageComponent;
+export default Message;

@@ -3,17 +3,17 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { hideMessage } from './Actions';
 import { AppState } from '../store';
-import MessageComponent from './MessageComponent';
+import Message from './Message';
 
-interface IProps {
-  text: string;
+export interface IMessageProps {
+  messages: string[];
   hideMessage: () => void;
 }
 
-const Message = (props: IProps) => <MessageComponent {...props} />;
+const MessageComponent = (props: IMessageProps) => <Message {...props} />;
 
 const mapStateToProps = (state: AppState) => ({
-  text: state.Message.text
+  messages: state.Message.messages
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -22,4 +22,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Message);
+export const MessageContainer = connect(mapStateToProps, mapDispatchToProps)(MessageComponent);

@@ -2,7 +2,7 @@ import { SHOW_MESSAGE, HIDE_MESSAGE } from '../types';
 import reducer from '../Reducer';
 
 const initialState = {
-  text: '',
+  messages: [],
   show: false
 };
 
@@ -11,17 +11,17 @@ describe('message reducer', () => {
     expect(
       reducer(initialState, {
         type: SHOW_MESSAGE,
-        text: 'Text example'
+        messages: ['Text example']
       })
     ).toEqual({
-      text: 'Text example',
+      messages: ['Text example'],
       show: true
     });
   });
 
   it('should handle HIDE_MESSAGE', () => {
     const state = {
-      text: 'Text example',
+      messages: ['Text example'],
       show: true
     };
 
@@ -30,7 +30,7 @@ describe('message reducer', () => {
         type: HIDE_MESSAGE
       })
     ).toEqual({
-      text: '',
+      messages: [],
       show: false
     });
   });

@@ -40,7 +40,8 @@ export default class Scene extends Component<ISceneProps, IState> {
 
     window.addEventListener('keydown', this.onKeyDown);
     if (this.props.listOfRecords.length === 0) {
-      this.props.showMessage('Press "w" to set block =)');
+      this.props.showMessage('Press "w" to set block =)', 'Press "h" to show/hide interface');
+      // this.props.showMessage('Press "h" to show/hide interface');
     }
   }
 
