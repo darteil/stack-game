@@ -13,5 +13,15 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     'prettier/prettier': 'error'
   },
-  plugins: ['prettier']
+  plugins: ['prettier'],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true
+    }
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  }
 };
