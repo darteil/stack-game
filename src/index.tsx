@@ -1,5 +1,5 @@
 /* global document */
-import React, { Fragment } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
@@ -13,9 +13,7 @@ ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router history={browserHistory}>
-        <Fragment>
-          <App />
-        </Fragment>
+        <App />
       </Router>
     </PersistGate>
   </Provider>,
