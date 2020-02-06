@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { addRecord, setTopRecord, toggleUI } from './Actions';
 import { showMessage } from '../Message/Actions';
-import { Record } from '../ListOfRecords/types';
+import { Record } from './types';
 import { AppState } from '../store';
 import Scene from './Scene';
 

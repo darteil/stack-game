@@ -1,8 +1,13 @@
-import { Record } from '../ListOfRecords/types';
-
 export const ADD_RECORD = 'ADD_RECORD';
 export const SET_TOP_RECORD = 'SET_TOP_RECORD';
 export const TOGGLE_UI = 'TOGGLE_UI';
+
+export type Record = {
+  id: string;
+  time: string;
+  count: number;
+  heightStack: number;
+};
 
 export interface IGameDataState {
   versionData: number;
