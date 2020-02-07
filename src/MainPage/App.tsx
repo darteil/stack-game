@@ -20,7 +20,7 @@ const App = () => {
   return (
     <>
       <div className={styles.app}>
-        <Router basename="/">
+        <Router basename="/stack">
           <Fragment>
             {showUI && <Menu />}
             <ErrorBoundary>
