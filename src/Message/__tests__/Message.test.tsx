@@ -30,5 +30,6 @@ describe('Message component', () => {
 
     expect(wrapper.find('.message > div').text()).toEqual('FirstSecond');
     expect(wrapper.find('.message > div').children()).toHaveLength(2);
+    expect(wrapper.find('.message > div > p:first-child').text()).toEqual('First');
   });
 });
