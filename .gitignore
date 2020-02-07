@@ -113,3 +113,4 @@ fabric.properties
 /dist
 .cache-loader/
 /public/vendor
+/.vscode/
