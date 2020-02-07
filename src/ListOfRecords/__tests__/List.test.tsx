@@ -1,7 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { shallowToJson } from 'enzyme-to-json';
-import List from '../List';
+import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+import reducer from '../../Scene/Reducer';
+import List from '../';
 
 describe('ListOfRecords component', () => {
   it('should render correctly', () => {
@@ -16,23 +18,33 @@ describe('ListOfRecords component', () => {
         id: '2',
         time: 'September 29th 2018, 16:11:32',
         count: 16,
-        heightStack: 16
+        heightStack: 17
       }
     ];
     const initialState = {
       GameData: {
+        versionData: 1,
         listOfRecords: mockListOfRecords,
         topRecord: 16,
-        topHeightStack: 16
+        topHeightStack: 17,
+        UI: false
       }
     };
-    const output = shallow(
-      <List
-        listOfRecords={initialState.GameData.listOfRecords}
-        topHeight={initialState.GameData.topHeightStack}
-        topRecord={initialState.GameData.topRecord}
-      />
+
+    const mockStore = createStore(combineReducers({ GameData: reducer }), initialState);
+
+    const getWrapper = () =>
+      mount(
+        <Provider store={mockStore}>
+          <List />
+        </Provider>
+      );
+
+    const wrapper = getWrapper();
+
+    expect(wrapper.find('.result-stats').text()).toEqual('Count: 16 Height stack: 17');
+    expect(wrapper.find('.list li:first-child').text()).toEqual(
+      'September 29th 2018, 16:11:32count: 16height stack: 17'
     );
-    expect(shallowToJson(output)).toMatchSnapshot();
   });
 });
