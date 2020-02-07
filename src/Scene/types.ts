@@ -1,13 +1,20 @@
-import { Record } from '../ListOfRecords/types';
-
 export const ADD_RECORD = 'ADD_RECORD';
 export const SET_TOP_RECORD = 'SET_TOP_RECORD';
+export const TOGGLE_UI = 'TOGGLE_UI';
+
+export type Record = {
+  id: string;
+  time: string;
+  count: number;
+  heightStack: number;
+};
 
 export interface IGameDataState {
   versionData: number;
   listOfRecords: Record[];
   topRecord: number;
   topHeightStack: number;
+  UI: boolean;
 }
 
 export interface IAddRecord {
@@ -21,4 +28,8 @@ export interface ISetTopRecord {
   heightStack: number;
 }
 
-export type RecordActionTypes = IAddRecord | ISetTopRecord;
+export interface IToggleUI {
+  type: typeof TOGGLE_UI;
+}
+
+export type RecordActionTypes = IAddRecord | ISetTopRecord | IToggleUI;

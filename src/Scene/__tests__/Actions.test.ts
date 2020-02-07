@@ -1,5 +1,5 @@
-import { ADD_RECORD, SET_TOP_RECORD } from '../types';
-import { addRecord, setTopRecord } from '../Actions';
+import { ADD_RECORD, SET_TOP_RECORD, TOGGLE_UI } from '../types';
+import { addRecord, setTopRecord, toggleUI } from '../Actions';
 
 describe('Scene actions', () => {
   it('should create an action ADD_RECORD', () => {
@@ -24,5 +24,12 @@ describe('Scene actions', () => {
       heightStack: 11
     };
     expect(setTopRecord(10, 11)).toEqual(expectedAction);
+  });
+
+  it('should create an action TOGGLE_UI', () => {
+    const expectedAction = {
+      type: TOGGLE_UI
+    };
+    expect(toggleUI()).toEqual(expectedAction);
   });
 });

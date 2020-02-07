@@ -2,13 +2,13 @@ export const SHOW_MESSAGE = 'SHOW_MESSAGE';
 export const HIDE_MESSAGE = 'HIDE_MESSAGE';
 
 export interface IMessageState {
-  text: string;
+  messages: string[];
   show: boolean;
 }
 
 export interface IShowMessage {
   type: typeof SHOW_MESSAGE;
-  text: string;
+  messages: string[];
 }
 
 export interface IHideMessage {

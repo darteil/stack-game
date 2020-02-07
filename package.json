@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prod": "./node_modules/.bin/webpack --config config/webpack.prod.js --mode production",
-    "lint": "./node_modules/.bin/prettier --config ./.prettierrc.js ./src/**/*.tsx ./src/**/*.ts ./src/*.tsx ./src/*.ts --write",
+    "lint": "./node_modules/.bin/prettier --config ./.prettierrc.js ./src/**/*.{tsx,ts} ./src/*.{tsx,ts} --write",
     "test": "jest --config ./jest-config/jest.config.js"
   },
   "author": "Romanov Yuri",
@@ -34,7 +34,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-github-corner": "^2.3.0",
-    "react-redux": "^5.1.2",
+    "react-redux": "^7.1.3",
     "react-router-dom": "^5.1.2",
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.5",

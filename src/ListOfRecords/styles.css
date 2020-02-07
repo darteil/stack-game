@@ -1,16 +1,14 @@
 .wrap {
   width: 100%;
   min-height: 100%;
-  background-color: #0e0f1a;
+  background-color: #e46346;
 }
 
 .container {
   margin-top: 30px;
   float: left;
-  height: 500px;
-  margin-bottom: 25px;
-  margin-left: 22px;
-  width: 600px;
+  height: 585px;
+  width: 587px;
   overflow-y: auto;
 }
 
@@ -21,12 +19,14 @@
 
 .container::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #161823;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #434343;
 }
 
 .container::-webkit-scrollbar-thumb {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: darkgreen;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #2980b9;
 }
 
 .flex-block {
@@ -43,14 +43,12 @@
 
 .list li {
   display: flex;
-  background-color: #191a25;
-  border-radius: 3px;
+  background-color: #434343;
   justify-content: space-between;
   align-items: center;
   font-weight: normal;
   font-size: 1em;
   height: 30px;
-  margin-bottom: 2px;
   padding: 2% 5% 2% 2%;
   color: #fff;
   -webkit-transition: 0.2s linear;
@@ -66,7 +64,6 @@
 
 .list li span {
   display: inline-block;
-  background: #fff;
   background: rgba(255, 255, 255, 0.2);
   padding: 3px 7px;
   color: #fff;
@@ -77,7 +74,7 @@
 
 .result {
   padding: 15px;
-  background-color: #161823;
+  background-color: #434343;
   color: #ffffff;
   font-size: 30px;
   text-align: center;
@@ -92,5 +89,5 @@
 }
 
 .result-stats span {
-  color: darkgreen;
+  color: crimson;
 }

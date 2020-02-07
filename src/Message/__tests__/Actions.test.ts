@@ -3,12 +3,15 @@ import { showMessage, hideMessage } from '../Actions';
 
 describe('Message actions', () => {
   it('should create an action SHOW_MESSAGE', () => {
-    const text = 'Text example';
+    const text1 = 'Text example';
+    const text2 = 'Text example 2';
+
     const expectedAction = {
       type: SHOW_MESSAGE,
-      text
+      messages: ['Text example', 'Text example 2']
     };
-    expect(showMessage(text)).toEqual(expectedAction);
+
+    expect(showMessage(text1, text2)).toEqual(expectedAction);
   });
 
   it('should create an action HIDE_MESSAGE', () => {

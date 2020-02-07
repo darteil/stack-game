@@ -1,25 +1,36 @@
-import React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { hideMessage } from './Actions';
 import { AppState } from '../store';
-import MessageComponent from './MessageComponent';
+import styles from './styles.css';
 
-interface IProps {
-  text: string;
-  hideMessage: () => void;
-}
+const Message = () => {
+  let timeoutVariable: NodeJS.Timeout;
+  const messages = useSelector((state: AppState) => state.Message.messages);
+  const dispatch = useDispatch();
 
-const Message = (props: IProps) => <MessageComponent {...props} />;
-
-const mapStateToProps = (state: AppState) => ({
-  text: state.Message.text
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  hideMessage: () => {
+  const hideMessageEvent = () => {
     dispatch(hideMessage());
-  }
-});
+  };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Message);
+  useEffect(() => {
+    timeoutVariable = setTimeout(() => {
+      hideMessageEvent();
+    }, 10000);
+
+    return () => clearTimeout(timeoutVariable);
+  }, []);
+
+  return (
+    <div className={styles.message}>
+      <em onClick={hideMessageEvent} />
+      <div>
+        {messages.map((text: string, index: number) => (
+          <p key={index}>{text}</p>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Message;
