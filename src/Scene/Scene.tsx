@@ -1,7 +1,6 @@
 /* global window */
 import React, { Component } from 'react';
 import dayjs from 'dayjs';
-// import moment from 'moment-timezone';
 import { ISceneProps } from './SceneContainer';
 import { v1 as uuid } from 'uuid';
 import Game from '../Game';

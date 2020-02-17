@@ -24,9 +24,8 @@ $ npm run lint
 
 ### Using libraries
 
-[moment](https://github.com/moment/moment),
-[moment-timezone](https://github.com/moment/moment-timezone/),
 [Tween.js](https://github.com/tweenjs/tween.js/)
+[ThreeJs](https://github.com/mrdoob/three.js/)
 
 ### License
 
