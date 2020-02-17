@@ -1,6 +1,7 @@
 /* global window */
 import React, { Component } from 'react';
-import moment from 'moment-timezone';
+import dayjs from 'dayjs';
+// import moment from 'moment-timezone';
 import { ISceneProps } from './SceneContainer';
 import { v1 as uuid } from 'uuid';
 import Game from '../Game';
@@ -13,7 +14,6 @@ interface IState {
 }
 
 export default class Scene extends Component<ISceneProps, IState> {
-  private timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   private container!: React.RefObject<HTMLDivElement>;
   private game: any;
 
@@ -41,7 +41,6 @@ export default class Scene extends Component<ISceneProps, IState> {
     window.addEventListener('keydown', this.onKeyDown);
     if (this.props.listOfRecords.length === 0) {
       this.props.showMessage('Press "w" to set block =)', 'Press "h" to show/hide interface');
-      // this.props.showMessage('Press "h" to show/hide interface');
     }
   }
 
@@ -89,9 +88,7 @@ export default class Scene extends Component<ISceneProps, IState> {
 
       this.props.addRecord({
         id: uuid(),
-        time: moment()
-          .tz(this.timeZone)
-          .format('MMMM Do YYYY, HH:mm:ss'),
+        time: dayjs().format('MMMM D YYYY, HH:mm:ss'),
         count: this.state.count,
         heightStack: this.game.getStackHeight()
       });
