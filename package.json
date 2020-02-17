@@ -16,7 +16,6 @@
   "license": "MIT",
   "dependencies": {
     "@tweenjs/tween.js": "^17.4.0",
-    "@types/moment-timezone": "^0.5.12",
     "@types/react": "^16.8.6",
     "@types/react-dom": "^16.8.5",
     "@types/react-redux": "^7.1.6",
