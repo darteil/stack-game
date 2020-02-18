@@ -23,6 +23,7 @@
     "@types/react-router-redux": "^5.0.18",
     "@types/redux-logger": "^3.0.7",
     "@types/redux-persist": "^4.3.1",
+    "@types/stats": "^0.16.30",
     "@types/three": "^0.103.2",
     "@types/tween.js": "^17.2.0",
     "@types/uuid": "^3.4.6",
@@ -37,11 +38,13 @@
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.5",
     "redux-persist": "^5.10.0",
+    "stats.js": "^0.17.0",
     "three": "^0.112.1",
     "three-addons": "^1.2.0",
     "three-orbitcontrols-ts": "git+https://git@github.com/nicolaspanel/three-orbitcontrols-ts.git"
   },
   "devDependencies": {
+    "@types/dat.gui": "^0.7.5",
     "@types/enzyme": "^3.10.4",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^23.3.14",

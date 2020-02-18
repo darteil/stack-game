@@ -25,6 +25,8 @@ import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 
 import { OrbitControls } from 'three-orbitcontrols-ts';
 import TWEEN from '@tweenjs/tween.js';
+import * as dat from 'dat.gui';
+import Stats from 'stats.js';
 import buildTextObject from './Objects/buildTextObject';
 import buildBox from './Objects/buildBox';
 import buildFloor from './Objects/buildFloor';
@@ -33,7 +35,7 @@ import Helpers from './helpers';
 
 import GlowsPass from './Passes/Glows';
 
-const SPEED = 3;
+const OPTIONS = { speed: 3 };
 
 interface IXAxis {
   prevBox: Mesh | null;
@@ -49,7 +51,6 @@ interface IZAxis {
 
 export default class Game {
   public stopGameStatus = true;
-  public controls!: OrbitControls;
   public count = 0;
   public heightStack = 0;
   private vectorForCamera!: Vector3;
@@ -68,6 +69,13 @@ export default class Game {
   private composer!: EffectComposer;
   private xAxis: IXAxis;
   private zAxis: IZAxis;
+
+  // develop
+  public enableDeveloperTools = false;
+  private stats!: Stats | null;
+  private showStats = false;
+  private controls!: OrbitControls | null;
+  private showControls = false;
 
   constructor(container: HTMLElement) {
     this.xAxis = {
@@ -133,10 +141,57 @@ export default class Game {
 
     this.scene.children.reverse();
     window.addEventListener('resize', this.onWindowResize, false);
+
+    if (this.enableDeveloperTools) {
+      this.setDeveloperTools();
+    }
+  }
+
+  setDeveloperTools() {
+    this.enableDatGui();
+    this.enableStats();
+    this.enableAxesHelper();
+    this.enableOrbitControls();
+  }
+
+  /*disableDeveloperTools() {
+    this.datGui.destroy();
+
+    this.showStats = false;
+    this.stats = null;
+
+    this.showControls = false;
+    this.controls = null;
+  }*/
+
+  enableDatGui() {
+    const datGui = new dat.GUI({ autoPlace: false });
+
+    datGui.domElement.id = 'gui';
+    datGui.add(OPTIONS, 'speed', 1, 10, 1);
+    this.container.appendChild(datGui.domElement);
+  }
+
+  enableStats() {
+    this.showStats = true;
+    this.stats = new Stats();
+    this.stats.showPanel(0);
+    this.container.appendChild(this.stats.dom);
+  }
+
+  enableOrbitControls() {
+    this.showControls = true;
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+  }
+
+  enableAxesHelper() {
+    const axesHelper = new AxesHelper(500);
+    this.scene.add(axesHelper);
   }
 
   private initPasses() {
     /**
+     * Errors:
      * ShaderPass type, no parameter: color
      * Material in ShaderPass, no parameter: uniforms
      *
@@ -160,15 +215,6 @@ export default class Game {
 
     this.composer.addPass(fxaaPass);
     this.composer.addPass(glowsPass);
-  }
-
-  enableOrbitControls() {
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-  }
-
-  enableAxesHelper() {
-    const axesHelper = new AxesHelper(500);
-    this.scene.add(axesHelper);
   }
 
   private addBoxesForInit() {
@@ -251,9 +297,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x + SPEED, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x + OPTIONS.speed, boxObject.position.y, boxObject.position.z);
     } else {
-      boxObject.position.set(boxObject.position.x - SPEED, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x - OPTIONS.speed, boxObject.position.y, boxObject.position.z);
     }
   }
 
@@ -268,9 +314,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + SPEED);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + OPTIONS.speed);
     } else {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - SPEED);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - OPTIONS.speed);
     }
   }
 
@@ -454,8 +500,10 @@ export default class Game {
     this.scaleBox.increaseHeight(10);
 
     tweenTextHeightStackPosition.start();
-    tweenCameraPosition.start();
-    vectorForCamera.start();
+    if (!this.enableDeveloperTools) {
+      tweenCameraPosition.start();
+      vectorForCamera.start();
+    }
   }
 
   setNewStack() {
@@ -533,7 +581,12 @@ export default class Game {
   private render() {
     this.composer.render();
     TWEEN.update();
-    if (this.controls) {
+
+    if (this.showStats && this.stats) {
+      this.stats.update();
+    }
+
+    if (this.showControls && this.controls) {
       this.controls.update();
     } else {
       this.camera.lookAt(this.vectorForCamera);
