@@ -22,7 +22,7 @@ body {
 
 :global(#gui) {
   position: absolute;
-  right: 20px;
-  bottom: 0;
+  right: 0;
+  top: 0;
   z-index: 2;
 }
