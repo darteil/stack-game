@@ -32,7 +32,7 @@ export default class Scene extends Component<ISceneProps, IState> {
 
   componentDidMount() {
     this.game = new Game(this.container.current as HTMLElement);
-    this.game.enableDeveloperTools = true;
+    // this.game.enableDeveloperTools = true;
     this.game.init();
     this.startGame();
 
