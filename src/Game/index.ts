@@ -25,15 +25,16 @@ import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 
 import { OrbitControls } from 'three-orbitcontrols-ts';
 import TWEEN from '@tweenjs/tween.js';
+import * as dat from 'dat.gui';
+import Stats from 'stats.js';
 import buildTextObject from './Objects/buildTextObject';
 import buildBox from './Objects/buildBox';
 import buildFloor from './Objects/buildFloor';
 import ScaleBox from './Objects/ScaleBox';
 import Helpers from './helpers';
+import GAME_SETTINGS from './settings';
 
 import GlowsPass from './Passes/Glows';
-
-const SPEED = 3;
 
 interface IXAxis {
   prevBox: Mesh | null;
@@ -49,7 +50,6 @@ interface IZAxis {
 
 export default class Game {
   public stopGameStatus = true;
-  public controls!: OrbitControls;
   public count = 0;
   public heightStack = 0;
   private vectorForCamera!: Vector3;
@@ -68,6 +68,17 @@ export default class Game {
   private composer!: EffectComposer;
   private xAxis: IXAxis;
   private zAxis: IZAxis;
+
+  // lights
+  private directionalLight!: DirectionalLight;
+  private hemisphereLight!: HemisphereLight;
+
+  // develop
+  public enableDeveloperTools = false;
+  private stats!: Stats | null;
+  private showStats = false;
+  private controls!: OrbitControls | null;
+  private showControls = false;
 
   constructor(container: HTMLElement) {
     this.xAxis = {
@@ -133,10 +144,15 @@ export default class Game {
 
     this.scene.children.reverse();
     window.addEventListener('resize', this.onWindowResize, false);
+
+    if (this.enableDeveloperTools) {
+      this.setDeveloperTools();
+    }
   }
 
   private initPasses() {
     /**
+     * Errors:
      * ShaderPass type, no parameter: color
      * Material in ShaderPass, no parameter: uniforms
      *
@@ -160,15 +176,6 @@ export default class Game {
 
     this.composer.addPass(fxaaPass);
     this.composer.addPass(glowsPass);
-  }
-
-  enableOrbitControls() {
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-  }
-
-  enableAxesHelper() {
-    const axesHelper = new AxesHelper(500);
-    this.scene.add(axesHelper);
   }
 
   private addBoxesForInit() {
@@ -213,30 +220,42 @@ export default class Game {
   }
 
   private createLights() {
-    const hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.3);
-    hemisphereLight.color.setHSL(0.6, 1, 0.6);
-    hemisphereLight.groundColor.setHSL(0.095, 1, 0.75);
-    hemisphereLight.position.set(0, 1000, 0);
+    this.hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.3);
+    this.hemisphereLight.color.setHSL(0.6, 1, 0.6);
+    this.hemisphereLight.groundColor.setHSL(0.095, 1, 0.75);
+    this.hemisphereLight.position.set(
+      GAME_SETTINGS.light.hemisphereLightPosition.x,
+      GAME_SETTINGS.light.hemisphereLightPosition.y,
+      GAME_SETTINGS.light.hemisphereLightPosition.z
+    );
 
-    const directionalLight = new DirectionalLight(0xffffff, 0.5);
+    this.directionalLight = new DirectionalLight(0xffffff, 0.5);
     const ambientLight = new AmbientLight(0xdc8874, 0.7);
 
-    directionalLight.position.set(100, 1000, 150);
-    directionalLight.target.position.set(36, 0, 36);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
-    directionalLight.shadow.camera.left = -400;
-    directionalLight.shadow.camera.right = 400;
-    directionalLight.shadow.camera.top = 400;
-    directionalLight.shadow.camera.bottom = -400;
+    this.directionalLight.position.set(
+      GAME_SETTINGS.light.directionalLightPosition.x,
+      GAME_SETTINGS.light.directionalLightPosition.y,
+      GAME_SETTINGS.light.directionalLightPosition.z
+    );
+    this.directionalLight.target.position.set(
+      GAME_SETTINGS.light.directionalLightTargetPosition.x,
+      GAME_SETTINGS.light.directionalLightTargetPosition.y,
+      GAME_SETTINGS.light.directionalLightTargetPosition.z
+    );
+    this.directionalLight.castShadow = true;
+    this.directionalLight.shadow.mapSize.width = 2048;
+    this.directionalLight.shadow.mapSize.height = 2048;
+    this.directionalLight.shadow.camera.left = -400;
+    this.directionalLight.shadow.camera.right = 400;
+    this.directionalLight.shadow.camera.top = 400;
+    this.directionalLight.shadow.camera.bottom = -400;
 
-    directionalLight.shadow.camera.far = 5000;
-    directionalLight.shadow.bias = -0.0001;
+    this.directionalLight.shadow.camera.far = 5000;
+    this.directionalLight.shadow.bias = -0.0001;
 
-    this.scene.add(hemisphereLight);
-    this.scene.add(directionalLight);
-    this.scene.add(directionalLight.target);
+    this.scene.add(this.hemisphereLight);
+    this.scene.add(this.directionalLight);
+    this.scene.add(this.directionalLight.target);
     this.scene.add(ambientLight);
   }
 
@@ -251,9 +270,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x + SPEED, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x + GAME_SETTINGS.speed, boxObject.position.y, boxObject.position.z);
     } else {
-      boxObject.position.set(boxObject.position.x - SPEED, boxObject.position.y, boxObject.position.z);
+      boxObject.position.set(boxObject.position.x - GAME_SETTINGS.speed, boxObject.position.y, boxObject.position.z);
     }
   }
 
@@ -268,9 +287,9 @@ export default class Game {
     }
 
     if (this.directionAnimation === 'down') {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + SPEED);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z + GAME_SETTINGS.speed);
     } else {
-      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - SPEED);
+      boxObject.position.set(boxObject.position.x, boxObject.position.y, boxObject.position.z - GAME_SETTINGS.speed);
     }
   }
 
@@ -454,8 +473,10 @@ export default class Game {
     this.scaleBox.increaseHeight(10);
 
     tweenTextHeightStackPosition.start();
-    tweenCameraPosition.start();
-    vectorForCamera.start();
+    if (!this.enableDeveloperTools) {
+      tweenCameraPosition.start();
+      vectorForCamera.start();
+    }
   }
 
   setNewStack() {
@@ -530,10 +551,17 @@ export default class Game {
     this.composer.setSize(this.container.clientWidth, this.container.clientHeight);
   }
 
+  // Main loop
+
   private render() {
     this.composer.render();
     TWEEN.update();
-    if (this.controls) {
+
+    if (this.showStats && this.stats) {
+      this.stats.update();
+    }
+
+    if (this.showControls && this.controls) {
       this.controls.update();
     } else {
       this.camera.lookAt(this.vectorForCamera);
@@ -564,5 +592,105 @@ export default class Game {
     }
 
     this.requestAnimationId = requestAnimationFrame(this.render.bind(this));
+  }
+
+  // Developer tools
+
+  private setDeveloperTools() {
+    this.enableDatGui();
+    this.enableStats();
+    this.enableAxesHelper();
+    this.enableOrbitControls();
+  }
+
+  private enableDatGui() {
+    const datGui = new dat.GUI({ autoPlace: false });
+    const lightSettings = { ...GAME_SETTINGS.light };
+
+    datGui.domElement.id = 'gui';
+    datGui.add(GAME_SETTINGS, 'speed', 1, 10, 1);
+
+    const lightsGui = datGui.addFolder('lights');
+    const directionalLightPositionGui = lightsGui.addFolder('directionalLightPosition');
+
+    directionalLightPositionGui
+      .add(lightSettings.directionalLightPosition, 'x', 1, 1500, 10)
+      .listen()
+      .onChange(value => {
+        this.directionalLight.position.x = value;
+      });
+    directionalLightPositionGui
+      .add(lightSettings.directionalLightPosition, 'y', 1, 1500, 10)
+      .listen()
+      .onChange(value => {
+        this.directionalLight.position.y = value;
+      });
+    directionalLightPositionGui
+      .add(lightSettings.directionalLightPosition, 'z', 1, 1500, 10)
+      .listen()
+      .onChange(value => {
+        this.directionalLight.position.z = value;
+      });
+
+    const directionalLightTargetPositionGui = lightsGui.addFolder('directionalLightTargetPosition');
+
+    directionalLightTargetPositionGui
+      .add(lightSettings.directionalLightTargetPosition, 'x', 1, 200, 1)
+      .listen()
+      .onChange(value => {
+        this.directionalLight.target.position.x = value;
+      });
+    directionalLightTargetPositionGui
+      .add(lightSettings.directionalLightTargetPosition, 'y', 1, 200, 1)
+      .listen()
+      .onChange(value => {
+        this.directionalLight.target.position.y = value;
+      });
+    directionalLightTargetPositionGui
+      .add(lightSettings.directionalLightTargetPosition, 'z', 1, 200, 1)
+      .listen()
+      .onChange(value => {
+        this.directionalLight.target.position.z = value;
+      });
+
+    const hemisphereLightPositionGui = lightsGui.addFolder('hemisphereLightPosition');
+
+    hemisphereLightPositionGui
+      .add(lightSettings.hemisphereLightPosition, 'x', 0, 1000, 5)
+      .listen()
+      .onChange(value => {
+        this.hemisphereLight.position.x = value;
+      });
+    hemisphereLightPositionGui
+      .add(lightSettings.hemisphereLightPosition, 'y', 0, 1000, 5)
+      .listen()
+      .onChange(value => {
+        this.hemisphereLight.position.y = value;
+      });
+    hemisphereLightPositionGui
+      .add(lightSettings.hemisphereLightPosition, 'z', 0, 1000, 5)
+      .listen()
+      .onChange(value => {
+        this.hemisphereLight.position.z = value;
+      });
+
+    this.container.appendChild(datGui.domElement);
+  }
+
+  private enableStats() {
+    this.showStats = true;
+    this.stats = new Stats();
+    this.stats.showPanel(0);
+    this.container.appendChild(this.stats.dom);
+  }
+
+  private enableOrbitControls() {
+    this.showControls = true;
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+  }
+
+  private enableAxesHelper() {
+    const axesHelper = new AxesHelper(500);
+    this.scene.add(axesHelper);
   }
 }
