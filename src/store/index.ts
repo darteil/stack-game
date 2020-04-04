@@ -3,7 +3,6 @@ import getConfigureStore from './configureStore';
 import rootReducer from './rootReducer';
 
 const initialState = {};
-
 const configureStore = getConfigureStore();
 
 export const browserHistory = createBrowserHistory();
