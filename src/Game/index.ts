@@ -58,14 +58,14 @@ export default class Game {
   private requestAnimationId!: number | null;
   private directionAnimation = 'up'; // up or down
   private animationAxis = 'x'; // x or z
-  private scene!: Scene;
-  private camera!: PerspectiveCamera;
-  private renderer!: WebGLRenderer;
+  private scene: Scene;
+  private camera: PerspectiveCamera;
+  private renderer: WebGLRenderer;
   private scaleBox!: ScaleBox | null;
   private textHeightStack: Mesh | null;
   private textHeightStackPositionY = 20;
   private fontFor3DText!: Font;
-  private composer!: EffectComposer;
+  private composer: EffectComposer;
   private xAxis: IXAxis;
   private zAxis: IZAxis;
 
@@ -97,9 +97,7 @@ export default class Game {
     this.container = container;
     this.setNewStack = this.setNewStack.bind(this);
     this.onWindowResize = this.onWindowResize.bind(this);
-  }
 
-  init() {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
 
@@ -131,8 +129,6 @@ export default class Game {
 
     this.container.appendChild(this.renderer.domElement);
 
-    this.addBoxesForInit();
-
     const loader = new FontLoader();
     loader.load('./fonts/Android_101.json', res => {
       this.fontFor3DText = res;
@@ -141,9 +137,12 @@ export default class Game {
 
     this.createLights();
     this.initPasses();
-
-    this.scene.children.reverse();
     window.addEventListener('resize', this.onWindowResize, false);
+  }
+
+  init() {
+    this.addBoxesForInit();
+    this.scene.children.reverse();
 
     if (this.enableDeveloperTools) {
       this.setDeveloperTools();
@@ -151,14 +150,6 @@ export default class Game {
   }
 
   private initPasses() {
-    /**
-     * Errors:
-     * ShaderPass type, no parameter: color
-     * Material in ShaderPass, no parameter: uniforms
-     *
-     * But they work, I don’t know why...
-     * Рad to leave a 'any' type
-     */
     const glowsPass: any = new ShaderPass(GlowsPass);
 
     glowsPass.color = '#ffcfe0';
@@ -552,7 +543,6 @@ export default class Game {
   }
 
   // Main loop
-
   private render() {
     this.composer.render();
     TWEEN.update();
@@ -595,7 +585,6 @@ export default class Game {
   }
 
   // Developer tools
-
   private setDeveloperTools() {
     this.enableDatGui();
     this.enableStats();
