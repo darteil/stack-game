@@ -28,7 +28,7 @@ build:
     - master
   script:
     - npm i
-    - npm run prod
+    - npm run build
 
 deploy:
   stage: deploy
@@ -36,7 +36,7 @@ deploy:
     - master
   script:
     - npm i
-    - npm run prod
+    - npm run build
     - sshpass -V
     - export SSHPASS=$SSH_USER_PASS
     - sshpass -e scp -o stricthostkeychecking=no -r dist/* $HOST:/var/www/html/stack
