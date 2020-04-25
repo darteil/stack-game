@@ -8,7 +8,7 @@
     "url": "https://github.com/darteil/StackGame.git"
   },
   "scripts": {
-    "dev": "./node_modules/.bin/webpack-dev-server --config config/webpack.dev.js --mode development",
+    "start": "./node_modules/.bin/webpack-dev-server --config config/webpack.dev.js --mode development",
     "lint": "./node_modules/.bin/prettier --config ./.prettierrc.js ./src/**/*.{tsx,ts} ./src/*.{tsx,ts} --write",
     "test": "jest --config ./jest-config/jest.config.js"
   },

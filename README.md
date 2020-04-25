@@ -11,7 +11,7 @@ Install dependencies and devDependencies and start.
 
 ```sh
 $ npm install
-$ npm run dev
+$ npm start
 ```
 
 ### Other
@@ -24,7 +24,7 @@ $ npm run lint
 
 ### Using libraries
 
-[Tween.js](https://github.com/tweenjs/tween.js/)
+[Tween.js](https://github.com/tweenjs/tween.js/),
 [ThreeJs](https://github.com/mrdoob/three.js/)
 
 ### License
