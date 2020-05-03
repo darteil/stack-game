@@ -80,7 +80,7 @@
     "redux-logger": "^3.0.6",
     "style-loader": "^0.21.0",
     "terser-webpack-plugin": "^2.3.2",
-    "ts-jest": "^25.0.0",
+    "ts-jest": "^25.4.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
     "url-loader": "^1.1.2",
