@@ -34,7 +34,17 @@ module.exports = (env, argv) => {
         root: path.resolve(__dirname, '../')
       }),
       new HtmlWebpackTagsPlugin({ tags: ['fonts/roboto.css'], append: true }),
-      new CopyWebpackPlugin([{ from: publicPathFolder, ignore: ['vendor/**/*'] }])
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            globOptions: {
+              ignore: ['vendor/**/*']
+            },
+            from: publicPathFolder,
+            to: distPath
+          }
+        ]
+      })
     ]
   });
 };
