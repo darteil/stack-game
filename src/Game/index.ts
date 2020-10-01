@@ -150,20 +150,19 @@ export default class Game {
   }
 
   private initPasses() {
-    const glowsPass: any = new ShaderPass(GlowsPass);
+    const glowsPass: ShaderPass = new ShaderPass(GlowsPass);
 
-    glowsPass.color = '#ffcfe0';
     glowsPass.material.uniforms.uPosition.value = new Vector2(0, 0.25);
     glowsPass.material.uniforms.uRadius.value = 0.7;
-    glowsPass.material.uniforms.uColor.value = new Color(glowsPass.color);
+    glowsPass.material.uniforms.uColor.value = new Color('#ffcfe0');
     glowsPass.material.uniforms.uAlpha.value = 0.55;
     glowsPass.renderToScreen = true;
 
     const pixelRatio = this.renderer.getPixelRatio();
 
-    const fxaaPass: any = new ShaderPass(FXAAShader);
-    fxaaPass.material.uniforms.resolution.value.x = 1 / (this.container.clientWidth * pixelRatio);
-    fxaaPass.material.uniforms.resolution.value.y = 1 / (this.container.clientHeight * pixelRatio);
+    const fxaaPass: ShaderPass = new ShaderPass(FXAAShader);
+    fxaaPass.material.uniforms['resolution'].value.x = 1 / (this.container.offsetWidth * pixelRatio);
+    fxaaPass.material.uniforms['resolution'].value.y = 1 / (this.container.offsetHeight * pixelRatio);
 
     this.composer.addPass(fxaaPass);
     this.composer.addPass(glowsPass);
