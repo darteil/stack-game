@@ -38,7 +38,7 @@
     "redux": "^4.0.5",
     "redux-persist": "^5.10.0",
     "stats.js": "^0.17.0",
-    "three": "^0.121.1",
+    "three": "^0.125.0",
     "three-addons": "^1.2.0",
     "three-orbitcontrols-ts": "git+https://git@github.com/nicolaspanel/three-orbitcontrols-ts.git"
   },
