@@ -30,7 +30,7 @@ import Stats from 'stats.js';
 import buildTextObject from './Objects/buildTextObject';
 import buildBox from './Objects/buildBox';
 import buildFloor from './Objects/buildFloor';
-// import ScaleBox from './Objects/ScaleBox';
+import ProgressBox from './Objects/ProgressBox';
 import Helpers from './helpers';
 import GAME_SETTINGS from './settings';
 
@@ -61,7 +61,7 @@ export default class Game {
   private scene: Scene;
   private camera: PerspectiveCamera;
   private renderer: WebGLRenderer;
-  //   private scaleBox!: ScaleBox | null;
+  private progressBox!: ProgressBox | null;
   private textHeightStack: Mesh | null;
   private textHeightStackPositionY = 20;
   private fontFor3DText!: Font;
@@ -177,9 +177,9 @@ export default class Game {
     secondBox.position.set(50, this.currentYPosition, 50);
     this.scene.add(secondBox);
 
-    // this.scaleBox = new ScaleBox();
-    // this.scaleBox.mesh.position.set(-120, 5, 50);
-    // this.scene.add(this.scaleBox.mesh);
+    this.progressBox = new ProgressBox();
+    this.progressBox.mesh.position.set(-120, 5, 50);
+    this.scene.add(this.progressBox.mesh);
 
     this.xAxis.activeBox = secondBox;
     this.xAxis.prevBox = firstBox;
@@ -322,7 +322,7 @@ export default class Game {
     this.animationAxis = 'x'; // x or z
     this.count = 0;
     this.heightStack = 0;
-    // this.scaleBox = null;
+    this.progressBox = null;
     this.textHeightStackPositionY = 20;
 
     for (let i = this.scene.children.length - 1; i >= 0; i -= 1) {
@@ -431,7 +431,8 @@ export default class Game {
       !this.xAxis.activeBox ||
       !this.xAxis.prevBox ||
       !this.zAxis.activeBox ||
-      !this.zAxis.prevBox /*|| !this.scaleBox */
+      !this.zAxis.prevBox ||
+      !this.progressBox
     )
       return;
     // Camera position
@@ -465,7 +466,7 @@ export default class Game {
       )
       .easing(TWEEN.Easing.Quartic.InOut);
 
-    // this.scaleBox.increaseHeight(10);
+    this.progressBox.setYPosition(10);
 
     tweenTextHeightStackPosition.start();
     if (!this.enableDeveloperTools) {
