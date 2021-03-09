@@ -24,6 +24,7 @@
     "@types/redux-logger": "^3.0.8",
     "@types/redux-persist": "^4.3.1",
     "@types/stats": "^0.16.30",
+    "@types/three": "^0.126.0",
     "@types/tween.js": "^17.2.0",
     "@types/uuid": "^3.4.9",
     "classnames": "^2.2.6",
@@ -38,7 +39,7 @@
     "redux": "^4.0.5",
     "redux-persist": "^5.10.0",
     "stats.js": "^0.17.0",
-    "three": "^0.121.1",
+    "three": "^0.126.1",
     "three-addons": "^1.2.0",
     "three-orbitcontrols-ts": "git+https://git@github.com/nicolaspanel/three-orbitcontrols-ts.git"
   },
