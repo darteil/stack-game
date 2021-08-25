@@ -6,8 +6,8 @@
 
 ### Installation and run project.
 
-Switch to dev branch.
-Install dependencies and start.
+Switch to "dev" branch.
+Install dependencies and devDependencies and start.
 
 ```sh
 $ npm install
