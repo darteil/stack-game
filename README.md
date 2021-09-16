@@ -1,6 +1,6 @@
 # Stack game
 
-[![GitHub license](https://img.shields.io/github/license/darteil/darteil-projects.ru?style=for-the-badge)](https://github.com/darteil/darteil-projects.ru/blob/master/LICENSE.md) [![pipeline status](https://img.shields.io/gitlab/pipeline/darteil_projects/darteil-projects-ru/master?style=for-the-badge)](https://gitlab.com/darteil_projects/darteil-projects-ru/commits/master) [![GitHub release](https://img.shields.io/github/release/darteil/StackGame?style=for-the-badge)](https://github.com/darteil/StackGame/releases) 
+[![GitHub license](https://img.shields.io/github/license/darteil/darteil-projects.ru?style=for-the-badge)](https://github.com/darteil/darteil-projects.ru/blob/master/LICENSE.md) [![pipeline status](https://img.shields.io/gitlab/pipeline/darteil_projects/StackGame/master?style=for-the-badge)](https://gitlab.com/darteil_projects/StackGame/commits/master) [![GitHub release](https://img.shields.io/github/release/darteil/StackGame?style=for-the-badge)](https://github.com/darteil/StackGame/releases) 
 
 ![](media/demo.gif)
 
